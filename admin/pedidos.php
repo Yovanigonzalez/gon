@@ -40,17 +40,10 @@ include 'menu.php'; // Incluir el menú
                   <label for="fecha">Fecha:</label>
                   <input type="date" id="fecha" name="fecha" class="form-control" required>
                 </div>
-                <div class="form-group">
-                  <label for="producto">Producto:</label>
-                  <input type="text" id="producto" name="producto" class="form-control" required>
-                  <!-- Lista de productos sugeridos -->
-                  <div id="lista-productos"></div>
+                <div id="productos">
+                  <!-- Aquí se agregarán dinámicamente los campos de productos -->
                 </div>
-                <div class="form-group">
-                    <label for="cantidad">Cantidad:</label>
-                    <input type="text" id="cantidad" name="cantidad" class="form-control" pattern="[0-9a-zA-Z]*" title="Ingrese solo números o letras">
-                </div>
-
+                <button type="button" class="btn btn-primary" onclick="agregarProducto()">Agregar Producto</button>
                 <button type="submit" class="btn btn-primary">Agregar Pedido</button>
               </form>
             </div>
@@ -64,10 +57,6 @@ include 'menu.php'; // Incluir el menú
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script src="../js/pedidos.js"></script>
-
   <!-- Script para la búsqueda en tiempo real de productos -->
-
 </body>
 </html>
-
-

@@ -16,7 +16,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Mostrar resultados de la búsqueda
     while($row = $result->fetch_assoc()) {
-        echo "<div onclick='seleccionarCliente(" . $row["id"] . ", \"" . $row["nombre"] . "\", \"" . $row["direccion"] . "\")'>ID: " . $row["id"] . " - Nombre: " . $row["nombre"] . " - Dirección: " . $row["direccion"] . "</div>";
+        echo "<div onclick='seleccionarCliente(" . $row["id"] . ", \"" . $row["nombre"] . "\", \"" . $row["direccion"] . "\")'> " . $row["nombre"] . " - Dirección: " . $row["direccion"] . "</div>";
     }
 } else {
     echo "No se encontraron resultados";
