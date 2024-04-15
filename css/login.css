@@ -1,0 +1,28 @@
+/* styles.css */
+
+/* Estilos generales */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .login-form {
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  
+  /* Estilos para dispositivos con un ancho máximo de 768px (tablets y dispositivos móviles) */
+  @media (max-width: 768px) {
+    .login-form {
+      width: 80%; /* Ancho del formulario en dispositivos móviles */
+      margin-top: 50px; /* Margen superior reducido en dispositivos móviles */
+    }
+  }
+  
+  /* Estilos para dispositivos con un ancho máximo de 576px (teléfonos móviles en posición vertical) */
+  @media (max-width: 576px) {
+    .login-form {
+      width: 90%; /* Ancho del formulario en teléfonos móviles */
+    }
+  }
+  
