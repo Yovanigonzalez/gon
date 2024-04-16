@@ -30,34 +30,98 @@
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <div class="col-lg-3 col-6">
-            <!-- Caja pequeña -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
+          
 
-                <p>Nuevos Pedidos</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- Caja pequeña para Clientes -->
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>53</h3>
+          
+          <?php
+// Configuración de la conexión a la base de datos
+include '../config/conexion.php';
 
-                <p>Clientes</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
+// Verificar la conexión
+if ($conn->connect_error) {
+  die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener la fecha actual en el formato adecuado para MySQL (YYYY-MM-DD)
+$current_date = date("Y-m-d");
+
+// Consulta SQL para contar los pedidos del día actual con el estatus 'PENDIENTE'
+$sql = "SELECT COUNT(*) AS total_pedidos FROM pedidos WHERE DATE(fecha) = '$current_date' AND estatus = 'PENDIENTE'";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // Si hay resultados, mostrar el número de pedidos
+  $row = $result->fetch_assoc();
+  $total_pedidos = $row["total_pedidos"];
+} else {
+  $total_pedidos = 0;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+
+<!-- Caja pequeña para Nuevos Pedidos -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-info">
+        <div class="inner">
+            <h3><?php echo $total_pedidos; ?></h3>
+            <p>Nuevos Pedidos</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
+
+
+
+
+<?php
+// Configuración de la conexión a la base de datos
+include '../config/conexion.php';
+
+// Verificar la conexión
+if ($conn->connect_error) {
+  die("Error de conexión: " . $conn->connect_error);
+}
+
+// Consulta SQL para contar los clientes
+$sql = "SELECT COUNT(*) AS total_clientes FROM clientes";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // Si hay resultados, mostrar el número de clientes
+  $row = $result->fetch_assoc();
+  $total_clientes = $row["total_clientes"];
+} else {
+  $total_clientes = 0;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+
+<!-- Caja pequeña para Clientes -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-success">
+        <div class="inner">
+            <h3><?php echo $total_clientes; ?></h3>
+            <p>Clientes</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-person-add"></i>
+        </div>
+        <a href="total_clientes.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
+
+
+
+
           <!-- Caja pequeña para Ganancias -->
           <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
@@ -88,35 +152,30 @@
           </div>
 
           <!-- Caja pequeña para Clientes a Crédito -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-secondary">
-        <div class="inner">
-            <h3>28</h3>
-            <p>Clientes a Crédito</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-card"></i>
-        </div>
-        <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
+          <div class="col-lg-3 col-6">
+              <div class="small-box bg-secondary">
+                  <div class="inner">
+                      <h3>28</h3>
+                      <p>Clientes a Crédito</p>
+                  </div>
+                  <div class="icon">
+                      <i class="ion ion-card"></i>
+                  </div>
+                  <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+          </div>
 
 
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
 </div>
-<!-- ./wrapper -->
 
   <!-- Bootstrap 4 JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   
-
 </body>
 </html>
