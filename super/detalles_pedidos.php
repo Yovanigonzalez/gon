@@ -1,21 +1,26 @@
 <?php
-// Incluir el archivo de conexión a la base de datos
-include 'menu.php'; // Incluir el menú
-
-// Conectar a la base de datos
+// Establecer la conexión con la base de datos
 include '../config/conexion.php';
 
-// Consulta SQL para obtener todos los clientes
-$sql = "SELECT * FROM clientes";
+// Verificar conexión
+if ($conn->connect_error) {
+  die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Consulta SQL para obtener los nombres y direcciones de los clientes
+$sql = "SELECT nombre, direccion FROM clientes";
 $result = $conn->query($sql);
 ?>
 
+<?php include 'menu.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Distribuidora González | Clientes</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -36,17 +41,6 @@ $result = $conn->query($sql);
               <div class="card-body">
                 <table class="table table-bordered">
                   <thead>
-                  <?php
-                    // Verificar si hay un mensaje de éxito
-                    if(isset($_GET['success']) && $_GET['success'] == 1) {
-                        echo "<p class='alert alert-success'>¡El cliente se ha actualizado correctamente!</p>";
-                    }
-                    // Verificar si hay un mensaje de error
-                    if(isset($_GET['error']) && $_GET['error'] == 1) {
-                        echo "<p class='alert alert-danger'>Ocurrió un error al actualizar el cliente. Por favor, inténtalo de nuevo.</p>";
-                    }
-                    ?>
-
                     <tr>
                       <th>Nombre</th>
                       <th>Dirección</th>
@@ -61,13 +55,12 @@ $result = $conn->query($sql);
                         echo "<td>" . $row["nombre"] . "</td>";
                         echo "<td>" . $row["direccion"] . "</td>";
                         echo "<td>
-                              <a href='editar_cliente.php?id=" . $row["id"] . "' class='btn btn-primary btn-sm'>Editar</a>
-                              <a href='eliminar_cliente.php?id=" . $row["id"] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este cliente?\")'>Eliminar</a>
+                              <a href='detalles_completos_cliente.php?nombre=" . $row["nombre"] . "&direccion=" . $row["direccion"] . "' class='btn btn-primary btn-sm'>Más detalles</a>
                               </td>";
                         echo "</tr>";
                       }
                     } else {
-                      echo "<tr><td colspan='4'>No se encontraron clientes</td></tr>";
+                      echo "<tr><td colspan='3'>No se encontraron clientes</td></tr>";
                     }
                     ?>
                   </tbody>
@@ -88,4 +81,8 @@ $result = $conn->query($sql);
 </body>
 </html>
 
+<?php
+// Cerrar conexión
+$conn->close();
+?>
 

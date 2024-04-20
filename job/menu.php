@@ -40,7 +40,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Logo de la Marca -->
     <a href="#" class="brand-link text-center">
-  <span class="brand-text font-weight-light">Administrador</span>
+  <span class="brand-text font-weight-light">Panel</span>
 </a>
 
 
@@ -65,7 +65,7 @@
       <a href="agregar_cliente.php" class="nav-link">
         <i class="nav-icon fas fa-user"></i>
         <p>
-          Agregar Clientes
+          Ventas a mostrador
         </p>
       </a>
     </li>
@@ -74,42 +74,23 @@
       <a href="agregar_productos.php" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
-          Agregar Productos
-        </p>
-      </a>
-    </li>
-    <!-- Agregar Entradas -->
-    <li class="nav-item">
-      <a href="agregar_entradas.php" class="nav-link">
-        <i class="nav-icon fas fa-file-alt"></i>
-        <p>
-          Agregar Entradas
+          Canastilla
         </p>
       </a>
     </li>
 
-        <!-- Pedidos -->
+
+       <!-- Pedidos -->
         <li class="nav-item">
-      <a href="pedidos.php" class="nav-link">
+      <a href="detalles_pedidos.php" class="nav-link">
         <i class="nav-icon fas fa-shopping-cart"></i>
         <p>
-          Agregar Pedidos
+          Ver Pedidos
         </p>
       </a>
     </li>
 
     
-
-        <!-- Nuevo elemento para descargar PDF -->
-        <li class="nav-item">
-    <a href="../pdf/manual_admin.pdf" class="nav-link" download>
-        <i class="nav-icon fas fa-file-pdf"></i>
-        <p>
-            Descargar PDF (Manual)
-        </p>
-    </a>
-</li>
-
 
   </ul>
 </nav>

@@ -40,7 +40,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Logo de la Marca -->
     <a href="#" class="brand-link text-center">
-  <span class="brand-text font-weight-light">Administrador</span>
+  <span class="brand-text font-weight-light">Super Administrador</span>
 </a>
 
 
@@ -60,56 +60,54 @@
         </p>
       </a>
     </li>
-    <!-- Agregar Clientes -->
-    <li class="nav-item">
-      <a href="agregar_cliente.php" class="nav-link">
-        <i class="nav-icon fas fa-user"></i>
-        <p>
-          Agregar Clientes
-        </p>
-      </a>
-    </li>
-    <!-- Agregar Productos -->
-    <li class="nav-item">
-      <a href="agregar_productos.php" class="nav-link">
-        <i class="nav-icon fas fa-box"></i>
-        <p>
-          Agregar Productos
-        </p>
-      </a>
-    </li>
-    <!-- Agregar Entradas -->
-    <li class="nav-item">
-      <a href="agregar_entradas.php" class="nav-link">
-        <i class="nav-icon fas fa-file-alt"></i>
-        <p>
-          Agregar Entradas
-        </p>
-      </a>
-    </li>
-
-        <!-- Pedidos -->
-        <li class="nav-item">
-      <a href="pedidos.php" class="nav-link">
-        <i class="nav-icon fas fa-shopping-cart"></i>
-        <p>
-          Agregar Pedidos
-        </p>
-      </a>
-    </li>
-
     
+    <!-- Localizador de Notas -->
+    <li class="nav-item">
+      <a href="localizador_notas.php" class="nav-link">
+        <i class="nav-icon fas fa-sticky-note"></i>
+        <p>
+          Localizador de Notas
+        </p>
+      </a>
+    </li>
+
+    <!-- Registrar Gastos -->
+    <li class="nav-item">
+      <a href="registrar_gastos.php" class="nav-link">
+        <i class="nav-icon fas fa-money-check-alt"></i>
+        <p>
+          Registrar Gastos
+        </p>
+      </a>
+    </li>
+    <!-- Cobranza -->
+    <li class="nav-item">
+      <a href="cobranza.php" class="nav-link">
+        <i class="nav-icon fas fa-hand-holding-usd"></i>
+        <p>
+          Cobranza
+        </p>
+      </a>
+    </li>
+    <!-- Actualizar Deuda -->
+    <li class="nav-item">
+      <a href="actualizar_deuda.php" class="nav-link">
+        <i class="nav-icon fas fa-money-bill-wave"></i>
+        <p>
+          Actualizar Deuda
+        </p>
+      </a>
+    </li>
 
         <!-- Nuevo elemento para descargar PDF -->
         <li class="nav-item">
-    <a href="../pdf/manual_admin.pdf" class="nav-link" download>
+      <a href="../pdf/" class="nav-link">
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>
-            Descargar PDF (Manual)
+          Descargar PDF (Manual)
         </p>
-    </a>
-</li>
-
+      </a>
+    </li>
 
   </ul>
 </nav>

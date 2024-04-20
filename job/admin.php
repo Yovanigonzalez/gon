@@ -16,9 +16,69 @@
       <div class="container-fluid">
         <!-- Cajas pequeñas (estadísticas) -->
         <div class="row">
+          <!-- Caja pequeña para Ventas -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3>$32,500</h3>
+
+                <p>Ventas</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-social-usd"></i>
+              </div>
+              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          
+
+          
+          <?php
+// Configuración de la conexión a la base de datos
+include '../config/conexion.php';
+
+// Verificar la conexión
+if ($conn->connect_error) {
+  die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener la fecha actual en el formato adecuado para MySQL (YYYY-MM-DD)
+$current_date = date("Y-m-d");
+
+// Consulta SQL para contar los pedidos del día actual con el estatus 'PENDIENTE'
+$sql = "SELECT COUNT(*) AS total_pedidos FROM pedidos WHERE DATE(fecha) = '$current_date' AND estatus = 'PENDIENTE'";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // Si hay resultados, mostrar el número de pedidos
+  $row = $result->fetch_assoc();
+  $total_pedidos = $row["total_pedidos"];
+} else {
+  $total_pedidos = 0;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+
+<!-- Caja pequeña para Nuevos Pedidos -->
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-info">
+        <div class="inner">
+            <h3><?php echo $total_pedidos; ?></h3>
+            <p>Nuevos Pedidos</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
 
 
-        
+
+
 <?php
 // Configuración de la conexión a la base de datos
 include '../config/conexion.php';
@@ -61,115 +121,9 @@ $conn->close();
 
 
 
-<?php
-// Configuración de la conexión a la base de datos
-include '../config/conexion.php';
-
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
-
-// Consulta SQL para contar los productos
-$sql = "SELECT COUNT(*) AS total_productos FROM productos";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de productos
-  $row = $result->fetch_assoc();
-  $total_productos = $row["total_productos"];
-} else {
-  $total_productos = 0;
-}
-
-// Cerrar conexión
-$conn->close();
-?>
-
-<!-- Caja pequeña para Productos -->
-<!-- Caja pequeña para Productos -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-dark"> <!-- Cambiar bg-warning por el color deseado -->
-        <div class="inner">
-            <h3><?php echo $total_productos; ?></h3>
-            <p>Productos</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-bag"></i>
-        </div>
-        <a href="total_productos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-
-
-          <!-- Caja pequeña para Ventas -->
-        <!--  <div class="col-lg-3 col-6">
-            <div class="small-box bg-primary">
-              <div class="inner">
-                <h3>$32,500</h3>
-
-                <p>Ventas</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-social-usd"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>-->
-          
-
-          
-          <?php
-// Configuración de la conexión a la base de datos
-include '../config/conexion.php';
-
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
-
-// Establecer la zona horaria a GMT-6
-date_default_timezone_set('America/Mexico_City');
-
-// Obtener la fecha actual en el formato adecuado para MySQL (YYYY-MM-DD)
-$current_date = date("Y-m-d");
-
-// Consulta SQL para contar los pedidos del día actual con el estatus 'PENDIENTE'
-$sql = "SELECT COUNT(*) AS total_pedidos FROM pedidos WHERE DATE(fecha) = '$current_date' AND estatus = 'PENDIENTE'";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de pedidos
-  $row = $result->fetch_assoc();
-  $total_pedidos = $row["total_pedidos"];
-} else {
-  $total_pedidos = 0;
-}
-
-// Cerrar conexión
-$conn->close();
-?>
-<!-- Caja pequeña para Nuevos Pedidos -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-info">
-        <div class="inner">
-            <h3><?php echo $total_pedidos; ?></h3>
-            <p>Ver Pedidos</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-bag"></i>
-        </div>
-        <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-
-
-
 
           <!-- Caja pequeña para Ganancias -->
-          <!--<div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3>$64,987</h3>
@@ -181,11 +135,9 @@ $conn->close();
               </div>
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>-->
-
-
+          </div>
           <!-- Caja pequeña para Gastos -->
-          <!--<div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>$23,482</h3>
@@ -197,7 +149,7 @@ $conn->close();
               </div>
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>-->
+          </div>
 
           <!-- Caja pequeña para Clientes a Crédito -->
           <div class="col-lg-3 col-6">

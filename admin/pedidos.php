@@ -27,6 +27,19 @@ include 'menu.php'; // Incluir el menú
               </div>
               <!-- Formulario para agregar pedidos -->
               <form class="card-body" action="procesar_pedido.php" method="post">
+
+              <?php
+                // Verificar si se ha pasado un mensaje de éxito o un error a través de la URL
+                if (isset($_GET['mensaje'])) {
+                    $mensaje = $_GET['mensaje'];
+                    echo "<div class='alert alert-success'>$mensaje</div>";
+                } elseif (isset($_GET['error'])) {
+                    $error = $_GET['error'];
+                    echo "<div class='alert alert-danger'>$error</div>";
+                }
+                ?>
+
+
                 <div class="form-group">
                   <label for="cliente">Cliente:</label>
                   <input type="text" id="cliente" name="cliente" class="form-control" oninput="buscarClientes()">

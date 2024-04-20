@@ -45,10 +45,12 @@ include 'menu.php'; // Incluir el menú
               <?php unset($_SESSION['mensaje_error']); ?>
               <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="nombreProducto">Nombre del producto:</label>
-                    <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" placeholder="Ingrese el nombre del producto" required>
-                </div>
+              <div class="form-group">
+    <label for="nombreProducto">Nombre del producto:</label>
+    <!-- Utilizamos JavaScript para convertir automáticamente el texto a mayúsculas -->
+    <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" placeholder="Ingrese el nombre del producto" oninput="this.value = this.value.toUpperCase()" required>
+</div>
+
                 <button type="submit" class="btn btn-primary" id="submitButton">Agregar Producto</button>
             </form>
             </div>

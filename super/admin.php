@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de control</title>
+    <title>Panel de control | Super Administrador</title>
 </head>
 <body>
     
@@ -18,93 +18,9 @@
         <div class="row">
 
 
-        
-<?php
-// Configuración de la conexión a la base de datos
-include '../config/conexion.php';
-
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
-
-// Consulta SQL para contar los clientes
-$sql = "SELECT COUNT(*) AS total_clientes FROM clientes";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de clientes
-  $row = $result->fetch_assoc();
-  $total_clientes = $row["total_clientes"];
-} else {
-  $total_clientes = 0;
-}
-
-// Cerrar conexión
-$conn->close();
-?>
-
-<!-- Caja pequeña para Clientes -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-success">
-        <div class="inner">
-            <h3><?php echo $total_clientes; ?></h3>
-            <p>Clientes</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-person-add"></i>
-        </div>
-        <a href="total_clientes.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-
-
-
-<?php
-// Configuración de la conexión a la base de datos
-include '../config/conexion.php';
-
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
-
-// Consulta SQL para contar los productos
-$sql = "SELECT COUNT(*) AS total_productos FROM productos";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de productos
-  $row = $result->fetch_assoc();
-  $total_productos = $row["total_productos"];
-} else {
-  $total_productos = 0;
-}
-
-// Cerrar conexión
-$conn->close();
-?>
-
-<!-- Caja pequeña para Productos -->
-<!-- Caja pequeña para Productos -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-dark"> <!-- Cambiar bg-warning por el color deseado -->
-        <div class="inner">
-            <h3><?php echo $total_productos; ?></h3>
-            <p>Productos</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-bag"></i>
-        </div>
-        <a href="total_productos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-
 
           <!-- Caja pequeña para Ventas -->
-        <!--  <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">
             <div class="small-box bg-primary">
               <div class="inner">
                 <h3>$32,500</h3>
@@ -116,7 +32,7 @@ $conn->close();
               </div>
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>-->
+          </div>
           
 
           
@@ -128,9 +44,6 @@ include '../config/conexion.php';
 if ($conn->connect_error) {
   die("Error de conexión: " . $conn->connect_error);
 }
-
-// Establecer la zona horaria a GMT-6
-date_default_timezone_set('America/Mexico_City');
 
 // Obtener la fecha actual en el formato adecuado para MySQL (YYYY-MM-DD)
 $current_date = date("Y-m-d");
@@ -151,12 +64,13 @@ if ($result->num_rows > 0) {
 // Cerrar conexión
 $conn->close();
 ?>
+
 <!-- Caja pequeña para Nuevos Pedidos -->
 <div class="col-lg-3 col-6">
     <div class="small-box bg-info">
         <div class="inner">
             <h3><?php echo $total_pedidos; ?></h3>
-            <p>Ver Pedidos</p>
+            <p>Nuevos Pedidos</p>
         </div>
         <div class="icon">
             <i class="ion ion-bag"></i>
@@ -169,8 +83,8 @@ $conn->close();
 
 
           <!-- Caja pequeña para Ganancias -->
-          <!--<div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
+          <div class="col-lg-3 col-6">
+          <div class="small-box bg-secondary">
               <div class="inner">
                 <h3>$64,987</h3>
 
@@ -181,11 +95,9 @@ $conn->close();
               </div>
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>-->
-
-
+          </div>
           <!-- Caja pequeña para Gastos -->
-          <!--<div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
               <div class="inner">
                 <h3>$23,482</h3>
@@ -197,11 +109,11 @@ $conn->close();
               </div>
               <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>-->
+          </div>
 
           <!-- Caja pequeña para Clientes a Crédito -->
           <div class="col-lg-3 col-6">
-              <div class="small-box bg-secondary">
+          <div class="small-box bg-success">
                   <div class="inner">
                       <h3>28</h3>
                       <p>Clientes a Crédito</p>
@@ -210,6 +122,23 @@ $conn->close();
                       <i class="ion ion-card"></i>
                   </div>
                   <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+          </div>
+
+          <!-- Caja pequeña para Deudas de Cajas -->
+          <div class="col-lg-3 col-6">
+              <div class="small-box bg-dark">
+                  <div class="inner">
+                      <!-- Aquí puedes mostrar el total de deudas de cajas -->
+                      <h3>$XX,XXX</h3>
+                      <p>Deudas de Cajas</p>
+                  </div>
+                  <div class="icon">
+                      <!-- Puedes elegir un icono apropiado, por ejemplo: -->
+                      <i class="ion ion-social-usd"></i>
+                  </div>
+                  <!-- Puedes enlazar a la página de detalles de las deudas de cajas -->
+                  <a href="detalles_deudas_cajas.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
               </div>
           </div>
 
