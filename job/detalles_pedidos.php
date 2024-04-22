@@ -4,13 +4,20 @@ include '../config/conexion.php';
 
 // Verificar conexión
 if ($conn->connect_error) {
-  die("Conexión fallida: " . $conn->connect_error);
+    die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Consulta SQL para obtener los nombres y direcciones de los clientes
-$sql = "SELECT nombre, direccion FROM clientes";
+// Ajustar la zona horaria a GMT-6
+date_default_timezone_set('America/Mexico_City');
+
+// Obtener la fecha actual en formato YYYY-MM-DD
+$fecha_actual = date("Y-m-d");
+
+// Consulta SQL para obtener los pedidos pendientes de hoy
+$sql = "SELECT id, cliente, direccion FROM pedidos WHERE fecha = '$fecha_actual' AND estatus = 'PENDIENTE'";
 $result = $conn->query($sql);
 ?>
+
 
 <?php include 'menu.php'; ?>
 <!DOCTYPE html>
@@ -18,7 +25,7 @@ $result = $conn->query($sql);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Distribuidora González | Clientes</title>
+  <title>Distribuidora González | Pedidos Pendientes</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -36,13 +43,14 @@ $result = $conn->query($sql);
             <br>
             <div class="card card-white">
               <div class="card-header">
-                <h3 class="card-title">Clientes</h3>
+                <h3 class="card-title">Pedidos Pendientes de Hoy</h3>
               </div>
               <div class="card-body">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Nombre</th>
+                      <!--<th>ID</th>-->
+                      <th>Cliente</th>
                       <th>Dirección</th>
                       <th>Acciones</th>
                     </tr>
@@ -52,15 +60,16 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                       while($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row["nombre"] . "</td>";
+                       // echo "<td>" . $row["id"] . "</td>";
+                        echo "<td>" . $row["cliente"] . "</td>";
                         echo "<td>" . $row["direccion"] . "</td>";
                         echo "<td>
-                              <a href='detalles_completos_cliente.php?nombre=" . $row["nombre"] . "&direccion=" . $row["direccion"] . "' class='btn btn-primary btn-sm'>Más detalles</a>
+                              <a href='detalles_completos_cliente.php?nombre=" . urlencode($row["cliente"]) . "&direccion=" . urlencode($row["direccion"]) . "' class='btn btn-primary btn-sm'>Detalles</a>
                               </td>";
                         echo "</tr>";
                       }
                     } else {
-                      echo "<tr><td colspan='3'>No se encontraron clientes</td></tr>";
+                      echo "<tr><td colspan='4'>No se encontraron pedidos pendientes para hoy</td></tr>";
                     }
                     ?>
                   </tbody>

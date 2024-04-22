@@ -20,19 +20,35 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-primary">
               <div class="inner">
-                <h3>$32,500</h3>
+                <h3>Mostrador</h3>
 
                 <p>Ventas</p>
               </div>
               <div class="icon">
                 <i class="ion ion-social-usd"></i>
               </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="mostrador.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           
 
-          
+
+          <!-- Caja pequeña para Gastos -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>$23,482</h3>
+
+                <p>Canastilla</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
+          <!-- Caja pequeña para Clientes a Crédito -->
           <?php
 // Configuración de la conexión a la base de datos
 include '../config/conexion.php';
@@ -41,6 +57,9 @@ include '../config/conexion.php';
 if ($conn->connect_error) {
   die("Error de conexión: " . $conn->connect_error);
 }
+
+// Establecer la zona horaria a GMT-6
+date_default_timezone_set('America/Mexico_City');
 
 // Obtener la fecha actual en el formato adecuado para MySQL (YYYY-MM-DD)
 $current_date = date("Y-m-d");
@@ -61,13 +80,12 @@ if ($result->num_rows > 0) {
 // Cerrar conexión
 $conn->close();
 ?>
-
 <!-- Caja pequeña para Nuevos Pedidos -->
 <div class="col-lg-3 col-6">
     <div class="small-box bg-info">
         <div class="inner">
             <h3><?php echo $total_pedidos; ?></h3>
-            <p>Nuevos Pedidos</p>
+            <p>Ver Pedidos</p>
         </div>
         <div class="icon">
             <i class="ion ion-bag"></i>
@@ -75,95 +93,6 @@ $conn->close();
         <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
-
-
-
-
-<?php
-// Configuración de la conexión a la base de datos
-include '../config/conexion.php';
-
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Error de conexión: " . $conn->connect_error);
-}
-
-// Consulta SQL para contar los clientes
-$sql = "SELECT COUNT(*) AS total_clientes FROM clientes";
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de clientes
-  $row = $result->fetch_assoc();
-  $total_clientes = $row["total_clientes"];
-} else {
-  $total_clientes = 0;
-}
-
-// Cerrar conexión
-$conn->close();
-?>
-
-<!-- Caja pequeña para Clientes -->
-<div class="col-lg-3 col-6">
-    <div class="small-box bg-success">
-        <div class="inner">
-            <h3><?php echo $total_clientes; ?></h3>
-            <p>Clientes</p>
-        </div>
-        <div class="icon">
-            <i class="ion ion-person-add"></i>
-        </div>
-        <a href="total_clientes.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-</div>
-
-
-
-
-          <!-- Caja pequeña para Ganancias -->
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>$64,987</h3>
-
-                <p>Ganancias</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- Caja pequeña para Gastos -->
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>$23,482</h3>
-
-                <p>Gastos</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-
-          <!-- Caja pequeña para Clientes a Crédito -->
-          <div class="col-lg-3 col-6">
-              <div class="small-box bg-secondary">
-                  <div class="inner">
-                      <h3>28</h3>
-                      <p>Clientes a Crédito</p>
-                  </div>
-                  <div class="icon">
-                      <i class="ion ion-card"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-          </div>
 
 
         </div>

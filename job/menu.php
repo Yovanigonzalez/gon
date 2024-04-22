@@ -62,7 +62,7 @@
     </li>
     <!-- Agregar Clientes -->
     <li class="nav-item">
-      <a href="agregar_cliente.php" class="nav-link">
+      <a href="mostrador.php" class="nav-link">
         <i class="nav-icon fas fa-user"></i>
         <p>
           Ventas a mostrador
