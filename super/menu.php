@@ -61,6 +61,17 @@
       </a>
     </li>
     
+
+        <!-- Agregar Deudores -->
+        <li class="nav-item">
+      <a href="deudores.php" class="nav-link">
+        <i class="nav-icon fas fa-money-bill-wave"></i>
+        <p>
+          Agregar Dedudores
+        </p>
+      </a>
+    </li>
+
     <!-- Localizador de Notas -->
     <li class="nav-item">
       <a href="localizador_notas.php" class="nav-link">
