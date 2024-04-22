@@ -1,6 +1,5 @@
 <?php
-// Conexión a la base de datos (debes llenar estos datos según tu configuración)
-
+// Incluir el archivo de conexión a la base de datos
 include '../config/conexion.php';
 
 // Verificar conexión
@@ -22,10 +21,26 @@ $clientes = array();
 // Iterar sobre los resultados y añadirlos al array
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        // Obtener el ID del cliente
+        $idCliente = $row['id'];
+
+        // Consultar si el cliente tiene una deuda pendiente
+        $deudaSql = "SELECT cantidad_deuda FROM deudores WHERE id_cliente = $idCliente";
+        $deudaResult = $conn->query($deudaSql);
+        $cantidadDeuda = 0; // Inicializar la cantidad de deuda en cero
+
+        // Si hay resultados, obtener la cantidad de deuda
+        if ($deudaResult->num_rows > 0) {
+            $deudaRow = $deudaResult->fetch_assoc();
+            $cantidadDeuda = $deudaRow['cantidad_deuda'];
+        }
+
+        // Agregar el cliente al array con la cantidad de deuda
         $clientes[] = array(
-            'id' => $row['id'],
+            'id' => $idCliente,
             'nombre' => $row['nombre'],
-            'direccion' => $row['direccion']
+            'direccion' => $row['direccion'],
+            'cantidad_deuda' => $cantidadDeuda
         );
     }
 }

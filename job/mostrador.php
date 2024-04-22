@@ -31,8 +31,7 @@ include 'menu.php'; // Incluir el menú
                 <!-- Formulario para agregar clientes -->
                 <form id="formulario">
                     <div class="form-row">
-
-                    <div class="form-group col-md-2">
+                      <div class="form-group col-md-2">
                           <label for="cliente">Cliente:</label>
                           <input type="text" class="form-control" id="cliente" name="cliente">
 
@@ -47,9 +46,10 @@ include 'menu.php'; // Incluir el menú
 
 
                         <div class="form-group col-md-2">
-                        <label for="deuda">Deuda Cliente:</label>
-                        <input type="text" class="form-control" id="deuda" name="deuda">
+                            <label for="deuda">Deuda Cliente:</label>
+                            <input type="text" class="form-control" id="deuda" name="deuda" readonly style="background-color: #f2f2f2;">
                         </div>
+
 
 
                         <div class="form-group col-md-2">
@@ -81,35 +81,27 @@ include 'menu.php'; // Incluir el menú
                         <label for="tapas">Tapas:</label>
                         <input type="text" class="form-control" id="tapas" name="tapas">
                         </div>
-                        <div class="form-group col-md-3">
-                        <label for="metodo_pago">Método de Pago:</label>
-                        <select class="form-control" id="metodo_pago" name="metodo_pago">
-                            <option>Selecciona el metodo de pago</option>
-                            <option value="decontado">Decontado</option>
-                            <option value="a credito">A credito</option>
-                            <option value="transferencia">Transferencia</option>
-                        </select>
-                        </div>
                     </div>
                     <button type="button" class="btn btn-primary" onclick="agregar()">Agregar</button>
                     </form>
 
                 <!-- Tabla para mostrar los datos ingresados -->
                 <table class="table mt-4" id="tabla">
-                  <thead>
-                    <tr>
-                      <th>Cliente</th>
-                      <th>Deuda Cliente</th>
-                      <th>Kilos</th>
-                      <th>Piezas</th>
-                      <th>Producto</th>
-                      <th>Precio</th>
-                      <th>Cajas</th>
-                      <th>Tapas</th>
-                      <th>Método de Pago</th>
-                      <th>Acción</th>
-                    </tr>
-                  </thead>
+                <thead>
+                <tr>
+            <th>Cliente</th>
+            <th>Deuda Cliente</th>
+            <th>Dirección</th>
+            <th>Kilos</th>
+            <th>Piezas</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Subtotal</th> <!-- Nueva columna para el subtotal -->
+            <th>Cajas</th>
+            <th>Tapas</th>
+            <th>Acción</th>
+        </tr>
+              </thead>
                   <tbody>
                     <!-- Aquí se agregarán las filas dinámicamente -->
                   </tbody>
@@ -179,53 +171,64 @@ include 'menu.php'; // Incluir el menú
 
 
   <script>
-    $(document).ready(function() {
-        $('#cliente').on('input', function() {
-            var searchTerm = $(this).val();
+  $(document).ready(function() {
+    $('#cliente').on('input', function() {
+        var searchTerm = $(this).val();
 
-            // Verificar si el campo de cliente está vacío
-            if (searchTerm.trim() === '') {
-                // Limpiar la lista de resultados si el campo está vacío
-                $('#resultados').empty();
-                return;
-            }
-
-            // Realizar la solicitud AJAX
-            $.ajax({
-                url: 'busqueda_clientes.php', // Ruta al script PHP
-                type: 'GET',
-                data: { term: searchTerm },
-                dataType: 'json',
-                success: function(response) {
-                    // Limpiar la lista de resultados
-                    $('#resultados').empty();
-
-                    // Iterar sobre los resultados y añadirlos a la lista
-                    $.each(response, function(index, cliente) {
-                        $('#resultados').append('<li class="list-group-item" data-id="' + cliente.id + '">' + cliente.nombre + ' - ' + cliente.direccion + '</li>');
-                    });
-                }
-            });
-        });
-
-        // Manejar el clic en un resultado de búsqueda
-        // Manejar el clic en un resultado de búsqueda
-        $('#resultados').on('click', 'li', function() {
-            // Obtener el nombre y la dirección del cliente seleccionado
-            var nombreDireccion = $(this).text().split(' - ');
-            var nombre = nombreDireccion[0];
-            var direccion = nombreDireccion[1];
-
-            // Establecer el nombre y la dirección en los campos correspondientes
-            $('#cliente').val(nombre);
-            $('#direccion').text(direccion); // Establecer la dirección en el div
-
-            // Limpiar los resultados de la búsqueda
+        // Verificar si el campo de cliente está vacío
+        if (searchTerm.trim() === '') {
+            // Limpiar la lista de resultados si el campo está vacío
             $('#resultados').empty();
+            return;
+        }
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: 'busqueda_clientes.php', // Ruta al script PHP
+            type: 'GET',
+            data: { term: searchTerm },
+            dataType: 'json',
+            success: function(response) {
+                // Limpiar la lista de resultados
+                $('#resultados').empty();
+
+                // Iterar sobre los resultados y añadirlos a la lista
+                $.each(response, function(index, cliente) {
+                    $('#resultados').append('<li class="list-group-item" data-id="' + cliente.id + '">' + cliente.nombre + ' - ' + cliente.direccion + '</li>');
+                });
+            }
+        });
+    });
+
+    // Manejar el clic en un resultado de búsqueda
+    $('#resultados').on('click', 'li', function() {
+        // Obtener el nombre y la dirección del cliente seleccionado
+        var nombreDireccion = $(this).text().split(' - ');
+        var nombre = nombreDireccion[0];
+        var direccion = nombreDireccion[1];
+        var idCliente = $(this).data('id'); // Obtener el ID del cliente
+
+        // Establecer el nombre y la dirección en los campos correspondientes
+        $('#cliente').val(nombre);
+        $('#direccion').text(direccion); // Establecer la dirección en el div
+
+        // Realizar una nueva solicitud AJAX para obtener la cantidad de deuda del cliente
+        $.ajax({
+            url: 'obtener_deuda.php', // Ruta al script PHP para obtener la deuda
+            type: 'GET',
+            data: { idCliente: idCliente }, // Enviar el ID del cliente como parámetro
+            dataType: 'json',
+            success: function(response) {
+                // Establecer la cantidad de deuda en el campo correspondiente
+                $('#deuda').val(response.cantidad_deuda);
+            }
         });
 
+        // Limpiar los resultados de la búsqueda
+        $('#resultados').empty();
+    });
+});
 
-            });
   </script>
 
 
@@ -237,13 +240,16 @@ function agregar() {
     // Obtener los valores del formulario
     var cliente = document.getElementById('cliente').value;
     var deuda = document.getElementById('deuda').value;
+    var direccion = document.getElementById('direccion').textContent;
     var kilos = document.getElementById('kilos').value;
     var piezas = document.getElementById('piezas').value;
     var producto = document.getElementById('productoInput').value;
     var precio = document.getElementById('precio').value;
     var cajas = document.getElementById('cajas').value;
     var tapas = document.getElementById('tapas').value;
-    var metodo_pago = document.getElementById('metodo_pago').value;
+
+    // Calcular subtotal
+    var subtotal = (parseFloat(kilos) * parseFloat(precio)).toFixed(2);
 
     // Crear una nueva fila en la tabla con los datos del formulario
     var table = document.getElementById('tabla');
@@ -258,18 +264,20 @@ function agregar() {
         newRow.insertCell(6),
         newRow.insertCell(7),
         newRow.insertCell(8),
-        newRow.insertCell(9)
+        newRow.insertCell(9),
+        newRow.insertCell(10) // Añadimos una celda más para la nueva columna de Subtotal
     ];
 
     cells[0].innerHTML = cliente;
     cells[1].innerHTML = deuda;
-    cells[2].innerHTML = kilos;
-    cells[3].innerHTML = piezas;
-    cells[4].innerHTML = producto;
-    cells[5].innerHTML = precio;
-    cells[6].innerHTML = cajas;
-    cells[7].innerHTML = tapas;
-    cells[8].innerHTML = metodo_pago;
+    cells[2].innerHTML = direccion;
+    cells[3].innerHTML = kilos;
+    cells[4].innerHTML = piezas;
+    cells[5].innerHTML = producto;
+    cells[6].innerHTML = precio;
+    cells[7].innerHTML = subtotal; // Mostramos el subtotal en la tabla
+    cells[8].innerHTML = cajas;
+    cells[9].innerHTML = tapas;
     
     // Crear el botón de cancelar
     var cancelarButton = document.createElement("button");
@@ -280,8 +288,23 @@ function agregar() {
     };
 
     // Agregar el botón de cancelar a la última celda de la fila
-    cells[9].appendChild(cancelarButton);
+    cells[10].appendChild(cancelarButton);
+
+    // Limpiar campos de búsqueda y de entrada del formulario
+    document.getElementById('cliente').value = '';
+    document.getElementById('deuda').value = '';
+    document.getElementById('direccion').textContent = '';
+    document.getElementById('kilos').value = '';
+    document.getElementById('piezas').value = '';
+    document.getElementById('productoInput').value = '';
+    document.getElementById('precio').value = '';
+    document.getElementById('cajas').value = '';
+    document.getElementById('tapas').value = '';
+    $('#resultados').empty();
+    $('#resultados_producto').empty();
 }
+
+
 
 // Función para eliminar una fila de la tabla
 function eliminar(row) {
@@ -295,3 +318,4 @@ function eliminar(row) {
   </script>
 </body>
 </html>
+
