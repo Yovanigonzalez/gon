@@ -45,18 +45,18 @@ include 'menu.php'; // Incluir el menú
                         </div>
 
 
-                        <div class="form-group col-md-2">
-                            <label for="deuda">Deuda Cliente:</label>
+                        <div class="form-group col-md-1">
+                            <label for="deuda">Deuda:</label>
                             <input type="text" class="form-control" id="deuda" name="deuda" readonly style="background-color: #f2f2f2;">
                         </div>
 
 
 
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
                         <label for="kilos">Kilos:</label>
                         <input type="text" class="form-control" id="kilos" name="kilos">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
                         <label for="piezas">Piezas:</label>
                         <input type="text" class="form-control" id="piezas" name="piezas">
                         </div>
@@ -69,15 +69,15 @@ include 'menu.php'; // Incluir el menú
                         </div>
 
 
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
                         <label for="precio">Precio:</label>
                         <input type="text" class="form-control" id="precio" name="precio">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
                         <label for="cajas">Cajas:</label>
                         <input type="text" class="form-control" id="cajas" name="cajas">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-1">
                         <label for="tapas">Tapas:</label>
                         <input type="text" class="form-control" id="tapas" name="tapas">
                         </div>
@@ -86,26 +86,62 @@ include 'menu.php'; // Incluir el menú
                     </form>
 
                 <!-- Tabla para mostrar los datos ingresados -->
+                <!-- Tabla para mostrar los datos ingresados -->
                 <table class="table mt-4" id="tabla">
-                <thead>
-                <tr>
-            <th>Cliente</th>
-            <th>Deuda Cliente</th>
-            <th>Dirección</th>
-            <th>Kilos</th>
-            <th>Piezas</th>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Subtotal</th> <!-- Nueva columna para el subtotal -->
-            <th>Cajas</th>
-            <th>Tapas</th>
-            <th>Acción</th>
-        </tr>
-              </thead>
-                  <tbody>
-                    <!-- Aquí se agregarán las filas dinámicamente -->
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Dirección</th>
+                            <th>Kilos</th>
+                            <th>Piezas</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th> <!-- Nueva columna para el subtotal -->
+                            <th>Cajas</th>
+                            <th>Tapas</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se agregarán las filas dinámicamente -->
+                    </tbody>
                 </table>
+
+                <!-- Deuda Anterior y Total -->
+                <!-- Deuda Anterior y Total -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-white">
+                            <div class="card-body">
+
+                                <div class="form-group row">
+                                    <label for="subtotal_venta" class="col-md-2 col-form-label">Subtotal de Venta:</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="subtotal_venta" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="deuda_anterior" class="col-md-2 col-form-label">Deuda Anterior:</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="deuda_anterior" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label for="total" class="col-md-2 col-form-label">Total:</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="total" readonly>
+                                    </div>
+                                </div>
+
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
               </div>
             </div>
             <!-- /.card -->
@@ -221,6 +257,9 @@ include 'menu.php'; // Incluir el menú
             success: function(response) {
                 // Establecer la cantidad de deuda en el campo correspondiente
                 $('#deuda').val(response.cantidad_deuda);
+
+                // Establecer la deuda anterior en el campo correspondiente
+                $('#deuda_anterior').val(response.cantidad_deuda);
             }
         });
 
@@ -239,7 +278,6 @@ include 'menu.php'; // Incluir el menú
 function agregar() {
     // Obtener los valores del formulario
     var cliente = document.getElementById('cliente').value;
-    var deuda = document.getElementById('deuda').value;
     var direccion = document.getElementById('direccion').textContent;
     var kilos = document.getElementById('kilos').value;
     var piezas = document.getElementById('piezas').value;
@@ -264,21 +302,19 @@ function agregar() {
         newRow.insertCell(6),
         newRow.insertCell(7),
         newRow.insertCell(8),
-        newRow.insertCell(9),
-        newRow.insertCell(10) // Añadimos una celda más para la nueva columna de Subtotal
+        newRow.insertCell(9)
     ];
 
     cells[0].innerHTML = cliente;
-    cells[1].innerHTML = deuda;
-    cells[2].innerHTML = direccion;
-    cells[3].innerHTML = kilos;
-    cells[4].innerHTML = piezas;
-    cells[5].innerHTML = producto;
-    cells[6].innerHTML = precio;
-    cells[7].innerHTML = subtotal; // Mostramos el subtotal en la tabla
-    cells[8].innerHTML = cajas;
-    cells[9].innerHTML = tapas;
-    
+    cells[1].innerHTML = direccion;
+    cells[2].innerHTML = kilos;
+    cells[3].innerHTML = piezas;
+    cells[4].innerHTML = producto;
+    cells[5].innerHTML = precio;
+    cells[6].innerHTML = subtotal; // Mostramos el subtotal en la tabla
+    cells[7].innerHTML = cajas;
+    cells[8].innerHTML = tapas;
+
     // Crear el botón de cancelar
     var cancelarButton = document.createElement("button");
     cancelarButton.className = "btn btn-danger";
@@ -288,21 +324,19 @@ function agregar() {
     };
 
     // Agregar el botón de cancelar a la última celda de la fila
-    cells[10].appendChild(cancelarButton);
+    cells[9].appendChild(cancelarButton);
 
-    // Limpiar campos de búsqueda y de entrada del formulario
-    document.getElementById('cliente').value = '';
-    document.getElementById('deuda').value = '';
-    document.getElementById('direccion').textContent = '';
+    // Limpiar campos de búsqueda y de entrada del formulario de producto
     document.getElementById('kilos').value = '';
     document.getElementById('piezas').value = '';
     document.getElementById('productoInput').value = '';
     document.getElementById('precio').value = '';
     document.getElementById('cajas').value = '';
     document.getElementById('tapas').value = '';
-    $('#resultados').empty();
     $('#resultados_producto').empty();
 }
+
+
 
 
 
@@ -316,6 +350,6 @@ function eliminar(row) {
 }
 
   </script>
+  
 </body>
 </html>
-
