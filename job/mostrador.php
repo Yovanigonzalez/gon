@@ -77,10 +77,21 @@ include 'menu.php'; // Incluir el menú
                         <label for="cajas">Cajas:</label>
                         <input type="text" class="form-control" id="cajas" name="cajas">
                         </div>
+                        
                         <div class="form-group col-md-1">
                         <label for="tapas">Tapas:</label>
                         <input type="text" class="form-control" id="tapas" name="tapas">
                         </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="metodo_pago">Método de Pago:</label>
+                              <select class="form-control" id="metodo_pago">
+                                  <option value="efectivo">Efectivo</option>
+                                  <option value="credito">Crédito</option>
+                                  <option value="transferencia">Transferencia</option>
+                              </select>
+                      </div>
+
                     </div>
                     <button type="button" class="btn btn-primary" onclick="agregar()">Agregar</button>
                     </form>
@@ -114,6 +125,13 @@ include 'menu.php'; // Incluir el menú
                         <div class="card card-white">
                             <div class="card-body">
 
+                            <div class="form-group row">
+                                <label class="col-md-2 col-form-label">Método de pago seleccionado:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="metodo_pago_seleccionado" readonly>
+                                </div>
+                            </div>
+
                                 <div class="form-group row">
                                     <label for="subtotal_venta" class="col-md-2 col-form-label">Subtotal de Venta:</label>
                                     <div class="col-md-4">
@@ -134,6 +152,14 @@ include 'menu.php'; // Incluir el menú
                                         <input type="text" class="form-control" id="total" readonly>
                                     </div>
                                 </div>
+
+                                <!-- Botón de Cobrar -->
+                                  <div class="form-group row">
+                                      <div class="col-md-6 offset-md-2">
+                                          <button type="button" class="btn btn-success btn-sm btn-block" onclick="cobrar()">Cobrar</button>
+                                      </div>
+                                  </div>
+
 
                               </div>
                         </div>
@@ -348,6 +374,15 @@ include 'menu.php'; // Incluir el menú
       subtotalVenta += parseFloat($(this).text());
     });
     $('#subtotal_venta').val(subtotalVenta.toFixed(2));
+    
+    // Obtener el valor de la deuda anterior
+    var deudaAnterior = parseFloat($('#deuda_anterior').val());
+
+    // Calcular el total sumando el subtotal de venta y la deuda anterior
+    var total = subtotalVenta + deudaAnterior;
+
+    // Actualizar el campo de Total con el nuevo valor
+    $('#total').val(total.toFixed(2));
   }
 </script>
 
