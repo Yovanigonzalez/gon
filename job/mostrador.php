@@ -161,121 +161,111 @@ include 'menu.php'; // Incluir el menú
   <!-- JavaScript para manejar la adición de datos a la tabla -->
 
   <script>
-    $(document).ready(function() {
-        $('#productoInput').on('input', function() {
-            var searchTerm = $(this).val();
+  $(document).ready(function() {
+    $('#productoInput').on('input', function() {
+      var searchTerm = $(this).val();
 
-            // Verificar si el campo de producto está vacío
-            if (searchTerm.trim() === '') {
-                // Limpiar la lista de resultados si el campo está vacío
-                $('#resultados_producto').empty();
-                return;
-            }
+      // Verificar si el campo de producto está vacío
+      if (searchTerm.trim() === '') {
+        // Limpiar la lista de resultados si el campo está vacío
+        $('#resultados_producto').empty();
+        return;
+      }
 
-            // Realizar la solicitud AJAX
-            $.ajax({
-                url: 'busqueda_productos.php', // Ruta al script PHP
-                type: 'GET',
-                data: { term: searchTerm },
-                dataType: 'json',
-                success: function(response) {
-                    // Limpiar la lista de resultados
-                    $('#resultados_producto').empty();
+      // Realizar la solicitud AJAX
+      $.ajax({
+        url: 'busqueda_productos.php', // Ruta al script PHP
+        type: 'GET',
+        data: { term: searchTerm },
+        dataType: 'json',
+        success: function(response) {
+          // Limpiar la lista de resultados
+          $('#resultados_producto').empty();
 
-                    // Iterar sobre los resultados y añadirlos a la lista
-                    $.each(response, function(index, producto) {
-                        $('#resultados_producto').append('<li class="list-group-item" data-id="' + producto.id + '">' + producto.nombre + '</li>');
-                    });
-                }
-            });
-        });
-
-        // Manejar el clic en un resultado de búsqueda de producto
-        $('#resultados_producto').on('click', 'li', function() {
-            // Obtener el nombre del producto seleccionado
-            var nombre = $(this).text();
-
-            // Establecer el nombre del producto en el campo correspondiente
-            $('#productoInput').val(nombre);
-
-            // Limpiar los resultados de la búsqueda de productos
-            $('#resultados_producto').empty();
-        });
+          // Iterar sobre los resultados y añadirlos a la lista
+          $.each(response, function(index, producto) {
+            $('#resultados_producto').append('<li class="list-group-item" data-id="' + producto.id + '">' + producto.nombre + '</li>');
+          });
+        }
+      });
     });
-</script>
 
+    // Manejar el clic en un resultado de búsqueda de producto
+    $('#resultados_producto').on('click', 'li', function() {
+      // Obtener el nombre del producto seleccionado
+      var nombre = $(this).text();
 
+      // Establecer el nombre del producto en el campo correspondiente
+      $('#productoInput').val(nombre);
 
-  <script>
+      // Limpiar los resultados de la búsqueda de productos
+      $('#resultados_producto').empty();
+    });
+  });
+
   $(document).ready(function() {
     $('#cliente').on('input', function() {
-        var searchTerm = $(this).val();
+      var searchTerm = $(this).val();
 
-        // Verificar si el campo de cliente está vacío
-        if (searchTerm.trim() === '') {
-            // Limpiar la lista de resultados si el campo está vacío
-            $('#resultados').empty();
-            return;
+      // Verificar si el campo de cliente está vacío
+      if (searchTerm.trim() === '') {
+        // Limpiar la lista de resultados si el campo está vacío
+        $('#resultados').empty();
+        return;
+      }
+
+      // Realizar la solicitud AJAX
+      $.ajax({
+        url: 'busqueda_clientes.php', // Ruta al script PHP
+        type: 'GET',
+        data: { term: searchTerm },
+        dataType: 'json',
+        success: function(response) {
+          // Limpiar la lista de resultados
+          $('#resultados').empty();
+
+          // Iterar sobre los resultados y añadirlos a la lista
+          $.each(response, function(index, cliente) {
+            $('#resultados').append('<li class="list-group-item" data-id="' + cliente.id + '">' + cliente.nombre + ' - ' + cliente.direccion + '</li>');
+          });
         }
-
-        // Realizar la solicitud AJAX
-        $.ajax({
-            url: 'busqueda_clientes.php', // Ruta al script PHP
-            type: 'GET',
-            data: { term: searchTerm },
-            dataType: 'json',
-            success: function(response) {
-                // Limpiar la lista de resultados
-                $('#resultados').empty();
-
-                // Iterar sobre los resultados y añadirlos a la lista
-                $.each(response, function(index, cliente) {
-                    $('#resultados').append('<li class="list-group-item" data-id="' + cliente.id + '">' + cliente.nombre + ' - ' + cliente.direccion + '</li>');
-                });
-            }
-        });
+      });
     });
 
     // Manejar el clic en un resultado de búsqueda
     $('#resultados').on('click', 'li', function() {
-        // Obtener el nombre y la dirección del cliente seleccionado
-        var nombreDireccion = $(this).text().split(' - ');
-        var nombre = nombreDireccion[0];
-        var direccion = nombreDireccion[1];
-        var idCliente = $(this).data('id'); // Obtener el ID del cliente
+      // Obtener el nombre y la dirección del cliente seleccionado
+      var nombreDireccion = $(this).text().split(' - ');
+      var nombre = nombreDireccion[0];
+      var direccion = nombreDireccion[1];
+      var idCliente = $(this).data('id'); // Obtener el ID del cliente
 
-        // Establecer el nombre y la dirección en los campos correspondientes
-        $('#cliente').val(nombre);
-        $('#direccion').text(direccion); // Establecer la dirección en el div
+      // Establecer el nombre y la dirección en los campos correspondientes
+      $('#cliente').val(nombre);
+      $('#direccion').text(direccion); // Establecer la dirección en el div
 
-        // Realizar una nueva solicitud AJAX para obtener la cantidad de deuda del cliente
-        $.ajax({
-            url: 'obtener_deuda.php', // Ruta al script PHP para obtener la deuda
-            type: 'GET',
-            data: { idCliente: idCliente }, // Enviar el ID del cliente como parámetro
-            dataType: 'json',
-            success: function(response) {
-                // Establecer la cantidad de deuda en el campo correspondiente
-                $('#deuda').val(response.cantidad_deuda);
+      // Realizar una nueva solicitud AJAX para obtener la cantidad de deuda del cliente
+      $.ajax({
+        url: 'obtener_deuda.php', // Ruta al script PHP para obtener la deuda
+        type: 'GET',
+        data: { idCliente: idCliente }, // Enviar el ID del cliente como parámetro
+        dataType: 'json',
+        success: function(response) {
+          // Establecer la cantidad de deuda en el campo correspondiente
+          $('#deuda').val(response.cantidad_deuda);
 
-                // Establecer la deuda anterior en el campo correspondiente
-                $('#deuda_anterior').val(response.cantidad_deuda);
-            }
-        });
+          // Establecer la deuda anterior en el campo correspondiente
+          $('#deuda_anterior').val(response.cantidad_deuda);
+        }
+      });
 
-        // Limpiar los resultados de la búsqueda
-        $('#resultados').empty();
+      // Limpiar los resultados de la búsqueda
+      $('#resultados').empty();
     });
-});
+  });
 
-  </script>
-
-
-  
-  <script>
-
-// Función para agregar una nueva fila a la tabla
-function agregar() {
+  // Función para agregar una nueva fila a la tabla
+  function agregar() {
     // Obtener los valores del formulario
     var cliente = document.getElementById('cliente').value;
     var direccion = document.getElementById('direccion').textContent;
@@ -293,16 +283,16 @@ function agregar() {
     var table = document.getElementById('tabla');
     var newRow = table.insertRow(table.rows.length);
     var cells = [
-        newRow.insertCell(0),
-        newRow.insertCell(1),
-        newRow.insertCell(2),
-        newRow.insertCell(3),
-        newRow.insertCell(4),
-        newRow.insertCell(5),
-        newRow.insertCell(6),
-        newRow.insertCell(7),
-        newRow.insertCell(8),
-        newRow.insertCell(9)
+      newRow.insertCell(0),
+      newRow.insertCell(1),
+      newRow.insertCell(2),
+      newRow.insertCell(3),
+      newRow.insertCell(4),
+      newRow.insertCell(5),
+      newRow.insertCell(6),
+      newRow.insertCell(7),
+      newRow.insertCell(8),
+      newRow.insertCell(9)
     ];
 
     cells[0].innerHTML = cliente;
@@ -312,6 +302,7 @@ function agregar() {
     cells[4].innerHTML = producto;
     cells[5].innerHTML = precio;
     cells[6].innerHTML = subtotal; // Mostramos el subtotal en la tabla
+    cells[6].className = 'subtotal'; // Agregar la clase 'subtotal' a la celda del subtotal
     cells[7].innerHTML = cajas;
     cells[8].innerHTML = tapas;
 
@@ -320,7 +311,7 @@ function agregar() {
     cancelarButton.className = "btn btn-danger";
     cancelarButton.innerHTML = "Cancelar";
     cancelarButton.onclick = function() {
-        eliminar(this);
+      eliminar(this);
     };
 
     // Agregar el botón de cancelar a la última celda de la fila
@@ -334,22 +325,31 @@ function agregar() {
     document.getElementById('cajas').value = '';
     document.getElementById('tapas').value = '';
     $('#resultados_producto').empty();
-}
 
+    // Calcular y actualizar el subtotal de venta
+    calcularSubtotalVenta();
+  }
 
-
-
-
-// Función para eliminar una fila de la tabla
-function eliminar(row) {
+  // Función para eliminar una fila de la tabla
+  function eliminar(row) {
     var confirmacion = confirm("¿Estás seguro de que deseas cancelar este producto?");
     if (confirmacion) {
-        var rowIndex = row.parentNode.parentNode.rowIndex;
-        document.getElementById('tabla').deleteRow(rowIndex);
+      var rowIndex = row.parentNode.parentNode.rowIndex;
+      document.getElementById('tabla').deleteRow(rowIndex);
+      // Calcular y actualizar el subtotal de venta después de eliminar una fila
+      calcularSubtotalVenta();
     }
-}
+  }
 
-  </script>
-  
+  // Función para calcular y mostrar la suma en tiempo real del subtotal de venta
+  function calcularSubtotalVenta() {
+    var subtotalVenta = 0;
+    $('.subtotal').each(function() {
+      subtotalVenta += parseFloat($(this).text());
+    });
+    $('#subtotal_venta').val(subtotalVenta.toFixed(2));
+  }
+</script>
+
 </body>
 </html>
