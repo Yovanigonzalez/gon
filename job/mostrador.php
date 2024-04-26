@@ -159,7 +159,7 @@ include 'menu.php'; // Incluir el menú
                                 <!-- Botón de Cobrar -->
                                   <div class="form-group row">
                                       <div class="col-md-6 offset-md-2">
-                                          <button type="button" class="btn btn-success btn-sm btn-block" onclick="cobrar()">Cobrar</button>
+                                          <button type="button" class="btn btn-primary" onclick="cobrar()">Cobrar</button>
                                       </div>
                                   </div>
 
