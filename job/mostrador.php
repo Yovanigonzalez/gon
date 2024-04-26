@@ -86,11 +86,14 @@ include 'menu.php'; // Incluir el menú
                         <div class="form-group col-md-2">
                           <label for="metodo_pago">Método de Pago:</label>
                               <select class="form-control" id="metodo_pago">
-                                  <option value="efectivo">Efectivo</option>
-                                  <option value="credito">Crédito</option>
-                                  <option value="transferencia">Transferencia</option>
+                                  <option value="Efectivo">Efectivo</option>
+                                  <option value="Credito">Crédito</option>
+                                  <option value="Transferencia">Transferencia</option>
                               </select>
                       </div>
+
+                      <!-- Campo oculto para almacenar el método de pago seleccionado -->
+                      <input type="hidden" id="metodo_pago_seleccionado_hidden" name="metodo_pago_seleccionado_hidden">
 
                     </div>
                     <button type="button" class="btn btn-primary" onclick="agregar()">Agregar</button>
@@ -304,6 +307,15 @@ include 'menu.php'; // Incluir el menú
 
     // Calcular subtotal
     var subtotal = (parseFloat(kilos) * parseFloat(precio)).toFixed(2);
+
+    // Obtener el método de pago seleccionado
+    var metodoPagoSeleccionado = document.getElementById('metodo_pago').value;
+
+    // Establecer el método de pago seleccionado en el campo oculto
+    document.getElementById('metodo_pago_seleccionado_hidden').value = metodoPagoSeleccionado;
+
+    // Actualizar el campo de texto para mostrar el método de pago seleccionado
+    document.getElementById('metodo_pago_seleccionado').value = metodoPagoSeleccionado;
 
     // Crear una nueva fila en la tabla con los datos del formulario
     var table = document.getElementById('tabla');
