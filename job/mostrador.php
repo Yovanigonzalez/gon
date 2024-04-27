@@ -294,7 +294,8 @@ include 'menu.php'; // Incluir el menú
   });
 
   // Función para agregar una nueva fila a la tabla
-  function agregar() {
+// Función para agregar una nueva fila a la tabla
+function agregar() {
     // Obtener los valores del formulario
     var cliente = document.getElementById('cliente').value;
     var direccion = document.getElementById('direccion').textContent;
@@ -304,6 +305,13 @@ include 'menu.php'; // Incluir el menú
     var precio = parseFloat(document.getElementById('precio').value);
     var cajas = parseFloat(document.getElementById('cajas').value);
     var tapas = parseFloat(document.getElementById('tapas').value);
+
+    // Formatear los números utilizando toLocaleString()
+    kilos = kilos.toLocaleString();
+    piezas = piezas.toLocaleString();
+    precio = precio.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Formato de 2 decimales
+    cajas = cajas.toLocaleString();
+    tapas = tapas.toLocaleString();
 
     // Obtener el método de pago seleccionado
     var metodoPagoSeleccionado = document.getElementById('metodo_pago').value;
@@ -325,13 +333,13 @@ include 'menu.php'; // Incluir el menú
 
         if (nombreProducto === producto) {
             // Sumar los valores relevantes a la fila existente
-            row.cells[2].innerHTML = (parseFloat(row.cells[2].innerHTML) + kilos).toFixed(2); // Sumar kilos
-            row.cells[3].innerHTML = (parseFloat(row.cells[3].innerHTML) + piezas).toFixed(2); // Sumar piezas
-            row.cells[7].innerHTML = (parseFloat(row.cells[7].innerHTML) + cajas).toFixed(2); // Sumar cajas
-            row.cells[8].innerHTML = (parseFloat(row.cells[8].innerHTML) + tapas).toFixed(2); // Sumar tapas
+            row.cells[2].innerHTML = kilos; // Sumar kilos
+            row.cells[3].innerHTML = piezas; // Sumar piezas
+            row.cells[7].innerHTML = cajas; // Sumar cajas
+            row.cells[8].innerHTML = tapas; // Sumar tapas
             subtotalAnterior = parseFloat(row.cells[6].innerHTML); // Obtener subtotal anterior
-            var subtotal = (kilos * precio).toFixed(2); // Calcular subtotal
-            row.cells[6].innerHTML = (subtotalAnterior + parseFloat(subtotal)).toFixed(2); // Actualizar subtotal
+            var subtotal = (kilos * precio).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Calcular subtotal
+            row.cells[6].innerHTML = subtotal; // Actualizar subtotal
             existeProducto = true;
             break;
         }
@@ -340,7 +348,7 @@ include 'menu.php'; // Incluir el menú
     // Si el producto no existe en la tabla, agregar una nueva fila
     if (!existeProducto) {
         // Calcular subtotal
-        var subtotal = (kilos * precio).toFixed(2);
+        var subtotal = (kilos * precio).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         // Crear una nueva fila en la tabla con los datos del formulario
         var newRow = table.insertRow(table.rows.length);
@@ -359,14 +367,14 @@ include 'menu.php'; // Incluir el menú
 
         cells[0].innerHTML = cliente;
         cells[1].innerHTML = direccion;
-        cells[2].innerHTML = kilos.toFixed(2);
-        cells[3].innerHTML = piezas.toFixed(2);
+        cells[2].innerHTML = kilos;
+        cells[3].innerHTML = piezas;
         cells[4].innerHTML = producto;
-        cells[5].innerHTML = precio.toFixed(2);
+        cells[5].innerHTML = precio;
         cells[6].innerHTML = subtotal; // Mostramos el subtotal en la tabla
         cells[6].className = 'subtotal'; // Agregar la clase 'subtotal' a la celda del subtotal
-        cells[7].innerHTML = cajas.toFixed(2);
-        cells[8].innerHTML = tapas.toFixed(2);
+        cells[7].innerHTML = cajas;
+        cells[8].innerHTML = tapas;
 
         // Crear el botón de cancelar
         var cancelarButton = document.createElement("button");
@@ -391,8 +399,7 @@ include 'menu.php'; // Incluir el menú
 
     // Calcular y actualizar el subtotal de venta
     calcularSubtotalVenta();
-  }
-
+}
   // Función para eliminar una fila de la tabla
   function eliminar(row) {
     var confirmacion = confirm("¿Estás seguro de que deseas cancelar este producto?");
@@ -404,23 +411,23 @@ include 'menu.php'; // Incluir el menú
     }
   }
 
-  // Función para calcular y mostrar la suma en tiempo real del subtotal de venta
-  function calcularSubtotalVenta() {
+// Función para calcular y mostrar la suma en tiempo real del subtotal de venta
+function calcularSubtotalVenta() {
     var subtotalVenta = 0;
     $('.subtotal').each(function() {
-      subtotalVenta += parseFloat($(this).text());
+        subtotalVenta += parseFloat($(this).text().replace(/,/g, '')); // Eliminar comas de los números antes de sumar
     });
-    $('#subtotal_venta').val(subtotalVenta.toFixed(2));
+    $('#subtotal_venta').val(subtotalVenta.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     
     // Obtener el valor de la deuda anterior
-    var deudaAnterior = parseFloat($('#deuda_anterior').val());
+    var deudaAnterior = parseFloat($('#deuda_anterior').val().replace(/,/g, '')); // Eliminar comas de los números antes de sumar
 
     // Calcular el total sumando el subtotal de venta y la deuda anterior
     var total = subtotalVenta + deudaAnterior;
 
     // Actualizar el campo de Total con el nuevo valor
-    $('#total').val(total.toFixed(2));
-  }
+    $('#total').val(total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+}
 </script>
 
 </body>
