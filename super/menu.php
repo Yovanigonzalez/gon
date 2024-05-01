@@ -72,6 +72,16 @@
       </a>
     </li>
 
+            <!-- Agregar Deudores Cajas -->
+            <li class="nav-item">
+      <a href="deudores_cajas.php" class="nav-link">
+        <i class="nav-icon fas fa-money-bill-wave"></i>
+        <p>
+           + Deudas Cajas
+        </p>
+      </a>
+    </li>
+
     <!-- Localizador de Notas -->
     <li class="nav-item">
       <a href="localizador_notas.php" class="nav-link">

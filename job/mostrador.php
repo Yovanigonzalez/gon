@@ -121,54 +121,109 @@ include 'menu.php'; // Incluir el menú
                     </tbody>
                 </table>
 
+    <div>
+      <br><br>
+    </div>
                 <!-- Deuda Anterior y Total -->
                 <!-- Deuda Anterior y Total -->
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-white">
-                            <div class="card-body">
+    <div class="col-md-6">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Pago:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="metodo_pago_seleccionado" readonly>
+            </div>
+        </div>
 
-                            <div class="form-group row">
-                                <label class="col-md-2 col-form-label">Método de pago seleccionado:</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" id="metodo_pago_seleccionado" readonly>
-                                </div>
-                            </div>
+        <div class="form-group row">
+            <label for="subtotal_venta" class="col-md-3 col-form-label">Subtotal:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="subtotal_venta" readonly>
+            </div>
+        </div>
 
-                                <div class="form-group row">
-                                    <label for="subtotal_venta" class="col-md-2 col-form-label">Subtotal de Venta:</label>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="subtotal_venta" readonly>
-                                    </div>
-                                </div>
+        <div class="form-group row">
+            <label for="deuda_anterior" class="col-md-3 col-form-label">Deuda Anterior:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="deuda_anterior" readonly>
+            </div>
+        </div>
 
-                                <div class="form-group row">
-                                    <label for="deuda_anterior" class="col-md-2 col-form-label">Deuda Anterior:</label>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="deuda_anterior" readonly>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group row">
-                                    <label for="total" class="col-md-2 col-form-label">Total:</label>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" id="total" readonly>
-                                    </div>
-                                </div>
+        <div class="form-group row">
+            <label for="total" class="col-md-3 col-form-label">Total:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="total" readonly>
+            </div>
+        </div>
+    </div>
 
-                                <!-- Botón de Cobrar -->
-                                  <div class="form-group row">
-                                      <div class="col-md-6 offset-md-2">
-                                          <button type="button" class="btn btn-primary" onclick="cobrar()">Cobrar</button>
-                                      </div>
-                                  </div>
+    <div class="col-md-6">
+        <div class="form-group row">
+            <label for="deuda_caja" class="col-md-3 col-form-label">Pendiente Caja:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="deuda_caja" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="deuda_tapa" class="col-md-3 col-form-label">Pendiente Tapa:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="deuda_tapa" readonly>
+            </div>
+        </div>
+
+        <script>
+          // Manejar el clic en un resultado de búsqueda
+$('#resultados').on('click', 'li', function() {
+  var idCliente = $(this).data('id'); // Obtener el ID del cliente seleccionado
+  var direccionCliente = $(this).text().split(' - ')[1].trim(); // Obtener la dirección del cliente seleccionado
+
+  // Realizar una nueva solicitud AJAX para obtener la deuda de cajas y tapas del cliente
+  $.ajax({
+    url: 'obtener_deuda_cajas_tapas.php', // Ruta al script PHP para obtener la deuda de cajas y tapas
+    type: 'GET',
+    data: { idCliente: idCliente, direccionCliente: direccionCliente }, // Enviar el ID del cliente y la dirección como parámetros
+    dataType: 'json',
+    success: function(response) {
+      // Establecer la cantidad de deuda de cajas y tapas en los campos correspondientes
+      $('#deuda_caja').val(response.cantidad_cajas);
+      $('#deuda_tapa').val(response.cantidad_tapas);
+    }
+  });
+});
+
+        </script>
+
+        <div class="form-group row">
+            <label for="caja_enviada" class="col-md-3 col-form-label">Caja Enviada:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="caja_enviada" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="tapa_enviada" class="col-md-3 col-form-label">Tapa Enviada:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="tapa_enviada" readonly>
+            </div>
+        </div>
 
 
-                              </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <label for="nueva_deuda_caja" class="col-md-3 col-form-label">Deuda de Caja:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="nueva_deuda_caja" readonly>
+            </div>
+        </div>
 
+        <div class="form-group row">
+            <label for="nueva_deuda_tapa" class="col-md-3 col-form-label">Deuda de Tapa:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="nueva_deuda_tapa" readonly>
+            </div>
+        </div>
+    </div>
+</div>
 
 
               </div>
@@ -410,17 +465,18 @@ include 'menu.php'; // Incluir el menú
     $('.subtotal').each(function() {
       subtotalVenta += parseFloat($(this).text());
     });
-    $('#subtotal_venta').val(subtotalVenta.toFixed(2));
-    
+    $('#subtotal_venta').val(subtotalVenta.toLocaleString()); // Aplicar formato numérico
+
     // Obtener el valor de la deuda anterior
     var deudaAnterior = parseFloat($('#deuda_anterior').val());
 
     // Calcular el total sumando el subtotal de venta y la deuda anterior
     var total = subtotalVenta + deudaAnterior;
 
-    // Actualizar el campo de Total con el nuevo valor
-    $('#total').val(total.toFixed(2));
+    // Actualizar el campo de Total con el nuevo valor y aplicar formato numérico
+    $('#total').val(total.toLocaleString());
   }
+
 </script>
 
 </body>
