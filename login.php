@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar Sesión</title>
   <!-- Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="csss/boostrap.css" rel="stylesheet">
   <!-- Estilos personalizados -->
   <link href="css/login.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="fonts/fonts.css" rel="stylesheet">
   <!-- Google Fonts - Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="fonts/monserrat.css" rel="stylesheet">
+
 </head>
 <body>
 
