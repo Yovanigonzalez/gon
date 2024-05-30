@@ -348,134 +348,171 @@ $('#resultados').on('click', 'li', function() {
     });
   });
 
-  // Función para agregar una nueva fila a la tabla
-  function agregar() {
-    // Obtener los valores del formulario
-    var cliente = document.getElementById('cliente').value;
-    var direccion = document.getElementById('direccion').textContent;
-    var kilos = parseFloat(document.getElementById('kilos').value);
-    var piezas = parseFloat(document.getElementById('piezas').value);
-    var producto = document.getElementById('productoInput').value;
-    var precio = parseFloat(document.getElementById('precio').value);
-    var cajas = parseFloat(document.getElementById('cajas').value);
-    var tapas = parseFloat(document.getElementById('tapas').value);
+// Función para agregar una nueva fila a la tabla
+function agregar() {
+  // Obtener los valores del formulario
+  var cliente = document.getElementById('cliente').value;
+  var direccion = document.getElementById('direccion').textContent;
+  var kilos = parseFloat(document.getElementById('kilos').value);
+  var piezas = parseFloat(document.getElementById('piezas').value);
+  var producto = document.getElementById('productoInput').value;
+  var precio = parseFloat(document.getElementById('precio').value);
+  var cajas = parseInt(document.getElementById('cajas').value); // Convertir a entero
+  var tapas = parseInt(document.getElementById('tapas').value); // Convertir a entero
 
-    // Obtener el método de pago seleccionado
-    var metodoPagoSeleccionado = document.getElementById('metodo_pago').value;
+  // Obtener el método de pago seleccionado
+  var metodoPagoSeleccionado = document.getElementById('metodo_pago').value;
 
-    // Establecer el método de pago seleccionado en el campo oculto
-    document.getElementById('metodo_pago_seleccionado_hidden').value = metodoPagoSeleccionado;
+  // Establecer el método de pago seleccionado en el campo oculto
+  document.getElementById('metodo_pago_seleccionado_hidden').value = metodoPagoSeleccionado;
 
-    // Actualizar el campo de texto para mostrar el método de pago seleccionado
-    document.getElementById('metodo_pago_seleccionado').value = metodoPagoSeleccionado;
+  // Actualizar el campo de texto para mostrar el método de pago seleccionado
+  document.getElementById('metodo_pago_seleccionado').value = metodoPagoSeleccionado;
 
-    // Buscar si ya existe una fila con el mismo producto
-    var table = document.getElementById('tabla');
-    var existeProducto = false;
-    var subtotalAnterior = 0;
+  // Buscar si ya existe una fila con el mismo producto
+  var table = document.getElementById('tabla');
+  var existeProducto = false;
+  var subtotalAnterior = 0;
 
-    for (var i = 1; i < table.rows.length; i++) {
-        var row = table.rows[i];
-        var nombreProducto = row.cells[4].innerHTML;
+  for (var i = 1; i < table.rows.length; i++) {
+    var row = table.rows[i];
+    var nombreProducto = row.cells[4].innerHTML;
 
-        if (nombreProducto === producto) {
-            // Sumar los valores relevantes a la fila existente
-            row.cells[2].innerHTML = (parseFloat(row.cells[2].innerHTML) + kilos).toFixed(2); // Sumar kilos
-            row.cells[3].innerHTML = (parseFloat(row.cells[3].innerHTML) + piezas).toFixed(2); // Sumar piezas
-            row.cells[7].innerHTML = (parseFloat(row.cells[7].innerHTML) + cajas).toFixed(2); // Sumar cajas
-            row.cells[8].innerHTML = (parseFloat(row.cells[8].innerHTML) + tapas).toFixed(2); // Sumar tapas
-            subtotalAnterior = parseFloat(row.cells[6].innerHTML); // Obtener subtotal anterior
-            var subtotal = (kilos * precio).toFixed(2); // Calcular subtotal
-            row.cells[6].innerHTML = (subtotalAnterior + parseFloat(subtotal)).toFixed(2); // Actualizar subtotal
-            existeProducto = true;
-            break;
-        }
+    if (nombreProducto === producto) {
+      // Sumar los valores relevantes a la fila existente
+      row.cells[2].innerHTML = (parseFloat(row.cells[2].innerHTML) + kilos).toFixed(2); // Sumar kilos
+      row.cells[3].innerHTML = (parseFloat(row.cells[3].innerHTML) + piezas).toFixed(2); // Sumar piezas
+      row.cells[7].innerHTML = (parseInt(row.cells[7].innerHTML) + cajas).toString(); // Sumar cajas
+      row.cells[8].innerHTML = (parseInt(row.cells[8].innerHTML) + tapas).toString(); // Sumar tapas
+      subtotalAnterior = parseFloat(row.cells[6].innerHTML); // Obtener subtotal anterior
+      var subtotal = (kilos * precio).toFixed(2); // Calcular subtotal
+      row.cells[6].innerHTML = (subtotalAnterior + parseFloat(subtotal)).toFixed(2); // Actualizar subtotal
+      existeProducto = true;
+      break;
     }
+  }
 
-    // Si el producto no existe en la tabla, agregar una nueva fila
-    if (!existeProducto) {
-        // Calcular subtotal
-        var subtotal = (kilos * precio).toFixed(2);
+  // Si el producto no existe en la tabla, agregar una nueva fila
+  if (!existeProducto) {
+    // Calcular subtotal
+    var subtotal = (kilos * precio).toFixed(2);
 
-        // Crear una nueva fila en la tabla con los datos del formulario
-        var newRow = table.insertRow(table.rows.length);
-        var cells = [
-          newRow.insertCell(0),
-          newRow.insertCell(1),
-          newRow.insertCell(2),
-          newRow.insertCell(3),
-          newRow.insertCell(4),
-          newRow.insertCell(5),
-          newRow.insertCell(6),
-          newRow.insertCell(7),
-          newRow.insertCell(8),
-          newRow.insertCell(9)
-        ];
+    // Crear una nueva fila en la tabla con los datos del formulario
+    var newRow = table.insertRow(table.rows.length);
+    var cells = [
+      newRow.insertCell(0),
+      newRow.insertCell(1),
+      newRow.insertCell(2),
+      newRow.insertCell(3),
+      newRow.insertCell(4),
+      newRow.insertCell(5),
+      newRow.insertCell(6),
+      newRow.insertCell(7),
+      newRow.insertCell(8),
+      newRow.insertCell(9)
+    ];
 
-        cells[0].innerHTML = cliente;
-        cells[1].innerHTML = direccion;
-        cells[2].innerHTML = kilos.toFixed(2);
-        cells[3].innerHTML = piezas.toFixed(2);
-        cells[4].innerHTML = producto;
-        cells[5].innerHTML = precio.toFixed(2);
-        cells[6].innerHTML = subtotal; // Mostramos el subtotal en la tabla
-        cells[6].className = 'subtotal'; // Agregar la clase 'subtotal' a la celda del subtotal
-        cells[7].innerHTML = cajas.toFixed(2);
-        cells[8].innerHTML = tapas.toFixed(2);
+    cells[0].innerHTML = cliente;
+    cells[1].innerHTML = direccion;
+    cells[2].innerHTML = kilos.toFixed(2);
+    cells[3].innerHTML = piezas.toFixed(2);
+    cells[4].innerHTML = producto;
+    cells[5].innerHTML = precio.toFixed(2);
+    cells[6].innerHTML = subtotal; // Mostramos el subtotal en la tabla
+    cells[6].className = 'subtotal'; // Agregar la clase 'subtotal' a la celda del subtotal
+    cells[7].innerHTML = cajas.toString();
+    cells[8].innerHTML = tapas.toString();
 
-        // Crear el botón de cancelar
-        var cancelarButton = document.createElement("button");
-        cancelarButton.className = "btn btn-danger";
-        cancelarButton.innerHTML = "Cancelar";
-        cancelarButton.onclick = function() {
-          eliminar(this);
-        };
+    // Crear el botón de cancelar
+    var cancelarButton = document.createElement("button");
+    cancelarButton.className = "btn btn-danger";
+    cancelarButton.innerHTML = "Cancelar";
+    cancelarButton.onclick = function() {
+      eliminar(this);
+    };
 
-        // Agregar el botón de cancelar a la última celda de la fila
-        cells[9].appendChild(cancelarButton);
-    }
+    // Agregar el botón de cancelar a la última celda de la fila
+    cells[9].appendChild(cancelarButton);
+  }
 
-    // Limpiar campos de búsqueda y de entrada del formulario de producto
-    document.getElementById('kilos').value = '';
-    document.getElementById('piezas').value = '';
-    document.getElementById('productoInput').value = '';
-    document.getElementById('precio').value = '';
-    document.getElementById('cajas').value = '';
-    document.getElementById('tapas').value = '';
-    $('#resultados_producto').empty();
+  // Limpiar campos de búsqueda y de entrada del formulario de producto
+  document.getElementById('kilos').value = '';
+  document.getElementById('piezas').value = '';
+  document.getElementById('productoInput').value = '';
+  document.getElementById('precio').value = '';
+  document.getElementById('cajas').value = '';
+  document.getElementById('tapas').value = '';
+  $('#resultados_producto').empty();
 
-    // Calcular y actualizar el subtotal de venta
+  // Calcular y actualizar el subtotal de venta
+  calcularSubtotalVenta();
+  
+  // Calcular y actualizar la suma de tapas
+  calcularSumaTapas();
+  
+  // Calcular y actualizar la suma de cajas
+  calcularSumaCajas();
+}
+
+// Función para eliminar una fila de la tabla
+function eliminar(row) {
+  var confirmacion = confirm("¿Estás seguro de que deseas cancelar este producto?");
+  if (confirmacion) {
+    var rowIndex = row.parentNode.parentNode.rowIndex;
+    document.getElementById('tabla').deleteRow(rowIndex);
+    // Calcular y actualizar el subtotal de venta después de eliminar una fila
     calcularSubtotalVenta();
+    
+    // Calcular y actualizar la suma de tapas
+    calcularSumaTapas();
+    
+    // Calcular y actualizar la suma de cajas
+    calcularSumaCajas();
   }
+}
 
-  // Función para eliminar una fila de la tabla
-  function eliminar(row) {
-    var confirmacion = confirm("¿Estás seguro de que deseas cancelar este producto?");
-    if (confirmacion) {
-      var rowIndex = row.parentNode.parentNode.rowIndex;
-      document.getElementById('tabla').deleteRow(rowIndex);
-      // Calcular y actualizar el subtotal de venta después de eliminar una fila
-      calcularSubtotalVenta();
+// Función para calcular y mostrar la suma de tapas en tiempo real
+function calcularSumaTapas() {
+  var sumaTapas = 0;
+  $('#tabla tr').each(function() {
+    var tapas = parseInt($(this).find('td').eq(8).text());
+    if (!isNaN(tapas)) {
+      sumaTapas += tapas;
     }
-  }
+  });
+  $('#tapa_enviada').val(sumaTapas); // Mostrar el resultado en el campo "Tapa Enviada"
+}
 
-  // Función para calcular y mostrar la suma en tiempo real del subtotal de venta
-  function calcularSubtotalVenta() {
-    var subtotalVenta = 0;
-    $('.subtotal').each(function() {
-      subtotalVenta += parseFloat($(this).text());
-    });
-    $('#subtotal_venta').val(subtotalVenta.toLocaleString()); // Aplicar formato numérico
+// Función para calcular y mostrar la suma de cajas en tiempo real
+function calcularSumaCajas() {
+  var sumaCajas = 0;
+  $('#tabla tr').each(function() {
+    var cajas = parseInt($(this).find('td').eq(7).text());
+    if (!isNaN(cajas)) {
+      sumaCajas += cajas;
+    }
+  });
+  $('#caja_enviada').val(sumaCajas); // Mostrar el resultado en el campo "Caja Enviada"
+}
 
-    // Obtener el valor de la deuda anterior
-    var deudaAnterior = parseFloat($('#deuda_anterior').val());
+// Función para calcular y mostrar la suma en tiempo real del subtotal de venta
+function calcularSubtotalVenta() {
+  var subtotalVenta = 0;
+  $('.subtotal').each(function() {
+    subtotalVenta += parseFloat($(this).text());
+  });
+  $('#subtotal_venta').val(subtotalVenta.toLocaleString()); // Aplicar formato numérico
 
-    // Calcular el total sumando el subtotal de venta y la deuda anterior
-    var total = subtotalVenta + deudaAnterior;
+  // Obtener el valor de la deuda anterior
+  var deudaAnterior = parseFloat($('#deuda_anterior').val());
 
-    // Actualizar el campo de Total con el nuevo valor y aplicar formato numérico
-    $('#total').val(total.toLocaleString());
-  }
+  // Calcular el total sumando el subtotal de venta y la deuda anterior
+  var total = subtotalVenta + deudaAnterior;
+
+  // Actualizar el campo de Total con el nuevo valor y aplicar formato numérico
+  $('#total').val(total.toLocaleString());
+}
+
 
 </script>
 

@@ -60,6 +60,17 @@
         </p>
       </a>
     </li>
+
+    <li class="nav-item">
+    <a href="agregar_empleado.php" class="nav-link">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            Agregar Empleado
+        </p>
+    </a>
+</li>
+
+
     <!-- Agregar Clientes -->
     <li class="nav-item">
       <a href="agregar_cliente.php" class="nav-link">
@@ -106,6 +117,17 @@
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>
             Descargar PDF (Manual)
+        </p>
+    </a>
+</li>
+
+
+        <!-- Nuevo elemento para descargar PDF -->
+        <li class="nav-item">
+    <a href="logout.php" class="nav-link">
+        <i class="nav-icon fas fa-sign-out-alt"></i>
+        <p>
+            Cerrar Sesión
         </p>
     </a>
 </li>
