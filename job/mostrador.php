@@ -338,7 +338,7 @@
 
     // Asignar la función de cálculo a los eventos 'input' de los campos correspondientes
     $('#deuda_tapa, #tapa_enviada').on('input', calcularDeudaTapa);
-    
+
 
       function calcularSumaTapas() {
         var sumaTapas = 0;
