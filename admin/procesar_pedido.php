@@ -29,11 +29,11 @@ if ($conn->query($sql_pedido) === TRUE) {
     }
 
     // Redirigir a pedidos.php con mensaje de éxito
-    header("Location: pedidos.php?mensaje=Pedido agregado correctamente");
+    header("Location: pedidos?mensaje=Pedido agregado correctamente");
     exit();
 } else {
     // Redirigir a pedidos.php con mensaje de error
-    header("Location: pedidos.php?error=Error al agregar el pedido: " . $conn->error);
+    header("Location: pedidos?error=Error al agregar el pedido: " . $conn->error);
     exit();
 }
 

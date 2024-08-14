@@ -1,12 +1,35 @@
 <?php include 'menu.php'; ?>
 
+<?php
+// Conexión a la base de datos
+include '../config/conexion.php';
+
+// Consulta para obtener todos los productos
+$query = "SELECT id, nombre FROM productos";
+$result = $conn->query($query);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Distribuidora | Entradas</title>
+    <style>
+    .alert-success {
+    border-radius: 50px;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
 
+  .alert-danger {
+    border-radius: 50px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -25,95 +48,30 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <!-- Display success message if it exists -->
+                                    <!-- Mostrar mensaje de éxito o error si existe -->
                                     <?php
-                                            // Verificar si se debe mostrar un mensaje de éxito o error
-                                            if (isset($_GET['success']) && $_GET['success'] === 'true') {
-                                                echo '<div class="alert alert-success" role="alert">Los datos se han guardado correctamente.</div>';
-                                            } elseif (isset($_GET['success']) && $_GET['success'] === 'false') {
-                                                echo '<div class="alert alert-danger" role="alert">Error al guardar los datos: ' . $_GET['error_message'] . '</div>';
-                                            }
-                                        ?>
-                                    <!-- Display error message if it exists -->
-
+                                    if (isset($_GET['success']) && $_GET['success'] === 'true') {
+                                        echo '<div class="alert alert-success" role="alert">Los datos se han guardado correctamente.</div>';
+                                    } elseif (isset($_GET['success']) && $_GET['success'] === 'false') {
+                                        echo '<div class="alert alert-danger" role="alert">Error al guardar los datos: ' . $_GET['error_message'] . '</div>';
+                                    }
+                                    ?>
 
                                     <form method="post" action="guardar_entradas.php">
-                                        <!-- Categoría: Entradas -->
+                                        <!-- Seleccionar Producto -->
                                         <div class="form-group">
-                                            <label class="form-label" for="categoria">Categoría:</label>
-                                            <select class="form-control" name="categoria" id="categoria">
-                                                <option value="" disabled selected>Selecciona categoría</option>
-
-                                                <option value="ROSTICERO LH">R-LH</option>
-                                                <option value="ROSTICERO R-10">R-10</option>
-                                                <option value="ROSTICERO R-20">R-20</option>
-                                                <option value="ROSTICERO R-30">R-30</option>
-                                                <option value="ROSTICERO R-40">R-40</option>
-                                                <option value="ROSTICERO R-50">R-50</option>
-                                                <option value="ROSTICERO R-60">R-60</option>
-                                                <option value="ROSTICERO R-70">R-70</option>
-                                                <option value="ROSTICERO R-80">R-80</option>
-
-                                                <!-- NUEVOS CAMPOS -->
-
-                                                <option value="ROSTICERO NATURAL 1.0 - 1.1">NATURAL 1.0 - 1.1</option>
-                                                <option value="ROSTICERO NATURAL 1.1 - 1.2">NATURAL 1.1 - 1.2</option>
-                                                <option value="ROSTICERO NATURAL 1.2 - 1.3">NATURAL 1.2 - 1.3</option>
-                                                <option value="ROSTICERO NATURAL 1.3 - 1.4">NATURAL 1.3 - 1.4</option>
-                                                <option value="ROSTICERO NATURAL 1.4 - 1.5">NATURAL 1.4 - 1.5</option>
-                                                <option value="ROSTICERO NATURAL 1.5 - 1.6">NATURAL 1.5 - 1.6</option>
-                                                <option value="ROSTICERO NATURAL 1.6 - 1.7">NATURAL 1.6 - 1.7</option>
-                                                <option value="ROSTICERO NATURAL 1.7 - 1.8">NATURAL 1.7 - 1.8</option>
-
-                                                <!-- CAMPOS NUEVOS -->
-
-                                                <option value="ALA NATURAL">ALA NATURAL</option>
-                                                <option value="ALA MARINADA">ALA MARINADA</option>
-                                                <option value="CABEZA NATURAL">CABEZA NATURAL</option>
-                                                <option value="CABEZA ESCALDADA">CABEZA ESCALDADA</option>
-                                                <option value="PIERNA / MUSLO">PIERNA / MUSLO</option>
-                                                <option value="MOLLEJA">MOLLEJA</option>
-
-                                            </select>
-                                        </div>
-
-                                        <!-- Productos de la categoría Entradas -->
-                                        <div class="form-group">
-                                            <label class="form-label" for="producto">Productos:</label>
+                                            <label class="form-label" for="producto">Producto:</label>
                                             <select class="form-control" name="producto" id="producto">
-                                                <option value="" disabled selected>Selecciona producto</option>
-
-                                                <option value="ROSTICERO LH">R-LH</option>
-                                                <option value="ROSTICERO R-10">R-10</option>
-                                                <option value="ROSTICERO R-20">R-20</option>
-                                                <option value="ROSTICERO R-30">R-30</option>
-                                                <option value="ROSTICERO R-40">R-40</option>
-                                                <option value="ROSTICERO R-50">R-50</option>
-                                                <option value="ROSTICERO R-60">R-60</option>
-                                                <option value="ROSTICERO R-70">R-70</option>
-                                                <option value="ROSTICERO R-80">R-80</option>
-
-                                                <!-- NUEVOS CAMPOS -->
-
-
-                                                <option value="ROSTICERO NATURAL 1.0 - 1.1">NATURAL 1.0 - 1.1</option>
-                                                <option value="ROSTICERO NATURAL 1.1 - 1.2">NATURAL 1.1 - 1.2</option>
-                                                <option value="ROSTICERO NATURAL 1.2 - 1.3">NATURAL 1.2 - 1.3</option>
-                                                <option value="ROSTICERO NATURAL 1.3 - 1.4">NATURAL 1.3 - 1.4</option>
-                                                <option value="ROSTICERO NATURAL 1.4 - 1.5">NATURAL 1.4 - 1.5</option>
-                                                <option value="ROSTICERO NATURAL 1.5 - 1.6">NATURAL 1.5 - 1.6</option>
-                                                <option value="ROSTICERO NATURAL 1.6 - 1.7">NATURAL 1.6 - 1.7</option>
-                                                <option value="ROSTICERO NATURAL 1.7 - 1.8">NATURAL 1.7 - 1.8</option>
-
-                                                <!-- CAMPOS NUEVOS -->
-
-                                                <option value="ALA NATURAL">ALA NATURAL</option>
-                                                <option value="ALA MARINADA">ALA MARINADA</option>
-                                                <option value="CABEZA NATURAL">CABEZA NATURAL</option>
-                                                <option value="CABEZA ESCALDADA">CABEZA ESCALDADA</option>
-                                                <option value="PIERNA / MUSLO">PIERNA / MUSLO</option>
-                                                <option value="MOLLEJA">MOLLEJA</option>
-
+                                                <option value="" disabled selected>Selecciona un producto</option>
+                                                <?php
+                                                if ($result->num_rows > 0) {
+                                                    while($row = $result->fetch_assoc()) {
+                                                        echo '<option value="' . $row['id'] . '">' . $row['nombre'] . '</option>';
+                                                    }
+                                                } else {
+                                                    echo '<option value="">No hay productos disponibles</option>';
+                                                }
+                                                ?>
                                             </select>
                                         </div>
 
@@ -137,3 +95,8 @@
 
 </body>
 </html>
+
+<?php
+// Cerrar la conexión
+$conn->close();
+?>

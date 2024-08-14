@@ -19,19 +19,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!mysqli_query($conexion, $sqlPedido)) {
             // Si falla la inserción de algún registro, mostrar mensaje de error y salir del bucle
             $mensaje_error = "Error al guardar el pedido.";
-            header("Location: pedidos.php?mensaje_error=" . urlencode($mensaje_error));
+            header("Location: pedidos?mensaje_error=" . urlencode($mensaje_error));
             exit();
         }
     }
 
     // Redirigir con un mensaje de éxito
     $mensaje_exito = "Pedidos guardados correctamente.";
-    header("Location: pedidos.php?mensaje_exito=" . urlencode($mensaje_exito));
+    header("Location: pedidos?mensaje_exito=" . urlencode($mensaje_exito));
     exit();
 
 } else {
     // Redirigir si se intenta acceder directamente a este script sin enviar datos desde el formulario
-    header("Location: pedidos.php");
+    header("Location: pedidos");
     exit();
 }
 ?>

@@ -53,7 +53,7 @@
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     <!-- Agrega iconos a los enlaces utilizando la clase .nav-icon con Font Awesome o cualquier otra biblioteca de iconos -->
     <li class="nav-item">
-      <a href="admin.php" class="nav-link">
+      <a href="admin" class="nav-link">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Panel de Control
@@ -61,19 +61,11 @@
       </a>
     </li>
 
-    <li class="nav-item">
-    <a href="agregar_empleado.php" class="nav-link">
-        <i class="nav-icon fas fa-user-plus"></i>
-        <p>
-            Agregar Empleado
-        </p>
-    </a>
-</li>
 
 
     <!-- Agregar Clientes -->
     <li class="nav-item">
-      <a href="agregar_cliente.php" class="nav-link">
+      <a href="agregar_cliente" class="nav-link">
         <i class="nav-icon fas fa-user"></i>
         <p>
           Agregar Clientes
@@ -82,7 +74,7 @@
     </li>
     <!-- Agregar Productos -->
     <li class="nav-item">
-      <a href="agregar_productos.php" class="nav-link">
+      <a href="agregar_productos" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
           Agregar Productos
@@ -91,7 +83,7 @@
     </li>
     <!-- Agregar Entradas -->
     <li class="nav-item">
-      <a href="agregar_entradas.php" class="nav-link">
+      <a href="agregar_entradas" class="nav-link">
         <i class="nav-icon fas fa-file-alt"></i>
         <p>
           Agregar Entradas
@@ -101,7 +93,7 @@
 
         <!-- Pedidos -->
         <li class="nav-item">
-      <a href="pedidos.php" class="nav-link">
+      <a href="pedidos" class="nav-link">
         <i class="nav-icon fas fa-shopping-cart"></i>
         <p>
           Agregar Pedidos
@@ -124,7 +116,7 @@
 
         <!-- Nuevo elemento para descargar PDF -->
         <li class="nav-item">
-    <a href="logout.php" class="nav-link">
+    <a href="logout" class="nav-link">
         <i class="nav-icon fas fa-sign-out-alt"></i>
         <p>
             Cerrar Sesión

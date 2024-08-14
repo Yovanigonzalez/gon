@@ -55,7 +55,7 @@ $conn->close();
         <div class="icon">
             <i class="ion ion-person-add"></i>
         </div>
-        <a href="total_clientes.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="total_clientes" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
 
@@ -98,7 +98,7 @@ $conn->close();
         <div class="icon">
             <i class="ion ion-bag"></i>
         </div>
-        <a href="total_productos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="total_productos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
 
@@ -161,7 +161,7 @@ $conn->close();
         <div class="icon">
             <i class="ion ion-bag"></i>
         </div>
-        <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="detalles_pedidos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
 

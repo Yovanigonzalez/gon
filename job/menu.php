@@ -40,7 +40,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Logo de la Marca -->
     <a href="#" class="brand-link text-center">
-  <span class="brand-text font-weight-light">Panel</span>
+  <span class="brand-text font-weight-light">Mostrador</span>
 </a>
 
 
