@@ -18,7 +18,6 @@ $sql = "SELECT id, cliente, direccion FROM pedidos WHERE fecha = '$fecha_actual'
 $result = $conn->query($sql);
 ?>
 
-
 <?php include 'menu.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,6 +27,23 @@ $result = $conn->query($sql);
   <title>Distribuidora González | Pedidos Pendientes</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .alert-success {
+    border-radius: 50px;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+
+  .alert-danger {
+    border-radius: 50px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+  </style>
+  
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -38,7 +54,7 @@ $result = $conn->query($sql);
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <!-- Contenedor Blanco -->
             <br>
             <div class="card card-white">
@@ -46,34 +62,49 @@ $result = $conn->query($sql);
                 <h3 class="card-title">Pedidos Pendientes de Hoy</h3>
               </div>
               <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <!--<th>ID</th>-->
-                      <th>Cliente</th>
-                      <th>Dirección</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if ($result->num_rows > 0) {
-                      while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                       // echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["cliente"] . "</td>";
-                        echo "<td>" . $row["direccion"] . "</td>";
-                        echo "<td>
-                              <a href='detalles_completos_cliente.php?nombre=" . urlencode($row["cliente"]) . "&direccion=" . urlencode($row["direccion"]) . "' class='btn btn-primary btn-sm'>Detalles</a>
-                              </td>";
-                        echo "</tr>";
+                <?php
+                // Verificar si hay un mensaje de éxito o error en la URL
+                if (isset($_GET['mensaje_exito'])) {
+                    $mensaje_exito = $_GET['mensaje_exito'];
+                    echo '<div class="alert alert-success">' . $mensaje_exito . '</div>';
+                } elseif (isset($_GET['mensaje_error'])) {
+                    $mensaje_error = $_GET['mensaje_error'];
+                    echo '<div class="alert alert-danger">' . $mensaje_error . '</div>';
+                }
+                ?>
+
+                <form method="post" action="actualizar_pedido.php">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Cliente</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                          echo "<tr>";
+                          echo "<td>" . $row["cliente"] . "</td>";
+                          echo "<td>" . $row["direccion"] . "</td>";
+                          echo "<td>
+                                <a href='detalles_completos_cliente.php?nombre=" . urlencode($row["cliente"]) . "&direccion=" . urlencode($row["direccion"]) . "' class='btn btn-primary btn-sm'>Detalles</a>
+                                <form method='post' style='display:inline;' action='actualizar_pedido.php'>
+                                  <input type='hidden' name='pedido_id' value='" . $row["id"] . "'>
+                                  <button type='submit' name='atendido' class='btn btn-success btn-sm'>Atendido</button>
+                                </form>
+                                </td>";
+                          echo "</tr>";
+                        }
+                      } else {
+                        echo "<tr><td colspan='3'>No se encontraron pedidos pendientes para hoy</td></tr>";
                       }
-                    } else {
-                      echo "<tr><td colspan='4'>No se encontraron pedidos pendientes para hoy</td></tr>";
-                    }
-                    ?>
-                  </tbody>
-                </table>
+                      ?>
+                    </tbody>
+                  </table>
+                </form>
               </div>
             </div>
           </div>
@@ -94,4 +125,3 @@ $result = $conn->query($sql);
 // Cerrar conexión
 $conn->close();
 ?>
-
