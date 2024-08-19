@@ -53,7 +53,7 @@
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     <!-- Agrega iconos a los enlaces utilizando la clase .nav-icon con Font Awesome o cualquier otra biblioteca de iconos -->
     <li class="nav-item">
-      <a href="admin.php" class="nav-link">
+      <a href="admin" class="nav-link">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Panel de Control
@@ -62,7 +62,7 @@
     </li>
     <!-- Agregar Clientes -->
     <li class="nav-item">
-      <a href="mostrador.php" class="nav-link">
+      <a href="mostrador" class="nav-link">
         <i class="nav-icon fas fa-user"></i>
         <p>
           Ventas a mostrador
@@ -71,7 +71,7 @@
     </li>
     <!-- Agregar Productos -->
     <li class="nav-item">
-      <a href="agregar_productos.php" class="nav-link">
+      <a href="agregar_productos" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
           Canastilla
@@ -82,7 +82,7 @@
 
        <!-- Pedidos -->
         <li class="nav-item">
-      <a href="detalles_pedidos.php" class="nav-link">
+      <a href="detalles_pedidos" class="nav-link">
         <i class="nav-icon fas fa-shopping-cart"></i>
         <p>
           Ver Pedidos
@@ -92,7 +92,7 @@
 
     <!-- Eventos -->
 <li class="nav-item">
-    <a href="eventos.php" class="nav-link">
+    <a href="eventos" class="nav-link">
         <i class="nav-icon fas fa-calendar-alt"></i>
         <p>
             Agregar Eventos
@@ -100,6 +100,24 @@
     </a>
 </li>
 
+<!-- Facturas -->
+<li class="nav-item">
+    <a href="facturas" class="nav-link">
+        <i class="nav-icon fas fa-file-invoice"></i>
+        <p>
+            Ingresar Facturas
+        </p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="gastos" class="nav-link">
+        <i class="nav-icon fas fa-wallet"></i> <!-- Puedes cambiar el ícono si deseas -->
+        <p>
+            Gastos
+        </p>
+    </a>
+</li>
     
 
   </ul>

@@ -14,13 +14,13 @@
             gap: 1px;
             max-width: 80%;
             margin: 20px auto;
-            font-size: 1.2rem;
+            font-size: 1.2rem; /* Tamaño de fuente un poco mayor */
         }
         .calendar div {
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             border: 1px solid #ddd;
-            height: auto; /* Ajustar automáticamente la altura según el contenido */
+            height: 80px; /* Altura un poco mayor */
             position: relative;
             box-sizing: border-box;
         }
@@ -32,24 +32,15 @@
             background-color: #ffeb3b;
             border-radius: 5px;
         }
-        .dia-aproximado {
-            background-color: #ffcccb; /* Color rojo claro */
-            border-radius: 5px;
-        }
-        .evento {
-            font-size: 0.9rem;
-            margin-top: 5px;
-            display: block;
-            text-align: center;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
     </style>
 </head>
 <body>
-
+    
+    <!-- Contenido Principal. Contiene el contenido de la página -->
     <div class="content-wrapper">
-    <div class="container-fluid">
+        <!-- Contenido Principal -->
+        <section class="content">
+            <div class="container-fluid">
                 <!-- Cajas pequeñas (estadísticas) -->
                 <div class="row">
                     <!-- Caja pequeña para Ventas -->
@@ -126,9 +117,9 @@
                         </div>
                     </div>
                 </div>
-            
-            <div class="container-fluid">
+
                 <h1 align="center">Calendario de pendientes</h1>
+                <!-- Calendario en tiempo real -->
                 <div class="calendar">
                     <div class="header">Lun</div>
                     <div class="header">Mar</div>
@@ -138,68 +129,25 @@
                     <div class="header">Sáb</div>
                     <div class="header">Dom</div>
                     
+                    <!-- Aquí se deben generar los días del calendario -->
                     <?php
-                    include '../config/conexion.php';
-
-                    if ($conn->connect_error) {
-                        die("Error de conexión: " . $conn->connect_error);
-                    }
-
-                    date_default_timezone_set('America/Mexico_City');
-                    $month = date('m');
-                    $year = date('Y');
+                    $month = date('m'); // Mes actual
+                    $year = date('Y'); // Año actual
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
                     
-                    $sql = "SELECT DAY(fecha) AS dia, descripcion FROM eventos WHERE MONTH(fecha) = '$month' AND YEAR(fecha) = '$year'";
-                    $result = $conn->query($sql);
-
-                    $eventos = [];
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $eventos[$row['dia']][] = $row['descripcion'];
-                        }
-                    }
-
+                    // Imprimir días vacíos para alinear el primer día
                     $firstDayOfMonth = date('w', strtotime("$year-$month-01"));
-                    $firstDayOfMonth = ($firstDayOfMonth == 0) ? 6 : $firstDayOfMonth - 1;
+                    $firstDayOfMonth = ($firstDayOfMonth == 0) ? 6 : $firstDayOfMonth - 1; // Ajustar el primer día a Lunes
 
                     for ($i = 0; $i < $firstDayOfMonth; $i++) {
                         echo '<div></div>';
                     }
-
+                    
+                    // Imprimir los días del mes
                     for ($day = 1; $day <= $daysInMonth; $day++) {
                         $class = ($day == date('j')) ? 'current-day' : '';
-                        $aproximado = false;
-
-                        if (isset($eventos[$day])) {
-                            foreach ($eventos[$day] as $evento) {
-                                $eventoFecha = strtotime("$year-$month-$day");
-                                $hoy = strtotime(date("Y-m-d"));
-                                $diasDiferencia = ($eventoFecha - $hoy) / (60 * 60 * 24);
-
-                                if ($diasDiferencia > 0 && $diasDiferencia <= 3) {
-                                    $aproximado = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if ($aproximado) {
-                            $class .= ' dia-aproximado';
-                        }
-
-                        echo "<div class='$class'>$day";
-
-                        if (isset($eventos[$day])) {
-                            foreach ($eventos[$day] as $evento) {
-                                echo "<span class='evento'>$evento</span>";
-                            }
-                        }
-
-                        echo "</div>";
+                        echo "<div class='$class'>$day</div>";
                     }
-
-                    $conn->close();
                     ?>
                 </div>
             </div>
@@ -207,6 +155,7 @@
         </section>
     </div>
 
+    <!-- Bootstrap 4 JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>

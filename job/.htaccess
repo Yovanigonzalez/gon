@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Para reescribir las URLs eliminando la extensión .php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L]
+
+# Opcional: Redirigir todas las solicitudes a index.php si no se encuentra un archivo correspondiente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
