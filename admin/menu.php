@@ -20,6 +20,14 @@
     body, .nav-link, .brand-text {
       font-family: 'Montserrat', sans-serif;
     }
+
+    .hr-blanco {
+            border: none; /* Elimina los bordes predeterminados */
+            height: 1px; /* Altura de la línea */
+            background-color: white; /* Color de fondo de la línea */
+            margin: 20px 0; /* Espaciado superior e inferior */
+        }
+
   </style>
   
 </head>
@@ -72,24 +80,45 @@
         </p>
       </a>
     </li>
+
+    <hr class="hr-blanco">
+
     <!-- Agregar Productos -->
     <li class="nav-item">
-      <a href="agregar_productos" class="nav-link">
+      <a href="agregar_productos_pollo" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
-          Agregar Productos
+        Agregar  Productos (Pollo)
         </p>
       </a>
     </li>
-    <!-- Agregar Entradas -->
-    <li class="nav-item">
+
+            <!-- Agregar Productos -->
+            <li class="nav-item">
+      <a href="agregar_productos_menudencia" class="nav-link">
+        <i class="nav-icon fas fa-box"></i>
+        <p>
+          Agregar Productos (Menudencia)
+        </p>
+      </a>
+    </li>
+
+
+    <hr class="hr-blanco">
+
+
+        <!-- Agregar Entradas -->
+        <li class="nav-item">
       <a href="agregar_entradas" class="nav-link">
         <i class="nav-icon fas fa-file-alt"></i>
         <p>
-          Agregar Entradas
+        Agregar Entradas
         </p>
       </a>
     </li>
+
+
+    <hr class="hr-blanco">
 
         <!-- Pedidos -->
         <li class="nav-item">
@@ -108,7 +137,7 @@
     <a href="../pdf/manual_admin.pdf" class="nav-link" download>
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>
-            Descargar PDF (Manual)
+            Manual
         </p>
     </a>
 </li>

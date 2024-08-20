@@ -12,8 +12,12 @@ if(isset($_POST['searchTerm'])) {
     // Escapar el término de búsqueda para evitar inyección SQL
     $searchTerm = $conn->real_escape_string($_POST['searchTerm']);
 
-    // Realizar la consulta para buscar productos que coincidan con el término de búsqueda
-    $query = "SELECT nombre FROM productos WHERE nombre LIKE '%$searchTerm%'";
+    // Realizar la consulta para buscar productos que coincidan con el término de búsqueda en ambas tablas
+    $query = "
+        SELECT id, nombre, 'productos' AS source FROM productos WHERE nombre LIKE '%$searchTerm%'
+        UNION
+        SELECT id, nombre, 'productos_menudencia' AS source FROM productos_menudencia WHERE nombre LIKE '%$searchTerm%'
+    ";
     $result = $conn->query($query);
 
     // Verificar si se encontraron resultados
@@ -21,7 +25,7 @@ if(isset($_POST['searchTerm'])) {
         // Crear un array para almacenar los resultados de la consulta
         $productos = array();
 
-        // Iterar sobre los resultados y agregar cada nombre de producto al array
+        // Iterar sobre los resultados y agregar cada id y nombre de producto al array
         while($row = $result->fetch_assoc()) {
             $productos[] = $row;
         }

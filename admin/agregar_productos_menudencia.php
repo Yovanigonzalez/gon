@@ -12,7 +12,7 @@ include 'menu.php'; // Incluir el menú
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Distribuidora González | Agregar Productos</title>
+  <title>Distribuidora González | Agregar Productos Menudencia</title>
   <style>
     .alert-success {
     border-radius: 50px;
@@ -43,11 +43,11 @@ include 'menu.php'; // Incluir el menú
             <br>
             <div class="card card-white">
               <div class="card-header">
-                <h3 class="card-title" id="title">Agregar Producto</h3>
+                <h3 class="card-title" id="title">Agregar Producto (Menudencia)</h3>
               </div>
               
               <!-- Formulario para agregar productos -->
-              <form class="card-body" method="post" action="guardar_productos.php">
+              <form class="card-body" method="post" action="guardar_productos_menudencia.php">
                               <!-- Mostrar mensaje de éxito si está disponible -->
               <?php if (isset($_SESSION['mensaje_exito'])): ?>
               <div class="alert alert-success"><?php echo $_SESSION['mensaje_exito']; ?></div>
@@ -61,10 +61,10 @@ include 'menu.php'; // Incluir el menú
               <?php endif; ?>
 
               <div class="form-group">
-    <label for="nombreProducto">Nombre del producto:</label>
-    <!-- Utilizamos JavaScript para convertir automáticamente el texto a mayúsculas -->
-    <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" placeholder="Ingrese el nombre del producto" oninput="this.value = this.value.toUpperCase()" required>
-</div>
+                  <label for="nombreProducto">Nombre del producto:</label>
+                  <!-- Utilizamos JavaScript para convertir automáticamente el texto a mayúsculas -->
+                  <input type="text" class="form-control" id="nombreProducto" name="nombreProducto" placeholder="Ingrese el nombre del producto" oninput="this.value = this.value.toUpperCase()" required>
+              </div>
 
                 <button type="submit" class="btn btn-primary" id="submitButton">Agregar Producto</button>
             </form>
