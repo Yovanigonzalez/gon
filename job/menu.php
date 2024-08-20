@@ -71,7 +71,7 @@
     </li>
     <!-- Agregar Productos -->
     <li class="nav-item">
-      <a href="agregar_productos" class="nav-link">
+      <a href="canastilla" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
           Canastilla
@@ -119,6 +119,17 @@
     </a>
 </li>
     
+
+    <!-- Agregar Productos -->
+    <li class="nav-item">
+      <a href="canastilla_patsa" class="nav-link">
+        <i class="nav-icon fas fa-box"></i>
+        <p>
+          Canastilla Patsa
+        </p>
+      </a>
+    </li>
+
 
   </ul>
 </nav>

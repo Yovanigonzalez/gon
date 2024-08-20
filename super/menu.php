@@ -53,7 +53,7 @@
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     <!-- Agrega iconos a los enlaces utilizando la clase .nav-icon con Font Awesome o cualquier otra biblioteca de iconos -->
     <li class="nav-item">
-      <a href="admin.php" class="nav-link">
+      <a href="admin" class="nav-link">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Panel de Control
@@ -64,7 +64,7 @@
 
         <!-- Agregar Deudores -->
         <li class="nav-item">
-      <a href="deudores.php" class="nav-link">
+      <a href="deudores" class="nav-link">
         <i class="nav-icon fas fa-money-bill-wave"></i>
         <p>
           Agregar Dedudores
@@ -74,7 +74,7 @@
 
             <!-- Agregar Deudores Cajas -->
             <li class="nav-item">
-      <a href="deudores_cajas.php" class="nav-link">
+      <a href="deudores_cajas" class="nav-link">
         <i class="nav-icon fas fa-money-bill-wave"></i>
         <p>
            + Deudas Cajas
@@ -84,7 +84,7 @@
 
     <!-- Localizador de Notas -->
     <li class="nav-item">
-      <a href="localizador_notas.php" class="nav-link">
+      <a href="localizador_notas" class="nav-link">
         <i class="nav-icon fas fa-sticky-note"></i>
         <p>
           Localizador de Notas
@@ -94,7 +94,7 @@
 
     <!-- Registrar Gastos -->
     <li class="nav-item">
-      <a href="registrar_gastos.php" class="nav-link">
+      <a href="registrar_gastos" class="nav-link">
         <i class="nav-icon fas fa-money-check-alt"></i>
         <p>
           Registrar Gastos
@@ -103,7 +103,7 @@
     </li>
     <!-- Cobranza -->
     <li class="nav-item">
-      <a href="cobranza.php" class="nav-link">
+      <a href="cobranza" class="nav-link">
         <i class="nav-icon fas fa-hand-holding-usd"></i>
         <p>
           Cobranza
@@ -112,7 +112,7 @@
     </li>
     <!-- Actualizar Deuda -->
     <li class="nav-item">
-      <a href="actualizar_deuda.php" class="nav-link">
+      <a href="actualizar_deuda" class="nav-link">
         <i class="nav-icon fas fa-money-bill-wave"></i>
         <p>
           Actualizar Deuda

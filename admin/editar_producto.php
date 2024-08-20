@@ -7,27 +7,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
     $id = $_POST['id'];
     $nuevo_nombre = $_POST['nombre'];
+    $tabla = $_POST['tabla'];
 
-    // Actualizar el nombre del producto en la base de datos
-    $sql = "UPDATE productos SET nombre='$nuevo_nombre' WHERE id=$id";
+    // Actualizar el nombre del producto en la tabla correspondiente
+    $sql = "UPDATE $tabla SET nombre='$nuevo_nombre' WHERE id=$id";
 
     if ($conn->query($sql) === TRUE) {
         // Redirigir de vuelta a la página de productos con un mensaje de éxito
-        header("Location: total_productos.php?success=1");
+        header("Location: total_productos?success=1");
         exit();
     } else {
         // Si ocurre un error, redirigir de vuelta a la página de productos con un mensaje de error
-        header("Location: total_productos.php?error=1");
+        header("Location: total_productos?error=1");
         exit();
     }
 }
 
-// Obtener el ID del producto a editar desde la URL
-if (isset($_GET['id'])) {
+// Obtener el ID del producto y la tabla desde la URL
+if (isset($_GET['id']) && isset($_GET['tabla'])) {
     $id_producto = $_GET['id'];
+    $tabla = $_GET['tabla'];
 
-    // Obtener los detalles del producto de la base de datos
-    $sql = "SELECT * FROM productos WHERE id=$id_producto";
+    // Obtener los detalles del producto de la tabla correspondiente
+    $sql = "SELECT nombre FROM $tabla WHERE id=$id_producto";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -35,12 +37,12 @@ if (isset($_GET['id'])) {
         $nombre_producto = $row['nombre'];
     } else {
         // Si no se encuentra el producto, redirigir de vuelta a la página de productos con un mensaje de error
-        header("Location: total_productos.php?error=1");
+        header("Location: total_productos?error=1");
         exit();
     }
 } else {
-    // Si no se proporciona un ID de producto, redirigir de vuelta a la página de productos con un mensaje de error
-    header("Location: total_productos.php?error=1");
+    // Si no se proporciona un ID de producto o una tabla válida, redirigir de vuelta a la página de productos con un mensaje de error
+    header("Location: total_productos?error=1");
     exit();
 }
 ?>
@@ -70,10 +72,11 @@ if (isset($_GET['id'])) {
               <div class="card-header">
                 <h3 class="card-title" id="title">Editar Producto</h3>
               </div>
-              <!-- Formulario para agregar clientes -->
+              <!-- Formulario para editar productos -->
               <div class="card-body">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <input type="hidden" name="id" value="<?php echo $id_producto; ?>">
+                        <input type="hidden" name="tabla" value="<?php echo $tabla; ?>">
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
                             <!-- Utilizamos JavaScript para convertir automáticamente el texto a mayúsculas -->
@@ -93,13 +96,12 @@ if (isset($_GET['id'])) {
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Footer -->
-
   <!-- Bootstrap 4 JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 
