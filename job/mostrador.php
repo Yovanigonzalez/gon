@@ -173,7 +173,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script src="../js/mostrador.js"></script>
   <script>
-    document.getElementById('generar-nota').addEventListener('click', function() {
+
+document.getElementById('generar-nota').addEventListener('click', function() {
   // Recoge toda la información del formulario
   const cliente = document.getElementById('cliente').value;
   const direccion = document.getElementById('direccion').value;
@@ -181,20 +182,20 @@
   const subtotalVendido = document.getElementById('subtotal-vendido').innerText;
   const deudaPendiente = document.getElementById('deuda-pendiente').innerText;
   const total = document.getElementById('total').innerText;
-  const cajaDeudora = document.getElementById('caja-deudora').value;
-  const tapaDeudora = document.getElementById('tapa-deudora').value;
-  const cajaEnviada = document.getElementById('caja-enviada').value;
-  const tapaEnviada = document.getElementById('tapa-enviada').value;
-  const cajaPendiente = document.getElementById('caja-pendiente').value;
-  const tapaPendiente = document.getElementById('tapa-pendiente').value;
+  const cajaDeudora = parseFloat(document.getElementById('caja-deudora').value) || 0;
+  const tapaDeudora = parseFloat(document.getElementById('tapa-deudora').value) || 0;
+  const cajaEnviada = parseFloat(document.getElementById('caja-enviada').value) || 0;
+  const tapaEnviada = parseFloat(document.getElementById('tapa-enviada').value) || 0;
+  const cajaPendiente = parseFloat(document.getElementById('caja-pendiente').value) || 0;
+  const tapaPendiente = parseFloat(document.getElementById('tapa-pendiente').value) || 0;
 
   // Recorre la tabla de productos
   document.querySelectorAll('#tabla-productos tr').forEach(row => {
     const producto = row.cells[0].innerText;
-    const piezas = row.cells[1].innerText;
-    const kilos = row.cells[2].innerText;
-    const precio = row.cells[3].innerText;
-    const subtotal = row.cells[4].innerText;
+    const piezas = parseFloat(row.cells[1].innerText) || 0;
+    const kilos = parseFloat(row.cells[2].innerText) || 0;
+    const precio = parseFloat(row.cells[3].innerText) || 0;
+    const subtotal = parseFloat(row.cells[4].innerText) || 0;
     productos.push({ producto, piezas, kilos, precio, subtotal });
   });
 
@@ -229,6 +230,7 @@
     }
   });
 });
+
 
   </script>
 </div>

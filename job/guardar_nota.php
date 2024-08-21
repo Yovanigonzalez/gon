@@ -86,8 +86,32 @@ if ($stmt->execute()) {
                            WHERE id = ?";
 
     $stmtActualizarCajas = $conn->prepare($sqlActualizarCajas);
-    $stmtActualizarCajas->bind_param("iis", $cantidadCajasNueva, $cantidadTapasNueva, $clienteIdCajas);
+    $stmtActualizarCajas->bind_param("dii", $cantidadCajasNueva, $cantidadTapasNueva, $clienteIdCajas);
     $stmtActualizarCajas->execute();
+  }
+
+  // Actualizar la tabla entradas
+  foreach ($productos as $producto) {
+    $productoNombre = $producto['producto'];
+    $piezas = $producto['piezas'];
+    $kilos = $producto['kilos'];
+
+    $sqlEntradas = "UPDATE entradas
+                    SET stock = stock - ?, kilos = kilos - ?
+                    WHERE producto_nombre = ?";
+
+    $stmtEntradas = $conn->prepare($sqlEntradas);
+    $stmtEntradas->bind_param("dds", $piezas, $kilos, $productoNombre);
+    $stmtEntradas->execute();
+
+    // También actualizar la tabla entradas_menudencia
+    $sqlEntradasMenudencia = "UPDATE entradas_menudencia
+                              SET kilos = kilos - ?
+                              WHERE producto_nombre = ?";
+
+    $stmtEntradasMenudencia = $conn->prepare($sqlEntradasMenudencia);
+    $stmtEntradasMenudencia->bind_param("ds", $kilos, $productoNombre);
+    $stmtEntradasMenudencia->execute();
   }
 
   echo json_encode(['success' => true]);
