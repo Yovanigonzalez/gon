@@ -62,7 +62,7 @@
                             <div class="icon">
                                 <i class="ion ion-social-usd"></i>
                             </div>
-                            <a href="mostrador.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="mostrador" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
 
@@ -122,7 +122,7 @@
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="detalles_pedidos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>

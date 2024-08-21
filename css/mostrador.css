@@ -1,0 +1,72 @@
+    /* Centrar el contenido dentro de la celda */
+    .text-center {
+        text-align: center;
+      }
+      /* Alinear el total a la derecha */
+      .text-right {
+        text-align: right;
+      }
+      /* Centrar el botón */
+      .btn-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+      /* Alineación de las filas de totales */
+      .total-row td {
+        text-align: left;
+        font-weight: bold;
+      }
+      .total-row td:first-child {
+        text-align: right;
+      }
+      .total-row td:last-child {
+        text-align: left;
+      }
+      /* Asegurarse de que el select se comporte correctamente */
+      select {
+        position: static;
+      }
+      .autocomplete-results {
+        border: 1px solid #ddd;
+        max-height: 150px;
+        overflow-y: auto;
+        position: absolute;
+        background-color: #fff;
+        z-index: 1000;
+      }
+      .autocomplete-result {
+        padding: 8px;
+        cursor: pointer;
+      }
+      .autocomplete-result:hover {
+        background-color: #f1f1f1;
+      }
+  
+
+      /*-----*/
+
+      .autocomplete-items {
+        border: 1px solid #ddd;
+        z-index: 99;
+        position: absolute;
+        background-color: #fff;
+        width: calc(100% - 20px);
+      }
+      .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+      }
+      .autocomplete-item:hover {
+        background-color: #ddd;
+      }
+      .table-visible {
+        display: table;
+        width: 100%;
+      }
+      .form-row {
+        margin-bottom: 1rem;
+      }
+      .form-group {
+        margin-bottom: 0.5rem;
+      }
+  
