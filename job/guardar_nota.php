@@ -43,8 +43,8 @@ if ($stmt->execute()) {
     $stmtProductos->execute();
   }
 
-  // Actualizar la tabla deudores_cajas
-  $sqlClienteId = "SELECT id, cantidad_cajas, cantidad_tapas FROM deudores_cajas WHERE nombre_cliente = ? AND direccion = ?";
+  // Obtener el ID del cliente
+  $sqlClienteId = "SELECT id FROM deudores WHERE nombre_cliente = ? AND direccion = ?";
   $stmtClienteId = $conn->prepare($sqlClienteId);
   $stmtClienteId->bind_param("ss", $cliente, $direccion);
   $stmtClienteId->execute();
@@ -53,20 +53,41 @@ if ($stmt->execute()) {
 
   if ($clienteData) {
     $clienteId = $clienteData['id'];
-    $cantidadCajasActual = $clienteData['cantidad_cajas'];
-    $cantidadTapasActual = $clienteData['cantidad_tapas'];
+
+    // Actualizar la tabla deudores con el nuevo total
+    $sqlActualizarDeuda = "UPDATE deudores
+                           SET cantidad_deuda = ?
+                           WHERE id = ?";
+
+    $stmtActualizarDeuda = $conn->prepare($sqlActualizarDeuda);
+    $stmtActualizarDeuda->bind_param("di", $total, $clienteId);
+    $stmtActualizarDeuda->execute();
+  }
+
+  // Actualizar la tabla deudores_cajas
+  $sqlCajas = "SELECT id, cantidad_cajas, cantidad_tapas FROM deudores_cajas WHERE nombre_cliente = ? AND direccion = ?";
+  $stmtCajas = $conn->prepare($sqlCajas);
+  $stmtCajas->bind_param("ss", $cliente, $direccion);
+  $stmtCajas->execute();
+  $resultCajas = $stmtCajas->get_result();
+  $clienteDataCajas = $resultCajas->fetch_assoc();
+
+  if ($clienteDataCajas) {
+    $clienteIdCajas = $clienteDataCajas['id'];
+    $cantidadCajasActual = $clienteDataCajas['cantidad_cajas'];
+    $cantidadTapasActual = $clienteDataCajas['cantidad_tapas'];
 
     // Sumar las nuevas cantidades a las existentes
     $cantidadCajasNueva = $cantidadCajasActual + $cajaEnviada;
     $cantidadTapasNueva = $cantidadTapasActual + $tapaEnviada;
 
-    $sqlActualizar = "UPDATE deudores_cajas
-                      SET cantidad_cajas = ?, cantidad_tapas = ?
-                      WHERE id = ?";
+    $sqlActualizarCajas = "UPDATE deudores_cajas
+                           SET cantidad_cajas = ?, cantidad_tapas = ?
+                           WHERE id = ?";
 
-    $stmtActualizar = $conn->prepare($sqlActualizar);
-    $stmtActualizar->bind_param("iis", $cantidadCajasNueva, $cantidadTapasNueva, $clienteId);
-    $stmtActualizar->execute();
+    $stmtActualizarCajas = $conn->prepare($sqlActualizarCajas);
+    $stmtActualizarCajas->bind_param("iis", $cantidadCajasNueva, $cantidadTapasNueva, $clienteIdCajas);
+    $stmtActualizarCajas->execute();
   }
 
   echo json_encode(['success' => true]);
