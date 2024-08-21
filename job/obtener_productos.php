@@ -2,9 +2,9 @@
 include '../config/conexion.php';
 
 $query = "
-    SELECT id, nombre FROM productos
+    SELECT CONCAT('prod_', id) as id, nombre FROM productos
     UNION
-    SELECT id, nombre FROM productos_menudencia
+    SELECT CONCAT('men_', id) as id, nombre FROM productos_menudencia
 ";
 
 $result = mysqli_query($conn, $query);

@@ -13,45 +13,7 @@
   <!-- Font Awesome CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="../css/mostrador.css">
-  <style>
-    .table-custom {
-      background-color: #f0f8ff;
-      border: 1px solid #d1e0e0;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .table-custom thead th {
-      background-color: #007bff;
-      color: white;
-      text-align: center;
-    }
-    .table-custom tbody tr:nth-child(even) {
-      background-color: #e7f0ff;
-    }
-    .table-custom tbody td, .table-custom thead th {
-      text-align: center;
-    }
-    .table-custom tfoot tr {
-      font-weight: bold;
-    }
-    .table-custom tfoot td {
-      background-color: #e7f0ff;
-    }
-    .btn-icon {
-      display: flex;
-      align-items: center;
-    }
-    .btn-icon i {
-      margin-right: 5px;
-    }
-    .text-center {
-      text-align: center;
-    }
-    .btn-container {
-      display: flex;
-      justify-content: center;
-    }
-  </style>
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
