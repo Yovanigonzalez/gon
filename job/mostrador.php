@@ -210,6 +210,65 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script src="../js/mostrador.js"></script>
+  <script>
+    document.getElementById('generar-nota').addEventListener('click', function() {
+  // Recoge toda la información del formulario
+  const cliente = document.getElementById('cliente').value;
+  const direccion = document.getElementById('direccion').value;
+  const productos = []; // Aquí almacenarás los productos de la tabla
+  const subtotalVendido = document.getElementById('subtotal-vendido').innerText;
+  const deudaPendiente = document.getElementById('deuda-pendiente').innerText;
+  const total = document.getElementById('total').innerText;
+  const cajaDeudora = document.getElementById('caja-deudora').value;
+  const tapaDeudora = document.getElementById('tapa-deudora').value;
+  const cajaEnviada = document.getElementById('caja-enviada').value;
+  const tapaEnviada = document.getElementById('tapa-enviada').value;
+  const cajaPendiente = document.getElementById('caja-pendiente').value;
+  const tapaPendiente = document.getElementById('tapa-pendiente').value;
+
+  // Recorre la tabla de productos
+  document.querySelectorAll('#tabla-productos tr').forEach(row => {
+    const producto = row.cells[0].innerText;
+    const piezas = row.cells[1].innerText;
+    const kilos = row.cells[2].innerText;
+    const precio = row.cells[3].innerText;
+    const subtotal = row.cells[4].innerText;
+    productos.push({ producto, piezas, kilos, precio, subtotal });
+  });
+
+  // Envía la información al servidor usando AJAX
+  fetch('guardar_nota.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cliente,
+      direccion,
+      productos,
+      subtotalVendido,
+      deudaPendiente,
+      total,
+      cajaDeudora,
+      tapaDeudora,
+      cajaEnviada,
+      tapaEnviada,
+      cajaPendiente,
+      tapaPendiente,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Maneja la respuesta del servidor
+    if (data.success) {
+      alert('Nota generada con éxito');
+    } else {
+      alert('Error al generar la nota');
+    }
+  });
+});
+
+  </script>
 </div>
 </body>
 </html>
