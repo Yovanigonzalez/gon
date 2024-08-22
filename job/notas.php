@@ -1,0 +1,256 @@
+<?php
+
+if (isset($_GET['nota_id'])) {
+    require('../tcpdf/tcpdf.php');
+    require('../config/conexion.php');
+
+    $nota_id = $_GET['nota_id'];
+
+    // Consulta para obtener los datos de la nota
+    $queryNota = "SELECT * FROM notas WHERE id = ?";
+    $stmt = $conn->prepare($queryNota);
+    $stmt->bind_param("i", $nota_id);
+    $stmt->execute();
+    $resultNota = $stmt->get_result();
+    $nota = $resultNota->fetch_assoc();
+
+    // Consulta para obtener los productos asociados a la nota
+    $queryProductos = "SELECT * FROM productos_nota WHERE nota_id = ?";
+    $stmtProd = $conn->prepare($queryProductos);
+    $stmtProd->bind_param("i", $nota_id);
+    $stmtProd->execute();
+    $resultProductos = $stmtProd->get_result();
+
+    // Crear nuevo PDF con orientación vertical ('P' para Portrait)
+    $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+
+    $pdf->SetCreator('Distribuidora González');
+    $pdf->SetAuthor('Distribuidora González');
+    $pdf->SetTitle('Nota de remisión');
+    $pdf->SetSubject('Nota de remisión');
+    $pdf->SetKeywords('Nota, Venta, PDF, Distribuidora González');
+
+    // Agregar una página
+    $pdf->AddPage();
+
+    // Título del documento
+    $pdf->SetFont('helvetica', 'B', 16);
+    $pdf->Cell(0, 10, 'Nota de remisión', 0, 1, 'C');
+
+    // Mostrar el número de la nota
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->Cell(0, 10, 'Folio: ' . $nota['id'], 0, 1, 'L'); // Aquí se agrega el número de la nota
+
+    // Información del cliente alineada a la izquierda
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->Cell(0, 10, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    $pdf->Cell(0, 10, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    $pdf->Cell(0, 10, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    $pdf->Ln(3);
+
+    // Agregar la imagen (Icono) alineada a la derecha
+    $pdf->Image('../pdf/icono.png', 150, 12, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
+
+    // Encabezado de la tabla de productos
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFillColor(0, 0, 0); // Fondo negro
+    $pdf->SetTextColor(255, 255, 255); // Texto blanco
+    $header = array('Producto', 'Piezas', 'Kilos', 'Precio', 'Subtotal');
+    $cellWidths = array(80, 20, 20, 30, 40); // Ancho personalizado para cada columna
+
+    foreach ($header as $i => $col) {
+        $pdf->Cell($cellWidths[$i], 10, $col, 1, 0, 'C', 1); // Asignar ancho de celda personalizado
+    }
+    $pdf->Ln();
+
+    // Restablecer color de texto para las celdas de datos
+    $pdf->SetTextColor(0, 0, 0); // Texto negro para los datos
+
+    // Datos de los productos
+    $pdf->SetFont('helvetica', '', 12);
+    while ($producto = $resultProductos->fetch_assoc()) {
+        $pdf->Cell($cellWidths[0], 10, $producto['producto'], 1);
+        $pdf->Cell($cellWidths[1], 10, number_format($producto['piezas'], 0, '.', ','), 1);
+        $pdf->Cell($cellWidths[2], 10, number_format($producto['kilos'], 2, '.', ','), 1);
+        $pdf->Cell($cellWidths[3], 10, number_format($producto['precio'], 2, '.', ','), 1);
+        $pdf->Cell($cellWidths[4], 10, number_format($producto['subtotal'], 2, '.', ','), 1);
+        $pdf->Ln();
+    }
+
+    // Mostrar los campos adicionales en una sola fila
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', '', 11);
+    $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
+                     'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
+                     'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
+                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') . '   ' .
+                     'Caja Pendiente: ' . number_format($nota['caja_pendiente'], 0, '.', ',') . '   ' .
+                     'Tapa Pendiente: ' . number_format($nota['tapa_pendiente'], 0, '.', ','), 0, 1);
+
+    // Campos vacíos para Caja Entregada y Tapa Entregada
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 11);
+    $pdf->Cell(0, 10, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
+
+    // Totales
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->Cell(0, 10, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 10, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 10, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+
+    // Dinero recibido y Deuda actual en una misma fila
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 11);
+    $pdf->Cell(0, 10, 'Dinero recibido: __________________   Deuda actual: __________________', 0, 1);
+
+    // Texto de pagaré
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', '', 11);
+    $pdf->MultiCell(0, 10, 
+                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Distribuidora González la cantidad de " .
+                    '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
+                    "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
+                    "En caso de incumplimiento de este pagaré, me comprometo a pagar todos los gastos y honorarios legales " .
+                    "que se generen para la cobranza de este documento.\n\n" .
+                    "Firma del Cliente: ____________________________", 0, 'L', 0, 1);
+
+    // Generar y descargar el PDF
+    $pdf->Output('nota_' . $nota_id . '.pdf', 'D');
+
+    $conn->close();
+    exit;
+}
+
+
+
+
+// Función para convertir números a palabras en español
+function numToWords($number) {
+    $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+    $teens = ['diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'];
+    $tens = ['', 'diez', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+    $hundreds = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+
+    if ($number == 0) {
+        return 'cero';
+    }
+
+    if ($number < 10) {
+        return $units[$number];
+    }
+
+    if ($number < 20) {
+        return $teens[$number - 10];
+    }
+
+    if ($number < 100) {
+        return $tens[intval($number / 10)] . (($number % 10 > 0) ? ' y ' . $units[$number % 10] : '');
+    }
+
+    if ($number < 1000) {
+        if ($number == 100) {
+            return 'cien';
+        }
+        return $hundreds[intval($number / 100)] . (($number % 100 > 0) ? ' ' . numToWords($number % 100) : '');
+    }
+
+    if ($number < 1000000) {
+        return numToWords(intval($number / 1000)) . ' mil ' . (($number % 1000 > 0) ? numToWords($number % 1000) : '');
+    }
+
+    if ($number < 1000000000) {
+        return numToWords(intval($number / 1000000)) . ' millones ' . (($number % 1000000 > 0) ? numToWords($number % 1000000) : '');
+    }
+
+    return 'Número demasiado grande';
+}
+?>
+
+
+<?php include 'menu.php'; ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distribuidora González | Notas</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .note-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      width: 200px;
+      text-align: center;
+    }
+    .note-card h4 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .note-card p {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .note-card button {
+      margin: 5px;
+      font-size: 14px;
+      padding: 5px 10px;
+    }
+    .notes-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            <div class="card card-white">
+              <div class="card-header">
+                <h3 class="card-title" id="title">Notas Pendientes</h3>
+              </div>
+              <div class="card-body">
+                <div class="notes-container">
+                  <?php
+                  include '../config/conexion.php';
+
+                  $sql = "SELECT id, cliente, direccion FROM notas";
+                  $result = $conn->query($sql);
+
+                  if ($result->num_rows > 0) {
+                      while($row = $result->fetch_assoc()) {
+                          echo '<div class="note-card">';
+                          echo '<h4>' . $row['cliente'] . '</h4>';
+                          echo '<p>' . $row['direccion'] . '</p>';
+                          echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
+                          echo '<button class="btn btn-success">Entregada</button>';
+                          echo '</div>';
+                      }
+                  } else {
+                      echo "No se encontraron notas pendientes.";
+                  }
+
+                  $conn->close();
+                  ?>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>
+

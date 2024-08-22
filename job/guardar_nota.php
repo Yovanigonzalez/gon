@@ -23,8 +23,8 @@ $cajaPendiente = $data['cajaPendiente'];
 $tapaPendiente = $data['tapaPendiente'];
 
 // Insertar la nota en la base de datos
-$sql = "INSERT INTO notas (cliente, direccion, subtotal_vendido, deuda_pendiente, total, caja_deudora, tapa_deudora, caja_enviada, tapa_enviada, caja_pendiente, tapa_pendiente)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO notas (cliente, direccion, subtotal_vendido, deuda_pendiente, total, caja_deudora, tapa_deudora, caja_enviada, tapa_enviada, caja_pendiente, tapa_pendiente, estatus)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendiente')";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssssssssss", $cliente, $direccion, $subtotalVendido, $deudaPendiente, $total, $cajaDeudora, $tapaDeudora, $cajaEnviada, $tapaEnviada, $cajaPendiente, $tapaPendiente);
@@ -33,8 +33,8 @@ if ($stmt->execute()) {
   $notaId = $stmt->insert_id;
 
   // Insertar los productos en la tabla de productos_nota
-  $sqlProductos = "INSERT INTO productos_nota (nota_id, producto, piezas, kilos, precio, subtotal)";
-  $sqlProductos .= " VALUES (?, ?, ?, ?, ?, ?)";
+  $sqlProductos = "INSERT INTO productos_nota (nota_id, producto, piezas, kilos, precio, subtotal, estatus)";
+  $sqlProductos .= " VALUES (?, ?, ?, ?, ?, ?, 'pendiente')";
 
   $stmtProductos = $conn->prepare($sqlProductos);
 

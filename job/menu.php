@@ -69,6 +69,7 @@
         </p>
       </a>
     </li>
+    
     <!-- Agregar Productos -->
     <li class="nav-item">
       <a href="canastilla" class="nav-link">
@@ -78,6 +79,32 @@
         </p>
       </a>
     </li>
+
+    <?php
+include '../config/conexion.php';
+
+// Consulta para contar las notas con estatus 'pendiente'
+$sql = "SELECT COUNT(*) as total_pendientes FROM productos_nota WHERE estatus = 'pendiente'";
+$result = $conn->query($sql);
+$pendientes = 0;
+
+if ($result && $row = $result->fetch_assoc()) {
+    $pendientes = $row['total_pendientes'];
+}
+?>
+
+
+<!-- Agregar Notas -->
+<li class="nav-item">
+  <a href="notas" class="nav-link">
+    <i class="nav-icon fas fa-clipboard"></i>
+    <p>
+      Notas
+      <span class="badge badge-warning"><?php echo $pendientes; ?></span>
+    </p>
+  </a>
+</li>
+
 
 
        <!-- Pedidos -->
