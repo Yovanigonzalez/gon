@@ -43,9 +43,9 @@ if (isset($_GET['nota_id'])) {
 
     // Información del cliente alineada a la izquierda
     $pdf->SetFont('helvetica', '', 12);
-    $pdf->Cell(0, 10, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
-    $pdf->Cell(0, 10, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
-    $pdf->Cell(0, 10, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha
@@ -81,11 +81,9 @@ if (isset($_GET['nota_id'])) {
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', '', 11);
     $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
-                     'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
-                     'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
-                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') . '   ' .
-                     'Caja Pendiente: ' . number_format($nota['caja_pendiente'], 0, '.', ',') . '   ' .
-                     'Tapa Pendiente: ' . number_format($nota['tapa_pendiente'], 0, '.', ','), 0, 1);
+    'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
+    'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
+    'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
 
     // Campos vacíos para Caja Entregada y Tapa Entregada
     $pdf->Ln(3);
@@ -95,25 +93,28 @@ if (isset($_GET['nota_id'])) {
     // Totales
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(0, 10, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 10, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 10, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
 
     // Dinero recibido y Deuda actual en una misma fila
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 11);
-    $pdf->Cell(0, 10, 'Dinero recibido: __________________   Deuda actual: __________________', 0, 1);
+    $pdf->Cell(0, 10, 'Dinero recibido: __________________ ', 0, 1);
 
     // Texto de pagaré
     $pdf->Ln(3);
-    $pdf->SetFont('helvetica', '', 11);
-    $pdf->MultiCell(0, 10, 
-                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Distribuidora González la cantidad de " .
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->MultiCell(0, 11, 
+                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de " .
                     '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
                     "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
-                    "En caso de incumplimiento de este pagaré, me comprometo a pagar todos los gastos y honorarios legales " .
-                    "que se generen para la cobranza de este documento.\n\n" .
-                    "Firma del Cliente: ____________________________", 0, 'L', 0, 1);
+                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 3% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
+
+                                            // Dinero recibido y Deuda actual en una misma fila (duplicado)
+    $pdf->SetFont('helvetica', 'B', 9);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
+
 
     // Agregar una segunda página para duplicar el contenido
     $pdf->AddPage();
@@ -168,9 +169,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
                      'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
                      'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
-                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') . '   ' .
-                     'Caja Pendiente: ' . number_format($nota['caja_pendiente'], 0, '.', ',') . '   ' .
-                     'Tapa Pendiente: ' . number_format($nota['tapa_pendiente'], 0, '.', ','), 0, 1);
+                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
 
     // Campos vacíos para Caja Entregada y Tapa Entregada (duplicado)
     $pdf->Ln(3);
@@ -187,18 +186,21 @@ if (isset($_GET['nota_id'])) {
     // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 11);
-    $pdf->Cell(0, 10, 'Dinero recibido: __________________   Deuda actual: __________________', 0, 1);
+    $pdf->Cell(0, 10, 'Dinero recibido: __________________ ', 0, 1);
 
     // Texto de pagaré (duplicado)
     $pdf->Ln(3);
-    $pdf->SetFont('helvetica', '', 11);
-    $pdf->MultiCell(0, 10, 
-                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Distribuidora González la cantidad de " .
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->MultiCell(0, 11, 
+                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de " .
                     '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
                     "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
-                    "En caso de incumplimiento de este pagaré, me comprometo a pagar todos los gastos y honorarios legales " .
-                    "que se generen para la cobranza de este documento.\n\n" .
-                    "Firma del Cliente: ____________________________", 0, 'L', 0, 1);
+                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 3% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
+
+                        // Dinero recibido y Deuda actual en una misma fila (duplicado)
+    $pdf->SetFont('helvetica', 'B', 9);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
+
 
     // Generar y descargar el PDF
     $pdf->Output('nota_' . $nota_id . '.pdf', 'D');
@@ -207,47 +209,6 @@ if (isset($_GET['nota_id'])) {
     exit;
 }
 
-
-// Función para convertir números a palabras en español
-function numToWords($number) {
-    $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
-    $teens = ['diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'];
-    $tens = ['', 'diez', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
-    $hundreds = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
-
-    if ($number == 0) {
-        return 'cero';
-    }
-
-    if ($number < 10) {
-        return $units[$number];
-    }
-
-    if ($number < 20) {
-        return $teens[$number - 10];
-    }
-
-    if ($number < 100) {
-        return $tens[intval($number / 10)] . (($number % 10 > 0) ? ' y ' . $units[$number % 10] : '');
-    }
-
-    if ($number < 1000) {
-        if ($number == 100) {
-            return 'cien';
-        }
-        return $hundreds[intval($number / 100)] . (($number % 100 > 0) ? ' ' . numToWords($number % 100) : '');
-    }
-
-    if ($number < 1000000) {
-        return numToWords(intval($number / 1000)) . ' mil ' . (($number % 1000 > 0) ? numToWords($number % 1000) : '');
-    }
-
-    if ($number < 1000000000) {
-        return numToWords(intval($number / 1000000)) . ' millones ' . (($number % 1000000 > 0) ? numToWords($number % 1000000) : '');
-    }
-
-    return 'Número demasiado grande';
-}
 ?>
 
 
@@ -337,3 +298,46 @@ function numToWords($number) {
 </body>
 </html>
 
+<?php 
+// Función para convertir números a palabras en español
+function numToWords($number) {
+  $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+  $teens = ['diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'];
+  $tens = ['', 'diez', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+  $hundreds = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+
+  if ($number == 0) {
+      return 'cero';
+  }
+
+  if ($number < 10) {
+      return $units[$number];
+  }
+
+  if ($number < 20) {
+      return $teens[$number - 10];
+  }
+
+  if ($number < 100) {
+      return $tens[intval($number / 10)] . (($number % 10 > 0) ? ' y ' . $units[$number % 10] : '');
+  }
+
+  if ($number < 1000) {
+      if ($number == 100) {
+          return 'cien';
+      }
+      return $hundreds[intval($number / 100)] . (($number % 100 > 0) ? ' ' . numToWords($number % 100) : '');
+  }
+
+  if ($number < 1000000) {
+      return numToWords(intval($number / 1000)) . ' mil ' . (($number % 1000 > 0) ? numToWords($number % 1000) : '');
+  }
+
+  if ($number < 1000000000) {
+      return numToWords(intval($number / 1000000)) . ' millones ' . (($number % 1000000 > 0) ? numToWords($number % 1000000) : '');
+  }
+
+  return 'Número demasiado grande';
+}
+
+?>
