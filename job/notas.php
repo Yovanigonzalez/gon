@@ -14,6 +14,7 @@ if (isset($_GET['nota_id'])) {
     $resultNota = $stmt->get_result();
     $nota = $resultNota->fetch_assoc();
 
+    
     // Consulta para obtener los productos asociados a la nota
     $queryProductos = "SELECT * FROM productos_nota WHERE nota_id = ?";
     $stmtProd = $conn->prepare($queryProductos);
@@ -30,6 +31,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->SetSubject('Nota de remisión');
     $pdf->SetKeywords('Nota, Venta, PDF, Distribuidora González');
 
+    
     // Agregar la primera página
     $pdf->AddPage();
 
@@ -39,7 +41,7 @@ if (isset($_GET['nota_id'])) {
 
     // Mostrar el número de la nota
     $pdf->SetFont('helvetica', '', 12);
-    $pdf->Cell(0, 10, 'Folio: ' . $nota['id'], 0, 1, 'L'); // Aquí se agrega el número de la nota
+    $pdf->Cell(0, 8, 'Folio: ' . $nota['id'], 0, 1, 'L'); // Aquí se agrega el número de la nota
 
     // Información del cliente alineada a la izquierda
     $pdf->SetFont('helvetica', '', 12);
@@ -49,7 +51,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha
-    $pdf->Image('../pdf/icono.png', 150, 12, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
+    $pdf->Image('../font/number.png', 150, 13, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
 
     // Encabezado de la tabla de productos
     $pdf->SetFont('helvetica', 'B', 12);
@@ -77,19 +79,6 @@ if (isset($_GET['nota_id'])) {
         $pdf->Ln();
     }
 
-    // Mostrar los campos adicionales en una sola fila
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', '', 11);
-    $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
-    'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
-    'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
-    'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
-
-    // Campos vacíos para Caja Entregada y Tapa Entregada
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', 'B', 11);
-    $pdf->Cell(0, 10, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
-
     // Totales
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 12);
@@ -102,6 +91,20 @@ if (isset($_GET['nota_id'])) {
     $pdf->SetFont('helvetica', 'B', 11);
     $pdf->Cell(0, 10, 'Dinero recibido: __________________ ', 0, 1);
 
+        // Mostrar los campos adicionales en una sola fila
+        $pdf->Ln(3);
+        $pdf->SetFont('helvetica', '', 11);
+        $pdf->Cell(0, 8, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
+        'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
+        'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
+        'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
+    
+        // Campos vacíos para Caja Entregada y Tapa Entregada
+        $pdf->Ln(3);
+        $pdf->SetFont('helvetica', 'B', 11);
+        $pdf->Cell(0, 8, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
+
+        
     // Texto de pagaré
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', '', 9);
@@ -109,33 +112,47 @@ if (isset($_GET['nota_id'])) {
                     "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de " .
                     '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
                     "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
-                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 3% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
+                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de ______% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
 
                                             // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
 
+    // Marca de agua en la segunda página
+    $pdf->SetFont('helvetica', 'B', 20);
+    $pdf->SetXY(110, 268);
+    $pdf->Cell(0, 0, 'Original', 0, 1, 'C');
+
+    // Establecer la opacidad (transparencia) de la imagen
+    $pdf->SetAlpha(0.3); // Valor entre 0 (transparente) y 1 (opaco)
+
+    // Agregar la imagen (Icono) alineada a la derecha
+    $pdf->Image('../pdf/icono.png', 20, 40, 180); // Coordenadas ajustadas para colocar la imagen a la derecha
+
+    // Restablecer la opacidad a 1 para el resto del contenido
+    $pdf->SetAlpha(1);
+
 
     // Agregar una segunda página para duplicar el contenido
     $pdf->AddPage();
-
+        
     // Título del documento (duplicado)
     $pdf->SetFont('helvetica', 'B', 16);
     $pdf->Cell(0, 10, 'Nota de remisión', 0, 1, 'C');
 
     // Mostrar el número de la nota (duplicado)
     $pdf->SetFont('helvetica', '', 12);
-    $pdf->Cell(0, 10, 'Folio: ' . $nota['id'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Folio: ' . $nota['id'], 0, 1, 'L');
 
     // Información del cliente alineada a la izquierda (duplicado)
     $pdf->SetFont('helvetica', '', 12);
-    $pdf->Cell(0, 10, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
-    $pdf->Cell(0, 10, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
-    $pdf->Cell(0, 10, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    $pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha (duplicado)
-    $pdf->Image('../pdf/icono.png', 150, 12, 40);
+    $pdf->Image('../font/number.png', 150, 13, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
 
     // Encabezado de la tabla de productos (duplicado)
     $pdf->SetFont('helvetica', 'B', 12);
@@ -163,31 +180,32 @@ if (isset($_GET['nota_id'])) {
         $pdf->Ln();
     }
 
-    // Mostrar los campos adicionales en una sola fila (duplicado)
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', '', 11);
-    $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
-                     'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
-                     'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
-                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
-
-    // Campos vacíos para Caja Entregada y Tapa Entregada (duplicado)
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', 'B', 11);
-    $pdf->Cell(0, 10, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
-
     // Totales (duplicado)
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(0, 10, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 10, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 10, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
 
     // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', 'B', 11);
     $pdf->Cell(0, 10, 'Dinero recibido: __________________ ', 0, 1);
 
+        // Mostrar los campos adicionales en una sola fila (duplicado)
+        $pdf->Ln(3);
+        $pdf->SetFont('helvetica', '', 11);
+        $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
+                         'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
+                         'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
+                         'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') , 0, 1);
+    
+        // Campos vacíos para Caja Entregada y Tapa Entregada (duplicado)
+        $pdf->Ln(3);
+        $pdf->SetFont('helvetica', 'B', 11);
+        $pdf->Cell(0, 10, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
+
+        
     // Texto de pagaré (duplicado)
     $pdf->Ln(3);
     $pdf->SetFont('helvetica', '', 9);
@@ -195,12 +213,26 @@ if (isset($_GET['nota_id'])) {
                     "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de " .
                     '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
                     "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
-                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de 3% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
+                    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de ______% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
 
                         // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
     $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
 
+// Marca de agua en la segunda página
+$pdf->SetFont('helvetica', 'B', 20);
+$pdf->SetTextColor(150, 150, 150);
+$pdf->SetXY(110, 268);
+$pdf->Cell(0, 0, 'Copia', 0, 1, 'C');
+
+// Establecer la opacidad (transparencia) de la imagen
+$pdf->SetAlpha(0.3); // Valor entre 0 (transparente) y 1 (opaco)
+
+// Agregar la imagen (Icono) alineada a la derecha
+$pdf->Image('../pdf/icono.png', 20, 40, 180); // Coordenadas ajustadas para colocar la imagen a la derecha
+
+// Restablecer la opacidad a 1 para el resto del contenido
+$pdf->SetAlpha(1);
 
     // Generar y descargar el PDF
     $pdf->Output('nota_' . $nota_id . '.pdf', 'D');
