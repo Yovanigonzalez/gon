@@ -30,7 +30,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->SetSubject('Nota de remisión');
     $pdf->SetKeywords('Nota, Venta, PDF, Distribuidora González');
 
-    // Agregar una página
+    // Agregar la primera página
     $pdf->AddPage();
 
     // Título del documento
@@ -115,14 +115,97 @@ if (isset($_GET['nota_id'])) {
                     "que se generen para la cobranza de este documento.\n\n" .
                     "Firma del Cliente: ____________________________", 0, 'L', 0, 1);
 
+    // Agregar una segunda página para duplicar el contenido
+    $pdf->AddPage();
+
+    // Título del documento (duplicado)
+    $pdf->SetFont('helvetica', 'B', 16);
+    $pdf->Cell(0, 10, 'Nota de remisión', 0, 1, 'C');
+
+    // Mostrar el número de la nota (duplicado)
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->Cell(0, 10, 'Folio: ' . $nota['id'], 0, 1, 'L');
+
+    // Información del cliente alineada a la izquierda (duplicado)
+    $pdf->SetFont('helvetica', '', 12);
+    $pdf->Cell(0, 10, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    $pdf->Cell(0, 10, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    $pdf->Cell(0, 10, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    $pdf->Ln(3);
+
+    // Agregar la imagen (Icono) alineada a la derecha (duplicado)
+    $pdf->Image('../pdf/icono.png', 150, 12, 40);
+
+    // Encabezado de la tabla de productos (duplicado)
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetFillColor(0, 0, 0);
+    $pdf->SetTextColor(255, 255, 255);
+    foreach ($header as $i => $col) {
+        $pdf->Cell($cellWidths[$i], 10, $col, 1, 0, 'C', 1);
+    }
+    $pdf->Ln();
+
+    // Restablecer color de texto para las celdas de datos (duplicado)
+    $pdf->SetTextColor(0, 0, 0);
+
+    // Datos de los productos (duplicado)
+    $pdf->SetFont('helvetica', '', 12);
+    // Resetear el cursor de la consulta
+    $stmtProd->execute();
+    $resultProductos = $stmtProd->get_result();
+    while ($producto = $resultProductos->fetch_assoc()) {
+        $pdf->Cell($cellWidths[0], 10, $producto['producto'], 1);
+        $pdf->Cell($cellWidths[1], 10, number_format($producto['piezas'], 0, '.', ','), 1);
+        $pdf->Cell($cellWidths[2], 10, number_format($producto['kilos'], 2, '.', ','), 1);
+        $pdf->Cell($cellWidths[3], 10, number_format($producto['precio'], 2, '.', ','), 1);
+        $pdf->Cell($cellWidths[4], 10, number_format($producto['subtotal'], 2, '.', ','), 1);
+        $pdf->Ln();
+    }
+
+    // Mostrar los campos adicionales en una sola fila (duplicado)
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', '', 11);
+    $pdf->Cell(0, 10, 'Caja Deudora: ' . number_format($nota['caja_deudora'], 0, '.', ',') . '   ' .
+                     'Tapa Deudora: ' . number_format($nota['tapa_deudora'], 0, '.', ',') . '   ' .
+                     'Caja Enviada: ' . number_format($nota['caja_enviada'], 0, '.', ',') . '   ' .
+                     'Tapa Enviada: ' . number_format($nota['tapa_enviada'], 0, '.', ',') . '   ' .
+                     'Caja Pendiente: ' . number_format($nota['caja_pendiente'], 0, '.', ',') . '   ' .
+                     'Tapa Pendiente: ' . number_format($nota['tapa_pendiente'], 0, '.', ','), 0, 1);
+
+    // Campos vacíos para Caja Entregada y Tapa Entregada (duplicado)
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 11);
+    $pdf->Cell(0, 10, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
+
+    // Totales (duplicado)
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->Cell(0, 10, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 10, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
+    $pdf->Cell(0, 10, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+
+    // Dinero recibido y Deuda actual en una misma fila (duplicado)
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', 'B', 11);
+    $pdf->Cell(0, 10, 'Dinero recibido: __________________   Deuda actual: __________________', 0, 1);
+
+    // Texto de pagaré (duplicado)
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', '', 11);
+    $pdf->MultiCell(0, 10, 
+                    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Distribuidora González la cantidad de " .
+                    '$' . number_format($nota['total'], 2, '.', ',') . " (con letras: " . strtoupper(numToWords($nota['total'])) . "), " .
+                    "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
+                    "En caso de incumplimiento de este pagaré, me comprometo a pagar todos los gastos y honorarios legales " .
+                    "que se generen para la cobranza de este documento.\n\n" .
+                    "Firma del Cliente: ____________________________", 0, 'L', 0, 1);
+
     // Generar y descargar el PDF
     $pdf->Output('nota_' . $nota_id . '.pdf', 'D');
 
     $conn->close();
     exit;
 }
-
-
 
 
 // Función para convertir números a palabras en español
