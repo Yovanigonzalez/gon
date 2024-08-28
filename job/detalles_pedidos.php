@@ -1,3 +1,5 @@
+<?php include 'menu.php'; ?>
+
 <?php
 // Establecer la conexión con la base de datos
 include '../config/conexion.php';
@@ -18,7 +20,6 @@ $sql = "SELECT id, cliente, direccion FROM pedidos WHERE fecha = '$fecha_actual'
 $result = $conn->query($sql);
 ?>
 
-<?php include 'menu.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

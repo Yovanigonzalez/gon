@@ -1,3 +1,5 @@
+<?php include 'menu.php'; ?>
+
 <?php
 // Verificar si se ha proporcionado un nombre y una dirección de cliente
 if (isset($_GET['nombre'], $_GET['direccion'])) {
@@ -39,7 +41,6 @@ if (isset($_GET['nombre'], $_GET['direccion'])) {
         if ($result->num_rows > 0) {
             ?>
 
-<?php include 'menu.php'; ?>
 
 <!DOCTYPE html>
 <html lang="es">

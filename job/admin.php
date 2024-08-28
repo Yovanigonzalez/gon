@@ -76,7 +76,7 @@
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="canastilla_patsa" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
 

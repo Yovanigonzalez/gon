@@ -79,12 +79,12 @@ if (isset($_GET['nota_id'])) {
         $pdf->Ln();
     }
 
-    // Totales
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+      // Totales
+      $pdf->Ln(3);
+      $pdf->SetFont('helvetica', 'B', 12);
+      $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1, 'R');
+      $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1, 'R');
+      $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1, 'R');
 
     // Dinero recibido y Deuda actual en una misma fila
     $pdf->Ln(3);
@@ -180,12 +180,12 @@ if (isset($_GET['nota_id'])) {
         $pdf->Ln();
     }
 
-    // Totales (duplicado)
-    $pdf->Ln(3);
-    $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1);
-    $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1);
+      // Totales
+      $pdf->Ln(3);
+      $pdf->SetFont('helvetica', 'B', 12);
+      $pdf->Cell(0, 8, 'Subtotal Vendido: $' . number_format($nota['subtotal_vendido'], 2, '.', ','), 0, 1, 'R');
+      $pdf->Cell(0, 8, 'Deuda Pendiente: $' . number_format($nota['deuda_pendiente'], 2, '.', ','), 0, 1, 'R');
+      $pdf->Cell(0, 8, 'Total: $' . number_format($nota['total'], 2, '.', ','), 0, 1, 'R');
 
     // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->Ln(3);
@@ -281,7 +281,24 @@ $pdf->SetAlpha(1);
       flex-wrap: wrap;
       justify-content: flex-start;
     }
+
   </style>
+    <style>
+    .alert-success {
+    border-radius: 50px;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+
+  .alert-danger {
+    border-radius: 50px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+  </style>
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -296,11 +313,13 @@ $pdf->SetAlpha(1);
                 <h3 class="card-title" id="title">Notas Pendientes</h3>
               </div>
               <div class="card-body">
+              <div id="mensaje"></div>
+
                 <div class="notes-container">
                   <?php
                   include '../config/conexion.php';
 
-                  $sql = "SELECT id, cliente, direccion FROM notas";
+                  $sql = "SELECT id, cliente, direccion FROM notas WHERE estatus = 'pendiente'";
                   $result = $conn->query($sql);
 
                   if ($result->num_rows > 0) {
@@ -309,7 +328,7 @@ $pdf->SetAlpha(1);
                           echo '<h4>' . $row['cliente'] . '</h4>';
                           echo '<p>' . $row['direccion'] . '</p>';
                           echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
-                          echo '<button class="btn btn-success">Entregada</button>';
+                          echo '<button class="btn btn-success entregada-btn" data-id="' . $row['id'] . '">Entregada</button>';
                           echo '</div>';
                       }
                   } else {
@@ -327,8 +346,38 @@ $pdf->SetAlpha(1);
     </section>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.entregada-btn').on('click', function() {
+      var notaId = $(this).data('id');
+
+      $.ajax({
+        url: 'actualizar_estatus.php',
+        type: 'POST',
+        data: { nota_id: notaId },
+        success: function(response) {
+          // Mostrar mensaje de éxito en la página
+          $('#mensaje').html('<div class="alert alert-success">Estatus actualizado a entregado</div>');
+          
+          // Recargar la página después de 2 segundos para mostrar el cambio
+          setTimeout(function() {
+            location.reload();
+          }, 2000);
+        },
+        error: function() {
+          // Mostrar mensaje de error en la página
+          $('#mensaje').html('<div class="alert alert-danger">Error al actualizar el estatus</div>');
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
+
 
 <?php 
 // Función para convertir números a palabras en español

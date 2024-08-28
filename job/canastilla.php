@@ -8,29 +8,37 @@ include 'menu.php'; // Incluir el menú
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Distribuidora González | Canastilla</title>
-  <!-- Agregar estilos CSS aquí -->
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .alert-success {
+    border-radius: 50px;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+
+  .alert-danger {
+    border-radius: 50px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
-  <!-- Contenido Principal. Contiene el contenido de la página -->
   <div class="content-wrapper">
-    <!-- Contenido Principal -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
-            <!-- Contenedor Blanco -->
             <br>
             <div class="card card-white">
               <div class="card-header">
-                <h3 class="card-title" id="title">Actualizar canastilla</h3>
+                <h3 class="card-title" id="title">Actualizar Canastilla</h3>
               </div>
-              <!-- Formulario para agregar clientes -->
-              <form class="card-body" method="post" action="guardar_deudor.php">
-              <?php
-                // Verificar si hay un mensaje de éxito o error en la URL
+              <form class="card-body" method="post" action="process_form.php">
+                <?php
                 if (isset($_GET['mensaje_exito'])) {
                     $mensaje_exito = $_GET['mensaje_exito'];
                     echo '<div class="alert alert-success">' . $mensaje_exito . '</div>';
@@ -39,66 +47,65 @@ include 'menu.php'; // Incluir el menú
                     echo '<div class="alert alert-danger">' . $mensaje_error . '</div>';
                 }
                 ?>
-
                 <div class="form-group">
                   <label for="nombreCliente">Nombre del cliente:</label>
                   <input type="text" class="form-control" id="nombreCliente" name="nombreCliente" placeholder="Ingrese el nombre del cliente" oninput="buscarCliente(this.value)" required>
-                  <div id="resultadoBusqueda"></div> <!-- Aquí se mostrarán los resultados de la búsqueda -->
-                  <input type="hidden" id="idCliente" name="idCliente"> <!-- Campo oculto para el ID del cliente seleccionado -->
+                  <div id="resultadoBusqueda"></div>
+                  <input type="hidden" id="idCliente" name="idCliente">
                 </div>
                 <div class="form-group">
                     <label for="direccion">Dirección:</label>
-                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese la dirección del cliente" readonly style="background-color: #f2f2f2;">
+                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección del cliente" readonly style="background-color: #f2f2f2;">
                 </div>
-
                 <div class="form-group">
-                    <label for="cantidadDeuda">Cantidad de deuda:</label>
-                    <input type="number" step="0.01" class="form-control" id="cantidadDeuda" name="cantidadDeuda" placeholder="Ingrese la cantidad de deuda" required>
+                    <label for="cajas">Cajas:</label>
+                    <input type="number" step="1" class="form-control" id="cajas" name="cajas" placeholder="Ingrese la cantidad de cajas" required>
                 </div>
-
+                <div class="form-group">
+                    <label for="tapas">Tapas:</label>
+                    <input type="number" step="1" class="form-control" id="tapas" name="tapas" placeholder="Ingrese la cantidad de tapas" required>
+                </div>
                 <button type="submit" class="btn btn-primary" id="submitButton">Agregar Cliente</button>
               </form>
             </div>
-            <!-- /.card -->
-
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Footer -->
-
-  <!-- Bootstrap 4 JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-  <!-- Script de búsqueda en tiempo real -->
-<script>
-    function buscarCliente(str) {
-        if (str.length == 0) {
-            document.getElementById("resultadoBusqueda").innerHTML = "";
-            return;
-        } else {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("resultadoBusqueda").innerHTML = this.responseText;
-                }
-            };
-            xmlhttp.open("GET", "buscar_cliente.php?q=" + str, true);
-            xmlhttp.send();
+  <script>
+    function buscarCliente(valor) {
+      if (valor.length === 0) {
+        $('#resultadoBusqueda').empty();
+        return;
+      }
+      
+      $.ajax({
+        url: 'buscar_cliente3.php',
+        method: 'GET',
+        data: { nombreCliente: valor },
+        success: function(data) {
+          $('#resultadoBusqueda').html(data);
         }
+      });
     }
 
-    function seleccionarCliente(id, nombre, direccion) {
-        document.getElementById("idCliente").value = id;
-        document.getElementById("nombreCliente").value = nombre;
-        document.getElementById("direccion").value = direccion;
-        document.getElementById("resultadoBusqueda").innerHTML = ""; // Limpiar resultados
-    }
-</script>
+    function seleccionarCliente(id, nombre, direccion, cajas, tapas) {
+      $('#idCliente').val(id);
+      $('#nombreCliente').val(nombre);
+      $('#direccion').val(direccion);
+      $('#resultadoBusqueda').empty();
 
+      // Calcula las nuevas cantidades
+      const cantidadCajas = parseInt($('#cajas').val()) || 0;
+      const cantidadTapas = parseInt($('#tapas').val()) || 0;
+
+      $('#cajas').val(cantidadCajas);
+      $('#tapas').val(cantidadTapas);
+    }
+  </script>
 </body>
 </html>
+

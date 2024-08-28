@@ -83,8 +83,8 @@
     <?php
 include '../config/conexion.php';
 
-// Consulta para contar las notas con estatus 'pendiente'
-$sql = "SELECT COUNT(*) as total_pendientes FROM productos_nota WHERE estatus = 'pendiente'";
+// Consulta para contar las notas con estatus 'pendiente' en la tabla 'notas'
+$sql = "SELECT COUNT(*) as total_pendientes FROM notas WHERE estatus = 'pendiente'";
 $result = $conn->query($sql);
 $pendientes = 0;
 
@@ -107,15 +107,29 @@ if ($result && $row = $result->fetch_assoc()) {
 
 
 
-       <!-- Pedidos -->
-        <li class="nav-item">
-      <a href="detalles_pedidos" class="nav-link">
-        <i class="nav-icon fas fa-shopping-cart"></i>
-        <p>
-          Ver Pedidos
-        </p>
-      </a>
-    </li>
+<?php
+include '../config/conexion.php';
+
+// Consulta para contar los pedidos con estatus 'PENDIENTE' en la tabla 'pedidos'
+$sql_pedidos = "SELECT COUNT(*) as total_pendientes_pedidos FROM pedidos WHERE estatus = 'PENDIENTE'";
+$result_pedidos = $conn->query($sql_pedidos);
+$pendientes_pedidos = 0;
+
+if ($result_pedidos && $row_pedidos = $result_pedidos->fetch_assoc()) {
+    $pendientes_pedidos = $row_pedidos['total_pendientes_pedidos'];
+}
+?>
+
+<!-- Pedidos -->
+<li class="nav-item">
+  <a href="detalles_pedidos" class="nav-link">
+    <i class="nav-icon fas fa-shopping-cart"></i>
+    <p>
+      Ver Pedidos
+      <span class="badge badge-warning"><?php echo $pendientes_pedidos; ?></span>
+    </p>
+  </a>
+</li>
 
     <!-- Eventos -->
 <li class="nav-item">
@@ -157,6 +171,14 @@ if ($result && $row = $result->fetch_assoc()) {
       </a>
     </li>
 
+
+    <!-- Nota Vacía -->
+<li class="nav-item">
+  <a href="nota_vacia.php" class="nav-link">
+    <i class="nav-icon fas fa-file-alt"></i>
+    <p>Nota Vacía</p>
+  </a>
+</li>
 
   </ul>
 </nav>

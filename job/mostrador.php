@@ -192,7 +192,11 @@
     </div>
   </div>
 
-  <script>
+</div>
+</body>
+</html>
+
+<script>
     document.getElementById('generar-nota').addEventListener('click', function() {
       // Recoge toda la información del formulario
       const cliente = document.getElementById('cliente').value;
@@ -262,11 +266,8 @@
         mensajeModal.show();
       });
     });
-  </script>
-</div>
-</body>
-</html>
 
+  </script>
 
 
 
