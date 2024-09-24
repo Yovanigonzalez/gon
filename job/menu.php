@@ -69,6 +69,17 @@
         </p>
       </a>
     </li>
+
+    <!-- Agregar Actualizar Deuda -->
+<li class="nav-item">
+  <a href="actualizar_deuda" class="nav-link">
+    <i class="nav-icon fas fa-edit"></i>
+    <p>
+      Actualizar Deuda
+    </p>
+  </a>
+</li>
+
     
     <!-- Agregar Productos -->
     <li class="nav-item">
@@ -174,9 +185,25 @@ if ($result_pedidos && $row_pedidos = $result_pedidos->fetch_assoc()) {
 
     <!-- Nota Vacía -->
 <li class="nav-item">
-  <a href="nota_vacia.php" class="nav-link">
+  <a href="nota_vacia" class="nav-link">
     <i class="nav-icon fas fa-file-alt"></i>
     <p>Nota Vacía</p>
+  </a>
+</li>
+
+<!-- Corte de Caja -->
+<li class="nav-item">
+  <a href="corte_caja" class="nav-link">
+    <i class="nav-icon fas fa-cash-register"></i>
+    <p>Corte de Caja</p>
+  </a>
+</li>
+
+<!-- Cerrar Sesión -->
+<li class="nav-item">
+  <a href="logout" class="nav-link">
+    <i class="nav-icon fas fa-sign-out-alt"></i>
+    <p>Cerrar Sesión</p>
   </a>
 </li>
 

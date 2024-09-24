@@ -17,6 +17,8 @@ if ($nombreCliente) {
             echo $row['nombre_cliente'];
             echo '</div>';
         }
+    
+    
     } else {
         echo 'No se encontraron resultados';
     }

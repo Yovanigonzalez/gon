@@ -57,7 +57,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->SetFillColor(0, 0, 0); // Fondo negro
     $pdf->SetTextColor(255, 255, 255); // Texto blanco
-    $header = array('Producto', 'Piezas', 'Kilos', 'Precio', 'Subtotal');
+    $header = array('Producto', 'Pz', 'Kg', 'P/U', 'Importe');
     $cellWidths = array(80, 20, 20, 30, 40); // Ancho personalizado para cada columna
 
     foreach ($header as $i => $col) {
@@ -116,7 +116,7 @@ if (isset($_GET['nota_id'])) {
 
                                             // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Encargado: __________________', 0, 1);
 
     // Marca de agua en la segunda página
     $pdf->SetFont('helvetica', 'B', 20);
@@ -152,7 +152,7 @@ if (isset($_GET['nota_id'])) {
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha (duplicado)
-    $pdf->Image('../font/number.png', 150, 13, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
+    $pdf->Image('../imgs/1n.png', 150, 13, 40); // Coordenadas ajustadas para colocar la imagen a la derecha
 
     // Encabezado de la tabla de productos (duplicado)
     $pdf->SetFont('helvetica', 'B', 12);
@@ -217,7 +217,7 @@ if (isset($_GET['nota_id'])) {
 
                         // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Encargado: __________________', 0, 1);
 
 // Marca de agua en la segunda página
 $pdf->SetFont('helvetica', 'B', 20);
@@ -229,7 +229,7 @@ $pdf->Cell(0, 0, 'Copia', 0, 1, 'C');
 $pdf->SetAlpha(0.3); // Valor entre 0 (transparente) y 1 (opaco)
 
 // Agregar la imagen (Icono) alineada a la derecha
-$pdf->Image('../pdf/icono.png', 20, 40, 180); // Coordenadas ajustadas para colocar la imagen a la derecha
+$pdf->Image('../imgs/2.png', 20, 40, 180); // Coordenadas ajustadas para colocar la imagen a la derecha
 
 // Restablecer la opacidad a 1 para el resto del contenido
 $pdf->SetAlpha(1);
