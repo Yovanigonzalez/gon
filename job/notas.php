@@ -316,27 +316,28 @@ $pdf->SetAlpha(1);
               <div id="mensaje"></div>
 
                 <div class="notes-container">
-                  <?php
-                  include '../config/conexion.php';
+                <?php
+                include '../config/conexion.php';
 
-                  $sql = "SELECT id, cliente, direccion FROM notas WHERE estatus = 'pendiente'";
-                  $result = $conn->query($sql);
+                // Filtra las notas pendientes del día actual usando la columna 'created_at'
+                $sql = "SELECT id, cliente, direccion FROM notas WHERE estatus = 'pendiente' AND DATE(created_at) = CURDATE()";
+                $result = $conn->query($sql);
 
-                  if ($result->num_rows > 0) {
-                      while($row = $result->fetch_assoc()) {
-                          echo '<div class="note-card">';
-                          echo '<h4>' . $row['cliente'] . '</h4>';
-                          echo '<p>' . $row['direccion'] . '</p>';
-                          echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
-                          echo '<button class="btn btn-success entregada-btn" data-id="' . $row['id'] . '">Entregada</button>';
-                          echo '</div>';
-                      }
-                  } else {
-                      echo "No se encontraron notas pendientes.";
-                  }
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo '<div class="note-card">';
+                        echo '<h4>' . htmlspecialchars($row['cliente']) . '</h4>'; // htmlspecialchars para evitar inyecciones XSS
+                        echo '<p>' . htmlspecialchars($row['direccion']) . '</p>';
+                        echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
+                        echo '<button class="btn btn-success entregada-btn" data-id="' . $row['id'] . '">Entregada</button>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "No se encontraron notas pendientes para hoy.";
+                }
 
-                  $conn->close();
-                  ?>
+                $conn->close();
+                ?>
                 </div>
               </div>
             </div>

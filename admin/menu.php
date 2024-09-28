@@ -83,7 +83,7 @@
 
         <!-- Agregar Productos -->
         <li class="nav-item">
-      <a href="canastilla_patsa" class="nav-link">
+      <a href="canastilla" class="nav-link">
         <i class="nav-icon fas fa-box"></i>
         <p>
           Canastilla Patsa

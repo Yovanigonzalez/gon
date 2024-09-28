@@ -92,33 +92,7 @@
       </a>
     </li>
 
-    <!-- Registrar Gastos -->
-    <li class="nav-item">
-      <a href="registrar_gastos" class="nav-link">
-        <i class="nav-icon fas fa-money-check-alt"></i>
-        <p>
-          Registrar Gastos
-        </p>
-      </a>
-    </li>
-    <!-- Cobranza -->
-    <li class="nav-item">
-      <a href="cobranza" class="nav-link">
-        <i class="nav-icon fas fa-hand-holding-usd"></i>
-        <p>
-          Cobranza
-        </p>
-      </a>
-    </li>
-    <!-- Actualizar Deuda -->
-    <li class="nav-item">
-      <a href="actualizar_deuda" class="nav-link">
-        <i class="nav-icon fas fa-money-bill-wave"></i>
-        <p>
-          Actualizar Deuda
-        </p>
-      </a>
-    </li>
+
 
         <!-- Nuevo elemento para descargar PDF -->
         <li class="nav-item">

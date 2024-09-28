@@ -222,7 +222,7 @@
         productos.push({ producto, piezas, kilos, precio, subtotal });
       });
 
-      // Envía la información al servidor usando AJAX
+      // Envía la información al servidor para guardar la nota
       fetch('guardar_nota.php', {
         method: 'POST',
         headers: {
@@ -245,29 +245,81 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Maneja la respuesta del servidor y muestra el modal
+        // Maneja la respuesta del servidor para guardar la nota
         const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
         const modalBody = document.getElementById('mensajeModalBody');
 
         if (data.success) {
           modalBody.innerHTML = 'Nota generada con éxito';
-          document.getElementById('modalAceptar').onclick = () => {
-            // Actualiza la página al hacer clic en "Aceptar"
-            location.reload();
-          };
         } else {
           modalBody.innerHTML = 'Error al generar la nota';
-          document.getElementById('modalAceptar').onclick = () => {
-            // Actualiza la página al hacer clic en "Aceptar"
-            location.reload();
-          };
         }
 
         mensajeModal.show();
-      });
-    });
 
-  </script>
+        // Luego de guardar la nota, registra la deuda
+        return fetch('registrar_deuda.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cliente,
+                direccion,
+                total, // Envía el total de la deuda
+            }),
+        });
+    })
+    .then(response => response.json())
+    .then(data => {
+        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+        const modalBody = document.getElementById('mensajeModalBody');
+
+        if (data.success) {
+            modalBody.innerHTML += '';
+        } else {
+            modalBody.innerHTML += '<br>Error al registrar la deuda';
+        }
+
+        mensajeModal.show();
+        document.getElementById('modalAceptar').onclick = () => {
+            location.reload();
+        };
+
+        // Registrar en deudores_cajas
+        return fetch('registrar_deuda_cajas.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cliente,
+                direccion,
+                cajaPendiente,
+                tapaPendiente,
+            }),
+        });
+    })
+    .then(response => response.json())
+    .then(data => {
+        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+        const modalBody = document.getElementById('mensajeModalBody');
+
+        if (data.success) {
+            modalBody.innerHTML += '';
+        } else {
+            modalBody.innerHTML += '<br>Error al registrar la deuda de cajas';
+        }
+
+        mensajeModal.show();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+    
+</script>
+
 
 
 

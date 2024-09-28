@@ -200,18 +200,40 @@ $conn->close();
           </div>-->
 
           <!-- Caja pequeña para Clientes a Crédito -->
-          <div class="col-lg-3 col-6">
-              <div class="small-box bg-secondary">
-                  <div class="inner">
-                      <h3>28</h3>
-                      <p>Clientes a Crédito</p>
-                  </div>
-                  <div class="icon">
-                      <i class="ion ion-card"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-          </div>
+          <?php
+// Conexión a la base de datos
+include '../config/conexion.php';
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Consulta SQL
+$sql = "SELECT COUNT(*) AS total_clientes_credito FROM deudores";
+$resultado = $conn->query($sql);
+
+// Obtener el total de clientes a crédito
+$total_clientes_credito = 0;
+if ($resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+    $total_clientes_credito = $fila['total_clientes_credito'];
+}
+
+$conn->close();
+?>
+
+<div class="col-lg-3 col-6">
+    <div class="small-box bg-secondary">
+        <div class="inner">
+            <h3><?php echo $total_clientes_credito; ?></h3>
+            <p>Clientes a Crédito</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-card"></i>
+        </div>
+        <a href="clientes_credito" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
 
 
         </div>
