@@ -5,7 +5,9 @@ $(document).ready(function() {
 
   // Función para formatear números
   function formatearNumero(numero) {
-    return numero.toLocaleString('en-US', {
+    // Verifica si el número es válido
+    if (isNaN(numero)) return '0.00'; 
+    return Number(numero).toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
@@ -59,6 +61,7 @@ $(document).ready(function() {
           let resultado = JSON.parse(data);
           $('#info-cliente').text(cliente);
           $('#info-direccion').text(direccion);
+          // Formatea la deuda pendiente
           $('#deuda-pendiente').text(formatearNumero(resultado.cantidad_deuda));
 
           // Obtener valores de caja y tapa deudora
@@ -204,5 +207,3 @@ $(document).ready(function() {
     actualizarTotales();
   });
 });
-
-
