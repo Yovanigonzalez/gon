@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Distribuidora González | Canastilla</title>
+  <title>Distribuidora González | Actualizacion deudores</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     .alert-success {
@@ -60,9 +60,10 @@
                     <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección del cliente" readonly style="background-color: #f2f2f2;">
                 </div>
                 <div class="form-group">
-                    <label for="cantidadDeuda">Deuda del cliente:</label>
-                    <input type="text" class="form-control" id="cantidadDeuda" name="cantidadDeuda" placeholder="Deuda del cliente" readonly style="background-color: #f2f2f2;">
-                </div>
+  <label for="cantidadDeuda">Deuda del cliente:</label>
+  <input type="text" class="form-control" id="cantidadDeuda" name="cantidadDeuda" placeholder="Deuda del cliente" readonly style="background-color: #f2f2f2;">
+</div>
+
                 <div class="form-group">
                     <label for="dineroRecibido">Dinero recibido:</label>
                     <input type="number" step="0.01" class="form-control" id="dineroRecibido" name="dineroRecibido" placeholder="Ingrese la cantidad de dinero recibido" required>
@@ -77,55 +78,58 @@
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function buscarCliente(valor) {
-      if (valor.length === 0) {
-        $('#resultadoBusqueda').empty();
-        return;
-      }
-      
-      $.ajax({
-        url: 'buscar_cliente4.php',
-        method: 'GET',
-        data: { nombreCliente: valor },
-        success: function(data) {
-          $('#resultadoBusqueda').html(data);
-        }
-      });
-    }
 
-    function seleccionarCliente(id, nombre, direccion, cantidadDeuda) {
+  <script>
+  function formatearNumero(numero) {
+    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(numero);
+  }
+
+  function buscarCliente(valor) {
+    if (valor.length === 0) {
+      $('#resultadoBusqueda').empty();
+      return;
+    }
+    
+    $.ajax({
+      url: 'buscar_cliente4.php',
+      method: 'GET',
+      data: { nombreCliente: valor },
+      success: function(data) {
+        $('#resultadoBusqueda').html(data);
+      }
+    });
+  }
+
+  function seleccionarCliente(id, nombre, direccion, cantidadDeuda) {
     $('#idCliente').val(id);
     $('#nombreCliente').val(nombre);
     $('#direccion').val(direccion);
-    $('#cantidadDeuda').val(cantidadDeuda); // Nueva línea para mostrar la deuda
+    $('#cantidadDeuda').val(formatearNumero(cantidadDeuda)); // Aplica el formato MXN aquí
     $('#resultadoBusqueda').empty();
 
-    // Captura el evento de click en el botón de enviar el formulario
     $('#submitButton').on('click', function(e) {
-        e.preventDefault();
-        
-        const dineroRecibido = parseFloat($('#dineroRecibido').val()) || 0;
-        
-        // Enviar los datos a un script para guardarlos en la base de datos
-        $.ajax({
-            url: 'guardar_deuda_actualizada.php',
-            method: 'POST',
-            data: {
-                idCliente: id,
-                dineroRecibido: dineroRecibido, // Enviar el dinero recibido al script PHP
-                fecha: new Date().toISOString().slice(0, 19).replace('T', ' ')
-            },
-            success: function(response) {
-                window.location.href = '?mensaje_exito=Deuda actualizada exitosamente';
-            },
-            error: function() {
-                window.location.href = '?mensaje_error=Error al actualizar la deuda';
-            }
-        });
+      e.preventDefault();
+      
+      const dineroRecibido = parseFloat($('#dineroRecibido').val()) || 0;
+      
+      $.ajax({
+        url: 'guardar_deuda_actualizada.php',
+        method: 'POST',
+        data: {
+          idCliente: id,
+          dineroRecibido: dineroRecibido,
+          fecha: new Date().toISOString().slice(0, 19).replace('T', ' ')
+        },
+        success: function(response) {
+          window.location.href = '?mensaje_exito=Deuda actualizada exitosamente';
+        },
+        error: function() {
+          window.location.href = '?mensaje_error=Error al actualizar la deuda';
+        }
+      });
     });
-}
+  }
+</script>
 
-  </script>
 </body>
 </html>
