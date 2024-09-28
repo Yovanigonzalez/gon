@@ -3,6 +3,14 @@ $(document).ready(function() {
   let totalCajas = 0;
   let totalTapas = 0;
 
+  // Función para formatear números
+  function formatearNumero(numero) {
+    return numero.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
   // Autocompletar cliente
   $('#cliente').on('input', function() {
     const query = $(this).val();
@@ -51,7 +59,7 @@ $(document).ready(function() {
           let resultado = JSON.parse(data);
           $('#info-cliente').text(cliente);
           $('#info-direccion').text(direccion);
-          $('#deuda-pendiente').text(resultado.cantidad_deuda);
+          $('#deuda-pendiente').text(formatearNumero(resultado.cantidad_deuda));
 
           // Obtener valores de caja y tapa deudora
           $.ajax({
@@ -68,8 +76,8 @@ $(document).ready(function() {
             }
           });
 
-          $('#subtotal-vendido').text('0'); // Actualiza con el subtotal vendido real
-          $('#total').text('0'); // Actualiza con el total real
+          $('#subtotal-vendido').text('0.00'); // Actualiza con el subtotal vendido real
+          $('#total').text('0.00'); // Actualiza con el total real
         }
       });
     } else {
@@ -111,7 +119,7 @@ $(document).ready(function() {
       let kilosExistentes = parseFloat(filaExistente.find('td:eq(2)').text()) || 0;
       filaExistente.find('td:eq(1)').text(piezasExistentes + piezas);
       filaExistente.find('td:eq(2)').text(kilosExistentes + kilos);
-      filaExistente.find('td:eq(4)').text((parseFloat(filaExistente.find('td:eq(2)').text()) * precio).toFixed(2));
+      filaExistente.find('td:eq(4)').text(formatearNumero((parseFloat(filaExistente.find('td:eq(2)').text()) * precio).toFixed(2)));
     } else {
       // Agregar nueva fila a la tabla
       const nuevaFila = `
@@ -119,8 +127,8 @@ $(document).ready(function() {
           <td>${productoNombre}</td>
           <td>${piezas}</td>
           <td>${kilos}</td>
-          <td>${precio.toFixed(2)}</td>
-          <td>${subtotal}</td>
+          <td>${formatearNumero(precio.toFixed(2))}</td>
+          <td>${formatearNumero(subtotal)}</td>
           <td><button class="btn btn-danger btn-sm eliminar-producto"><i class="fas fa-trash-alt"></i></button></td>
         </tr>
       `;
@@ -151,14 +159,14 @@ $(document).ready(function() {
   function actualizarTotales() {
     let subtotalVendido = 0;
     $('#tabla-productos tr').each(function() {
-      const subtotal = parseFloat($(this).find('td:eq(4)').text());
+      const subtotal = parseFloat($(this).find('td:eq(4)').text().replace(/,/g, '')) || 0;
       subtotalVendido += subtotal;
     });
 
-    $('#subtotal-vendido').text(subtotalVendido.toFixed(2));
-    const deudaPendiente = parseFloat($('#deuda-pendiente').text()) || 0;
+    $('#subtotal-vendido').text(formatearNumero(subtotalVendido));
+    const deudaPendiente = parseFloat($('#deuda-pendiente').text().replace(/,/g, '')) || 0;
     const total = subtotalVendido + deudaPendiente;
-    $('#total').text(total.toFixed(2));
+    $('#total').text(formatearNumero(total));
   }
 
   // Función para actualizar Caja Pendiente y Tapa Pendiente
@@ -196,4 +204,5 @@ $(document).ready(function() {
     actualizarTotales();
   });
 });
+
 

@@ -197,127 +197,129 @@
 </html>
 
 <script>
-    document.getElementById('generar-nota').addEventListener('click', function() {
-      // Recoge toda la información del formulario
-      const cliente = document.getElementById('cliente').value;
-      const direccion = document.getElementById('direccion').value;
-      const productos = []; // Aquí almacenarás los productos de la tabla
-      const subtotalVendido = document.getElementById('subtotal-vendido').innerText;
-      const deudaPendiente = document.getElementById('deuda-pendiente').innerText;
-      const total = document.getElementById('total').innerText;
-      const cajaDeudora = parseFloat(document.getElementById('caja-deudora').value) || 0;
-      const tapaDeudora = parseFloat(document.getElementById('tapa-deudora').value) || 0;
-      const cajaEnviada = parseFloat(document.getElementById('caja-enviada').value) || 0;
-      const tapaEnviada = parseFloat(document.getElementById('tapa-enviada').value) || 0;
-      const cajaPendiente = parseFloat(document.getElementById('caja-pendiente').value) || 0;
-      const tapaPendiente = parseFloat(document.getElementById('tapa-pendiente').value) || 0;
+document.getElementById('generar-nota').addEventListener('click', function() {
+  // Recoge toda la información del formulario
+  const cliente = document.getElementById('cliente').value;
+  const direccion = document.getElementById('direccion').value;
+  const productos = []; // Aquí almacenarás los productos de la tabla
+  
+  // Convertir valores a números, eliminando comas
+  const subtotalVendido = parseFloat(document.getElementById('subtotal-vendido').innerText.replace(/,/g, '').trim()) || 0;
+  const deudaPendiente = parseFloat(document.getElementById('deuda-pendiente').innerText.replace(/,/g, '').trim()) || 0;
+  const total = parseFloat(document.getElementById('total').innerText.replace(/,/g, '').trim()) || 0;
 
-      // Recorre la tabla de productos
-      document.querySelectorAll('#tabla-productos tr').forEach(row => {
-        const producto = row.cells[0].innerText;
-        const piezas = parseFloat(row.cells[1].innerText) || 0;
-        const kilos = parseFloat(row.cells[2].innerText) || 0;
-        const precio = parseFloat(row.cells[3].innerText) || 0;
-        const subtotal = parseFloat(row.cells[4].innerText) || 0;
-        productos.push({ producto, piezas, kilos, precio, subtotal });
-      });
+  const cajaDeudora = parseFloat(document.getElementById('caja-deudora').value) || 0;
+  const tapaDeudora = parseFloat(document.getElementById('tapa-deudora').value) || 0;
+  const cajaEnviada = parseFloat(document.getElementById('caja-enviada').value) || 0;
+  const tapaEnviada = parseFloat(document.getElementById('tapa-enviada').value) || 0;
+  const cajaPendiente = parseFloat(document.getElementById('caja-pendiente').value) || 0;
+  const tapaPendiente = parseFloat(document.getElementById('tapa-pendiente').value) || 0;
 
-      // Envía la información al servidor para guardar la nota
-      fetch('guardar_nota.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cliente,
-          direccion,
-          productos,
-          subtotalVendido,
-          deudaPendiente,
-          total,
-          cajaDeudora,
-          tapaDeudora,
-          cajaEnviada,
-          tapaEnviada,
-          cajaPendiente,
-          tapaPendiente,
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Maneja la respuesta del servidor para guardar la nota
-        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
-        const modalBody = document.getElementById('mensajeModalBody');
+  // Recorre la tabla de productos
+  document.querySelectorAll('#tabla-productos tr').forEach(row => {
+    const producto = row.cells[0].innerText;
+    const piezas = parseFloat(row.cells[1].innerText) || 0;
+    const kilos = parseFloat(row.cells[2].innerText) || 0;
+    const precio = parseFloat(row.cells[3].innerText.replace(/,/g, '').trim()) || 0; // Asegúrate de eliminar comas
+    const subtotal = parseFloat(row.cells[4].innerText.replace(/,/g, '').trim()) || 0; // Asegúrate de eliminar comas
+    productos.push({ producto, piezas, kilos, precio, subtotal });
+  });
 
-        if (data.success) {
-          modalBody.innerHTML = 'Nota generada con éxito';
-        } else {
-          modalBody.innerHTML = 'Error al generar la nota';
-        }
+  // Envía la información al servidor para guardar la nota
+  fetch('guardar_nota.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cliente,
+      direccion,
+      productos,
+      subtotalVendido,
+      deudaPendiente,
+      total,
+      cajaDeudora,
+      tapaDeudora,
+      cajaEnviada,
+      tapaEnviada,
+      cajaPendiente,
+      tapaPendiente,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Maneja la respuesta del servidor para guardar la nota
+    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+    const modalBody = document.getElementById('mensajeModalBody');
 
-        mensajeModal.show();
+    if (data.success) {
+      modalBody.innerHTML = 'Nota generada con éxito';
+    } else {
+      modalBody.innerHTML = 'Error al generar la nota';
+    }
 
-        // Luego de guardar la nota, registra la deuda
-        return fetch('registrar_deuda.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                cliente,
-                direccion,
-                total, // Envía el total de la deuda
-            }),
-        });
-    })
-    .then(response => response.json())
-    .then(data => {
-        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
-        const modalBody = document.getElementById('mensajeModalBody');
+    mensajeModal.show();
 
-        if (data.success) {
-            modalBody.innerHTML += '';
-        } else {
-            modalBody.innerHTML += '<br>Error al registrar la deuda';
-        }
-
-        mensajeModal.show();
-        document.getElementById('modalAceptar').onclick = () => {
-            location.reload();
-        };
-
-        // Registrar en deudores_cajas
-        return fetch('registrar_deuda_cajas.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                cliente,
-                direccion,
-                cajaPendiente,
-                tapaPendiente,
-            }),
-        });
-    })
-    .then(response => response.json())
-    .then(data => {
-        const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
-        const modalBody = document.getElementById('mensajeModalBody');
-
-        if (data.success) {
-            modalBody.innerHTML += '';
-        } else {
-            modalBody.innerHTML += '<br>Error al registrar la deuda de cajas';
-        }
-
-        mensajeModal.show();
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    // Luego de guardar la nota, registra la deuda
+    return fetch('registrar_deuda.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cliente,
+        direccion,
+        total, // Envía el total de la deuda
+      }),
     });
+  })
+  .then(response => response.json())
+  .then(data => {
+    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+    const modalBody = document.getElementById('mensajeModalBody');
+
+    if (data.success) {
+      modalBody.innerHTML += '';
+    } else {
+      modalBody.innerHTML += '<br>Error al registrar la deuda';
+    }
+
+    mensajeModal.show();
+    document.getElementById('modalAceptar').onclick = () => {
+      location.reload();
+    };
+
+    // Registrar en deudores_cajas
+    return fetch('registrar_deuda_cajas.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cliente,
+        direccion,
+        cajaPendiente,
+        tapaPendiente,
+      }),
+    });
+  })
+  .then(response => response.json())
+  .then(data => {
+    const mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+    const modalBody = document.getElementById('mensajeModalBody');
+
+    if (data.success) {
+      modalBody.innerHTML += '';
+    } else {
+      modalBody.innerHTML += '<br>Error al registrar la deuda de cajas';
+    }
+
+    mensajeModal.show();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 });
-    
 </script>
 
 
