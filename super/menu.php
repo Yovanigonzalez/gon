@@ -1,3 +1,14 @@
+<?php
+session_start();
+// Resto del código de login.php
+
+if (empty($_SERVER['HTTP_REFERER'])) {
+    // El acceso se está realizando directamente desde la URL
+    header('Location: 404');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -60,7 +71,18 @@
         </p>
       </a>
     </li>
+
     
+    <!-- Agregar Usuarios -->
+<li class="nav-item">
+  <a href="usuarios" class="nav-link">
+    <i class="nav-icon fas fa-user-plus"></i>
+    <p>
+      Agregar Usuarios
+    </p>
+  </a>
+</li>
+
 
         <!-- Agregar Deudores -->
         <li class="nav-item">
@@ -84,13 +106,14 @@
 
     <!-- Localizador de Notas -->
     <li class="nav-item">
-      <a href="localizador_notas" class="nav-link">
-        <i class="nav-icon fas fa-sticky-note"></i>
-        <p>
-          Localizador de Notas
-        </p>
-      </a>
-    </li>
+  <a href="actualizar_inventario" class="nav-link">
+    <i class="nav-icon fas fa-box"></i>
+    <p>
+      Actualizar Inventario
+    </p>
+  </a>
+</li>
+
 
 
 
@@ -103,6 +126,14 @@
         </p>
       </a>
     </li>
+
+    <!-- Cerrar Sesión -->
+<li class="nav-item">
+  <a href="logout" class="nav-link">
+    <i class="nav-icon fas fa-sign-out-alt"></i>
+    <p>Cerrar Sesión</p>
+  </a>
+</li>
 
   </ul>
 </nav>

@@ -1,3 +1,14 @@
+<?php
+session_start();
+// Resto del código de login.php
+
+if (empty($_SERVER['HTTP_REFERER'])) {
+    // El acceso se está realizando directamente desde la URL
+    header('Location: 404');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

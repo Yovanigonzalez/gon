@@ -19,23 +19,7 @@
 
 
 
-          <!-- Caja pequeña para Ventas -->
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-primary">
-              <div class="inner">
-                <h3>$32,500</h3>
-
-                <p>Ventas</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-social-usd"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          
-
-          
+         
           <?php
 // Configuración de la conexión a la base de datos
 include '../config/conexion.php';
@@ -75,7 +59,7 @@ $conn->close();
         <div class="icon">
             <i class="ion ion-bag"></i>
         </div>
-        <a href="detalles_pedidos.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="detalles_pedidos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
 
@@ -111,36 +95,6 @@ $conn->close();
             </div>
           </div>
 
-          <!-- Caja pequeña para Clientes a Crédito -->
-          <div class="col-lg-3 col-6">
-          <div class="small-box bg-success">
-                  <div class="inner">
-                      <h3>28</h3>
-                      <p>Clientes a Crédito</p>
-                  </div>
-                  <div class="icon">
-                      <i class="ion ion-card"></i>
-                  </div>
-                  <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-          </div>
-
-          <!-- Caja pequeña para Deudas de Cajas -->
-          <div class="col-lg-3 col-6">
-              <div class="small-box bg-dark">
-                  <div class="inner">
-                      <!-- Aquí puedes mostrar el total de deudas de cajas -->
-                      <h3>$XX,XXX</h3>
-                      <p>Deudas de Cajas</p>
-                  </div>
-                  <div class="icon">
-                      <!-- Puedes elegir un icono apropiado, por ejemplo: -->
-                      <i class="ion ion-social-usd"></i>
-                  </div>
-                  <!-- Puedes enlazar a la página de detalles de las deudas de cajas -->
-                  <a href="detalles_deudas_cajas.php" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-          </div>
 
 
         </div>
