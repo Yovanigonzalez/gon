@@ -113,7 +113,6 @@
 
     .right img {
       max-width: 80%;
-      background: #fff;
       height: auto;
     }
 
@@ -124,6 +123,92 @@
         border-color: #f5c6cb;
         padding: 10px;
         margin-bottom: 15px;
+    }
+
+        /* Media Queries */
+
+    /* Pantallas pequeñas (max-width: 600px) */
+    @media only screen and (max-width: 600px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .login-form {
+            width: 90%;
+            padding: 1.5rem;
+        }
+
+        .login-form h2 {
+            font-size: 1.5rem;
+        }
+
+        .login-form input, .login-form button {
+            font-size: 0.9rem;
+        }
+
+        .right img {
+            max-width: 80%;
+        }
+    }
+
+    /* Pantallas medianas (601px - 1024px) */
+    @media only screen and (min-width: 601px) and (max-width: 1024px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .login-form {
+            width: 70%;
+            padding: 2rem;
+        }
+
+        .login-form h2 {
+            font-size: 1.6rem;
+        }
+
+        .right img {
+            max-width: 80%;
+        }
+    }
+
+    /* Pantallas grandes (1025px - 1920px) */
+    @media only screen and (min-width: 1025px) and (max-width: 1920px) {
+        .container {
+            flex-direction: row;
+        }
+
+        .login-form {
+            width: 600px;
+            padding: 3rem;
+        }
+
+        .login-form h2 {
+            font-size: 1.8rem;
+        }
+
+        .right img {
+            max-width: 80%;
+        }
+    }
+
+    /* Pantallas extra grandes (min-width: 1921px) */
+    @media only screen and (min-width: 1921px) {
+        .container {
+            flex-direction: row;
+        }
+
+        .login-form {
+            width: 700px;
+            padding: 4rem;
+        }
+
+        .login-form h2 {
+            font-size: 2rem;
+        }
+
+        .right img {
+            max-width: 90%;
+        }
     }
   </style>
 </head>
