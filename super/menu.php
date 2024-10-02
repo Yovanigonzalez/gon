@@ -106,10 +106,10 @@ if (empty($_SERVER['HTTP_REFERER'])) {
 
     <!-- Localizador de Notas -->
     <li class="nav-item">
-  <a href="actualizar_inventario" class="nav-link">
+  <a href="editar_inventario" class="nav-link">
     <i class="nav-icon fas fa-box"></i>
     <p>
-      Actualizar Inventario
+      Editar Inventario
     </p>
   </a>
 </li>

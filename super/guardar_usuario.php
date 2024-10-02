@@ -26,18 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ejecutar la consulta
     if ($stmt->execute()) {
         // Redirigir con mensaje de éxito
-        header("Location: usuarios?mensaje_exito=Usuario agregado exitosamente");
+        header("Location: usuarios?mensaje_exito_agregar=Usuario agregado exitosamente");
         exit();
     } else {
         // Redirigir con mensaje de error
-        header("Location: usuarios?mensaje_error=Error al agregar el usuario: " . $stmt->error);
+        header("Location: usuarios?mensaje_error_agregar=Error al agregar el usuario: " . $stmt->error);
         exit();
     }
 
     // Cerrar la declaración
     $stmt->close();
 } else {
-    header("Location: usuarios?mensaje_error=Solicitud inválida.");
+    header("Location: usuarios?mensaje_error_agregar=Solicitud inválida.");
     exit();
 }
 

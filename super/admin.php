@@ -153,7 +153,7 @@ $conn->close();
 ?>
 
 <!-- Mostrar el resultado en la caja de gastos -->
-<div class="col-lg-3 col-6">
+<!--<div class="col-lg-3 col-6">
   <div class="small-box bg-danger">
       <div class="inner">
         <h3><?php echo number_format($total_gastos, 2, '.', ','); ?> MXN</h3>
@@ -162,9 +162,9 @@ $conn->close();
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="gastos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
-</div>
+</div>-->
 
 
 

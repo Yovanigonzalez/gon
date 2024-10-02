@@ -10,6 +10,25 @@ include 'menu.php'; // Incluir el menú
   <title>Distribuidora González | Agregar Deudores</title>
   <!-- Agregar estilos CSS aquí -->
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .alert-success {
+        border-radius: 50px;
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .alert-danger {
+        border-radius: 50px;
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">

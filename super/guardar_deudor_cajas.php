@@ -20,11 +20,11 @@ $sql = "INSERT INTO deudores_cajas (id_cliente, nombre_cliente, direccion, canti
 
 if ($conn->query($sql) === TRUE) {
     // Redirigir a la página principal con un mensaje de éxito
-    header("Location: deudores_cajas.php?mensaje_exito=Cliente agregado a deudores correctamente");
+    header("Location: deudores_cajas?mensaje_exito=Cliente agregado a deudores correctamente");
     exit();
 } else {
     // Redirigir a la página principal con un mensaje de error
-    header("Location: deudores_cajas.php?mensaje_error=Error al agregar cliente a deudores: " . $conn->error);
+    header("Location: deudores_cajas?mensaje_error=Error al agregar cliente a deudores: " . $conn->error);
     exit();
 }
 
