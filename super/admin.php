@@ -14,6 +14,7 @@
     <!-- Contenido Principal -->
     <section class="content">
       <div class="container-fluid">
+        <div><br></div>
         <!-- Cajas pequeñas (estadísticas) -->
         <div class="row">
 
@@ -67,33 +68,104 @@ $conn->close();
 
 
           <!-- Caja pequeña para Ganancias -->
-          <div class="col-lg-3 col-6">
-          <div class="small-box bg-secondary">
-              <div class="inner">
-                <h3>$64,987</h3>
+          <?php
+// Configuración de la conexión
+include '../config/conexion.php';
 
-                <p>Ganancias</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Zona horaria (GMT-6)
+date_default_timezone_set('America/Mexico_City');
+
+// Obtener la fecha actual (día en curso)
+$fecha_actual = date('Y-m-d');
+
+// Consulta SQL para sumar deuda_restante solo del día actual
+$sql = "SELECT SUM(deuda_restante) as total_deuda
+        FROM historial_deudas
+        WHERE DATE(fecha) = '$fecha_actual'";
+
+// Ejecutar la consulta
+$resultado = $conn->query($sql);
+
+// Obtener el total de deuda
+$total_deuda = 0;
+if ($resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+    $total_deuda = $fila['total_deuda'] ?? 0;  // Si no hay resultado, será 0
+}
+
+// Cerrar la conexión
+$conn->close();
+?>
+
+<!-- Mostrar el resultado en la caja de ganancias -->
+<div class="col-lg-3 col-6">
+  <div class="small-box bg-secondary">
+      <div class="inner">
+        <h3><?php echo number_format($total_deuda, 2, '.', ','); ?> MXN</h3>
+        <p>Dinero recaudado</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="recaudado" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
+
+
           <!-- Caja pequeña para Gastos -->
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>$23,482</h3>
+          <?php
+// Configuración de la conexión
+include '../config/conexion.php';
 
-                <p>Gastos</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Zona horaria (GMT-6)
+date_default_timezone_set('America/Mexico_City');
+
+// Obtener la fecha actual (día en curso)
+$fecha_actual = date('Y-m-d');
+
+// Consulta SQL para sumar monto solo del día actual
+$sql = "SELECT SUM(monto) as total_gastos
+        FROM gastos
+        WHERE DATE(fecha) = '$fecha_actual'";
+
+// Ejecutar la consulta
+$resultado = $conn->query($sql);
+
+// Obtener el total de gastos
+$total_gastos = 0;
+if ($resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+    $total_gastos = $fila['total_gastos'] ?? 0;  // Si no hay resultado, será 0
+}
+
+// Cerrar la conexión
+$conn->close();
+?>
+
+<!-- Mostrar el resultado en la caja de gastos -->
+<div class="col-lg-3 col-6">
+  <div class="small-box bg-danger">
+      <div class="inner">
+        <h3><?php echo number_format($total_gastos, 2, '.', ','); ?> MXN</h3>
+        <p>Gastos</p>
+      </div>
+      <div class="icon">
+        <i class="ion ion-pie-graph"></i>
+      </div>
+      <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+</div>
+
 
 
 

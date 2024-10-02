@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO gastos (descripcion, monto, fecha, ruta_archivo) VALUES ('$descripcion', '$monto', '$fecha', '$ruta_archivo')";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: gastos?mensaje_exito=Factura guardada exitosamente.");
+        header("Location: gastos?mensaje_exito=Gasto guardado exitosamente.");
     } else {
         header("Location: gastos?mensaje_error=Error al guardar la factura: " . $conn->error);
     }

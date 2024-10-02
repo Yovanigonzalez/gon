@@ -68,7 +68,7 @@
 
                   <div class="form-group">
                     <label for="documento">Subir documento de gatos:</label>
-                    <input type="file" class="form-control-file" id="documento" name="documento" required>
+                    <input type="file" class="form-control-file" id="documento" name="documento">
                   </div>
                   <button type="submit" class="btn btn-primary">Guardar</button>
                 </form>

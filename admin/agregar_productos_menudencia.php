@@ -1,9 +1,4 @@
 <?php
-session_start();
-?>
-
-
-<?php
 include 'menu.php'; // Incluir el menú
 ?>
 

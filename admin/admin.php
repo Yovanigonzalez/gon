@@ -14,6 +14,7 @@
     <!-- Contenido Principal -->
     <section class="content">
       <div class="container-fluid">
+        <div><br></div>
         <!-- Cajas pequeñas (estadísticas) -->
         <div class="row">
 
@@ -70,30 +71,36 @@ if ($conn->connect_error) {
   die("Error de conexión: " . $conn->connect_error);
 }
 
-// Consulta SQL para contar los productos
-$sql = "SELECT COUNT(*) AS total_productos FROM productos";
+// Consulta SQL para contar los productos en ambas tablas
+$sql = "
+    SELECT 
+        (SELECT COUNT(*) FROM productos) AS total_productos,
+        (SELECT COUNT(*) FROM productos_menudencia) AS total_productos_menudencia
+";
 
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-  // Si hay resultados, mostrar el número de productos
+  // Si hay resultados, obtener los totales
   $row = $result->fetch_assoc();
   $total_productos = $row["total_productos"];
+  $total_productos_menudencia = $row["total_productos_menudencia"];
+  // Sumar ambos totales
+  $total_productos_sumados = $total_productos + $total_productos_menudencia;
 } else {
-  $total_productos = 0;
+  $total_productos_sumados = 0;
 }
 
 // Cerrar conexión
 $conn->close();
 ?>
 
-<!-- Caja pequeña para Productos -->
-<!-- Caja pequeña para Productos -->
+<!-- Caja pequeña para Productos Totales -->
 <div class="col-lg-3 col-6">
     <div class="small-box bg-dark"> <!-- Cambiar bg-warning por el color deseado -->
         <div class="inner">
-            <h3><?php echo $total_productos; ?></h3>
-            <p>Productos</p>
+            <h3><?php echo $total_productos_sumados; ?></h3>
+            <p>Total de Productos</p>
         </div>
         <div class="icon">
             <i class="ion ion-bag"></i>
@@ -101,6 +108,7 @@ $conn->close();
         <a href="total_productos" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
     </div>
 </div>
+
 
 
           <!-- Caja pequeña para Ventas -->

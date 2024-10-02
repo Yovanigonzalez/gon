@@ -50,6 +50,7 @@
 
     <div class="content-wrapper">
     <div class="container-fluid">
+        <div><br></div>
                 <!-- Cajas pequeñas (estadísticas) -->
                 <div class="row">
                     <!-- Caja pequeña para Ventas -->
