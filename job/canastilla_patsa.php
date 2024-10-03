@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET['generate_pdf'])) {
-    require('../tcpdf/tcpdf.php');
+    require('../TCPDF/tcpdf.php');
     require('../config/conexion.php');
 
     if ($conn->connect_error) {

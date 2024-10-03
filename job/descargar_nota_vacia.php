@@ -1,5 +1,5 @@
 <?php
-require('../tcpdf/tcpdf.php');
+require('../TCPDF/tcpdf.php');
 
 // Crear nuevo PDF con orientación vertical ('P' para Portrait)
 $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);

@@ -1,7 +1,7 @@
 <?php
 // Verificar si se hizo clic en el botón para generar el PDF
 if (isset($_GET['generate_pdf'])) {
-    require('../tcpdf/tcpdf.php');
+    require('../TCPDF/tcpdf.php');
     require '../config/conexion.php'; // Asegúrate de que la conexión esté correctamente incluida
 
     // Crear nuevo documento PDF

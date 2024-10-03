@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET['nota_id'])) {
-    require('../tcpdf/tcpdf.php');
+    require('../TCPDF/tcpdf.php');
     require('../config/conexion.php');
 
     $nota_id = $_GET['nota_id'];
