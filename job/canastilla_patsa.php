@@ -156,41 +156,8 @@ if (isset($_GET['generate_pdf'])) {
     <!-- Contenido Principal -->
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-4">
-            <!-- Contenedor Blanco -->
-            <br>
-            <div class="card card-white">
-              <div class="card-header">
-                <h3 class="card-title">Registrar Canastilla de patsa</h3>
-              </div>
-              <div class="card-body">
-                <?php
-                // Verificar si hay un mensaje de éxito o error en la URL
-                if (isset($_GET['mensaje_exito'])) {
-                    $mensaje_exito = $_GET['mensaje_exito'];
-                    echo '<div class="alert alert-success">' . $mensaje_exito . '</div>';
-                } elseif (isset($_GET['mensaje_error'])) {
-                    $mensaje_error = $_GET['mensaje_error'];
-                    echo '<div class="alert alert-danger">' . $mensaje_error . '</div>';
-                }
-                ?>
+      <div class="row">
 
-                <form method="post" action="guardar_datos.php">
-                  <div class="form-group">
-                    <label for="caja">Caja:</label>
-                    <input type="text" class="form-control" id="caja" name="caja" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="tapa">Tapa:</label>
-                    <input type="text" class="form-control" id="tapa" name="tapa" required>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </form>
-
-              </div>
-            </div>
-          </div>
 
 
           <!-- Nuevo Cuadro "Cajas Recibidas" -->
