@@ -101,13 +101,8 @@ include 'menu.php'; // Incluir el menú
                         <option value="" disabled selected>Seleccione un usuario</option>
                         <?php
                         // Conectar a la base de datos
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "distribuidora";
-
-                        $conn = new mysqli($servername, $username, $password, $dbname);
-
+                        include '../config/conexion.php';
+                        
                         // Verificar la conexión
                         if ($conn->connect_error) {
                             die("Conexión fallida: " . $conn->connect_error);
