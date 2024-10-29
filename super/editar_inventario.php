@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Establecer conexión a la base de datos
 include '../config/conexion.php';
 
@@ -10,11 +10,14 @@ if ($conn->connect_error) {
 // Obtener los datos de la tabla 'entradas'
 $sql = "SELECT * FROM entradas";
 $result = $conn->query($sql);
+
+// Obtener los datos de la tabla 'entradas_menudencia'
+$sql_menudencia = "SELECT * FROM entradas_menudencia";
+$result_menudencia = $conn->query($sql_menudencia);
 ?>
 <?php
 include 'menu.php'; // Incluir el menú
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -41,8 +44,7 @@ include 'menu.php'; // Incluir el menú
         padding: 10px;
         margin-bottom: 15px;
     }
-    </style>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -50,14 +52,14 @@ include 'menu.php'; // Incluir el menú
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-10">
             <br>
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Inventario</h3>
+                <h3 class="card-title">Inventario (Pollo)</h3>
               </div>
               <div class="card-body">
-              <?php
+                <?php
                   // Verificar si hay un mensaje de éxito o error en la URL
                   if (isset($_GET['mensaje_exito_editar'])) {
                       $mensaje_exito_editar = $_GET['mensaje_exito_editar']; 
@@ -99,12 +101,61 @@ include 'menu.php'; // Incluir el menú
             </div>
           </div>
         </div>
+
+        <!-- Nueva sección para Producto (Menudencia) -->
+        <div class="col-md-10">
+            <br>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Producto (Menudencia)</h3>
+              </div>
+              <div class="card-body">
+              <?php
+                  // Verificar si hay un mensaje de éxito o error en la URL
+                  if (isset($_GET['mensaje_exito_editar2'])) {
+                      $mensaje_exito_editar2 = $_GET['mensaje_exito_editar2']; 
+                      echo '<div class="alert alert-success">' . $mensaje_exito_editar2 . '</div>'; 
+                  } elseif (isset($_GET['mensaje_error_editar'])) {
+                      $mensaje_error_editar2 = $_GET['mensaje_error_editar2']; 
+                      echo '<div class="alert alert-danger">' . $mensaje_error_editar2 . '</div>'; 
+                  }
+                ?>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Kilos</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if ($result_menudencia->num_rows > 0): ?>
+                      <?php while($row_menudencia = $result_menudencia->fetch_assoc()): ?>
+                        <tr>
+                          <td><?php echo $row_menudencia['producto_nombre']; ?></td>
+                          <td><?php echo $row_menudencia['kilos']; ?></td>
+                          <td>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#editMenudenciaModal" data-id="<?php echo $row_menudencia['id']; ?>" data-kilos="<?php echo $row_menudencia['kilos']; ?>">Editar</button>
+                          </td>
+                        </tr>
+                      <?php endwhile; ?>
+                    <?php else: ?>
+                      <tr>
+                        <td colspan="3">No hay datos disponibles</td>
+                      </tr>
+                    <?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
 
-<!-- Modal de Edición -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <!-- Modal de Edición para Inventario -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -132,12 +183,38 @@ include 'menu.php'; // Incluir el menú
             </form>
         </div>
     </div>
-</div>
+  </div>
+
+  <!-- Modal de Edición para Menudencia -->
+  <div class="modal fade" id="editMenudenciaModal" tabindex="-1" role="dialog" aria-labelledby="editMenudenciaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMenudenciaModalLabel">Editar Producto (Menudencia)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editMenudenciaForm" method="post" action="editar_menudencia.php">
+                <div class="modal-body">
+                    <input type="hidden" id="menudenciaId" name="menudenciaId">
+                    <div class="form-group">
+                        <label for="kilos">Kilos</label>
+                        <input type="number" class="form-control" id="menudenciaKilos" name="kilos" step="0.01" placeholder="Ingrese los nuevos kilos (dejar en blanco si no desea cambiar)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
 
   <!-- Bootstrap 4 JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
+  <script src="../job_js/a.js"></script>
+  <script src="../job_js/a2.js"></script>
   <script>
     $('#editModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget);
@@ -149,6 +226,16 @@ include 'menu.php'; // Incluir el menú
       modal.find('#productoId').val(id);
       modal.find('#stock').val(stock);
       modal.find('#kilos').val(kilos);
+    });
+
+    $('#editMenudenciaModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var id = button.data('id');
+      var kilos = button.data('kilos');
+
+      var modal = $(this);
+      modal.find('#menudenciaId').val(id);
+      modal.find('#menudenciaKilos').val(kilos);
     });
   </script>
 </body>

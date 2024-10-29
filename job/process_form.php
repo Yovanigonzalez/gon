@@ -32,11 +32,11 @@ if ($idCliente) {
         $stmt->execute();
 
         // Redirigir con mensaje de éxito
-        header('Location: canastilla.php?mensaje_exito=Actualización exitosa y movimiento registrado');
+        header('Location: canastilla?mensaje_exito=Actualización exitosa y movimiento registrado');
     } else {
-        header('Location: canastilla.php?mensaje_error=Cliente no encontrado');
+        header('Location: canastilla?mensaje_error=Cliente no encontrado');
     }
 } else {
-    header('Location: canastilla.php?mensaje_error=ID de cliente no válido');
+    header('Location: canastilla?mensaje_error=ID de cliente no válido');
 }
 ?>

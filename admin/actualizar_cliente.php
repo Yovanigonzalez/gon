@@ -14,16 +14,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($conn->query($sql) === TRUE) {
         // Redirigir de vuelta a la página de lista de clientes con un mensaje de éxito
-        header("Location: total_clientes.php?success=1");
+        header("Location: total_clientes?success=1");
         exit();
     } else {
         // Redirigir de vuelta a la página de lista de clientes con un mensaje de error
-        header("Location: total_clientes.php?error=1");
+        header("Location: total_clientes?error=1");
         exit();
     }
 } else {
     // Redirigir de vuelta a la página de lista de clientes si no se envió el formulario correctamente
-    header("Location: total_clientes.php?error=1");
+    header("Location: total_clientes?error=1");
     exit();
 }
 ?>

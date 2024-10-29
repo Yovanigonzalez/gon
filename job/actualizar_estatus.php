@@ -13,20 +13,20 @@ if (isset($_POST['nota_id'])) {
         $stmt = $conn->prepare($sql);
         if ($stmt->bind_param("i", $nota_id) && $stmt->execute()) {
             // Redirigir con un mensaje de éxito
-            header('Location: notas.php?mensaje_exito=Nota marcada como entregada');
+            header('Location: notas?mensaje_exito=Nota marcada como entregada');
             exit();
         } else {
             // Redirigir con un mensaje de error
-            header('Location: notas.php?mensaje_error=Error al marcar la nota como entregada');
+            header('Location: notas?mensaje_error=Error al marcar la nota como entregada');
             exit();
         }
     } else {
         // Redirigir con un mensaje de error
-        header('Location: notas.php?mensaje_error=Error al actualizar notas');
+        header('Location: notas?mensaje_error=Error al actualizar notas');
         exit();
     }
 } else {
-    header('Location: notas.php?mensaje_error=ID de nota no proporcionado');
+    header('Location: notas?mensaje_error=ID de nota no proporcionado');
     exit();
 }
 

@@ -37,17 +37,27 @@ if (isset($_GET['nota_id'])) {
 
     // Título del documento
     $pdf->SetFont('helvetica', 'B', 16);
-    $pdf->Cell(0, 10, 'Nota de remisión', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Nota de remisión original', 0, 1, 'C');
 
     // Mostrar el número de la nota
     $pdf->SetFont('helvetica', '', 12);
     $pdf->Cell(0, 8, 'Folio: ' . $nota['id'], 0, 1, 'L'); // Aquí se agrega el número de la nota
 
+    //Esta funcion es para ver los folios, clientes, direccion, fecha:
     // Información del cliente alineada a la izquierda
+    //$pdf->SetFont('helvetica', '', 12);
+    //$pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    //$pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    //$pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    //$pdf->Ln(3);
+
     $pdf->SetFont('helvetica', '', 12);
     $pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
     $pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
-    $pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+
+    // Formatear la fecha para que solo muestre la fecha sin la hora
+    $fecha_formateada = date('d/m/Y', strtotime($nota['created_at']));
+    $pdf->Cell(0, 8, 'Fecha: ' . $fecha_formateada, 0, 1, 'L');
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha
@@ -116,7 +126,7 @@ if (isset($_GET['nota_id'])) {
 
                                             // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Encargado: __________________', 0, 1);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Chofer: __________________', 0, 1);
 
     // Marca de agua en la segunda página
     $pdf->SetFont('helvetica', 'B', 20);
@@ -138,17 +148,27 @@ if (isset($_GET['nota_id'])) {
         
     // Título del documento (duplicado)
     $pdf->SetFont('helvetica', 'B', 16);
-    $pdf->Cell(0, 10, 'Nota de remisión', 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Nota de remisión copia', 0, 1, 'C');
 
     // Mostrar el número de la nota (duplicado)
     $pdf->SetFont('helvetica', '', 12);
     $pdf->Cell(0, 8, 'Folio: ' . $nota['id'], 0, 1, 'L');
 
-    // Información del cliente alineada a la izquierda (duplicado)
+    //Esta funcion es para ver los folios, clientes, direccion, fecha:
+    // Información del cliente alineada a la izquierda
+    //$pdf->SetFont('helvetica', '', 12);
+    //$pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
+    //$pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
+    //$pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+    //$pdf->Ln(3);
+
     $pdf->SetFont('helvetica', '', 12);
     $pdf->Cell(0, 8, 'Cliente: ' . $nota['cliente'], 0, 1, 'L');
     $pdf->Cell(0, 8, 'Dirección: ' . $nota['direccion'], 0, 1, 'L');
-    $pdf->Cell(0, 8, 'Fecha: ' . $nota['created_at'], 0, 1, 'L');
+
+    // Formatear la fecha para que solo muestre la fecha sin la hora
+    $fecha_formateada = date('d/m/Y', strtotime($nota['created_at']));
+    $pdf->Cell(0, 8, 'Fecha: ' . $fecha_formateada, 0, 1, 'L');
     $pdf->Ln(3);
 
     // Agregar la imagen (Icono) alineada a la derecha (duplicado)
@@ -217,7 +237,7 @@ if (isset($_GET['nota_id'])) {
 
                         // Dinero recibido y Deuda actual en una misma fila (duplicado)
     $pdf->SetFont('helvetica', 'B', 9);
-    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Encargado: __________________', 0, 1);
+    $pdf->Cell(0, 6, 'Firma del cliente: __________________   Chofer: __________________', 0, 1);
 
 // Marca de agua en la segunda página
 $pdf->SetFont('helvetica', 'B', 20);
@@ -235,7 +255,7 @@ $pdf->Image('../imgs/2.png', 20, 40, 180); // Coordenadas ajustadas para colocar
 $pdf->SetAlpha(1);
 
     // Generar y descargar el PDF
-    $pdf->Output('nota_' . $nota_id . '.pdf', 'D');
+    $pdf->Output('nota_' . $nota_id . '.pdf', 'I'); //Si pongo la letra 'D' es para descargar el pdf 
 
     $conn->close();
     exit;
@@ -281,9 +301,7 @@ $pdf->SetAlpha(1);
       flex-wrap: wrap;
       justify-content: flex-start;
     }
-
-  </style>
-    <style>
+    
     .alert-success {
     border-radius: 50px;
     color: #155724;
@@ -328,7 +346,8 @@ $pdf->SetAlpha(1);
                         echo '<div class="note-card">';
                         echo '<h4>' . htmlspecialchars($row['cliente']) . '</h4>'; // htmlspecialchars para evitar inyecciones XSS
                         echo '<p>' . htmlspecialchars($row['direccion']) . '</p>';
-                        echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
+                        //echo '<a href="?nota_id=' . $row['id'] . '" class="btn btn-primary">Descargar nota</a>';
+                        echo '<a href="?nota_id=' . $row['id'] . '" target="_blank" class="btn btn-primary">Ver nota</a>';
                         echo '<button class="btn btn-success entregada-btn" data-id="' . $row['id'] . '">Entregada</button>';
                         echo '</div>';
                     }
@@ -348,7 +367,14 @@ $pdf->SetAlpha(1);
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --> 
+     <!-- Bootstrap 4 JS -->
+    <!-- Bootstrap 4 JS en caso de fallar la recuperacion solo sera cambiar las llaves ya que el codigi estara en 'exception_job' -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="../job_js/a.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../job_js/a2.js"></script>
+
 <script>
   $(document).ready(function() {
     $('.entregada-btn').on('click', function() {
@@ -365,7 +391,7 @@ $pdf->SetAlpha(1);
           // Recargar la página después de 2 segundos para mostrar el cambio
           setTimeout(function() {
             location.reload();
-          }, 2000);
+          }, 1000);
         },
         error: function() {
           // Mostrar mensaje de error en la página

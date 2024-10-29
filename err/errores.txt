@@ -1,0 +1,4 @@
+Falta salidas: 'al momento de que se guarda la nota se debe de guarda el producto, recordar que falta e id del producto'
+
+las salidas deben de ser semanales
+

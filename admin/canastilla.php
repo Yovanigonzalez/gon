@@ -87,30 +87,55 @@ if (isset($_GET['generate_pdf'])) {
 
     $pdf->Ln(10);
 
-    // Sección de Canastillas
-    $pdf->SetFont('helvetica', 'B', 14);
-    $pdf->Cell(0, 10, 'Canastillas', 0, 1);
-    $pdf->SetFont('helvetica', '', 12);
+// Sección de Canastillas
+$pdf->SetFont('helvetica', 'B', 14);
+$pdf->Cell(0, 10, 'Canastillas', 0, 1);
+$pdf->SetFont('helvetica', '', 12);
 
-    $query3 = "SELECT caja, tapa FROM canastilla";
-    $result3 = $conn->query($query3);
+// Consultas para obtener la suma de las columnas caja y tapa de ambas tablas
+$query_recibidas = "SELECT SUM(caja) AS suma_caja_recibida, SUM(tapa) AS suma_tapa_recibida FROM cajas_recibidas";
+$result_recibidas = $conn->query($query_recibidas);
+$row_recibidas = $result_recibidas->fetch_assoc();
+$suma_caja_recibida = $row_recibidas['suma_caja_recibida'];
+$suma_tapa_recibida = $row_recibidas['suma_tapa_recibida'];
 
-    // Agregar cabeceras de la tabla para Canastillas
-    $pdf->SetFont('helvetica', 'B', 10);
-    $pdf->Cell(50, 10, 'Caja', 1);
-    $pdf->Cell(50, 10, 'Tapa', 1);
-    $pdf->Ln();
+$query_enviadas = "SELECT SUM(caja) AS suma_caja_enviada, SUM(tapa) AS suma_tapa_enviada FROM caja_enviada";
+$result_enviadas = $conn->query($query_enviadas);
+$row_enviadas = $result_enviadas->fetch_assoc();
+$suma_caja_enviada = $row_enviadas['suma_caja_enviada'];
+$suma_tapa_enviada = $row_enviadas['suma_tapa_enviada'];
 
-    $pdf->SetFont('helvetica', '', 10);
-    if ($result3->num_rows > 0) {
-        while ($row = $result3->fetch_assoc()) {
-            $pdf->Cell(50, 10, $row['caja'], 1);
-            $pdf->Cell(50, 10, $row['tapa'], 1);
-            $pdf->Ln();
-        }
-    } else {
-        $pdf->Cell(0, 10, 'No hay canastillas.', 1, 1);
-    }
+// Calcular la diferencia entre recibidas y enviadas
+$diferencia_caja = $suma_caja_recibida - $suma_caja_enviada;
+$diferencia_tapa = $suma_tapa_recibida - $suma_tapa_enviada;
+
+// Agregar cabeceras de la tabla para el PDF
+$pdf->SetFont('helvetica', 'B', 10);
+$pdf->Cell(50, 10, 'Concepto', 1);
+$pdf->Cell(50, 10, 'Caja', 1);
+$pdf->Cell(50, 10, 'Tapa', 1);
+$pdf->Ln();
+
+$pdf->SetFont('helvetica', '', 10);
+
+// Mostrar las sumas de recibidas
+$pdf->Cell(50, 10, 'Total Recibidas', 1);
+$pdf->Cell(50, 10, $suma_caja_recibida, 1);
+$pdf->Cell(50, 10, $suma_tapa_recibida, 1);
+$pdf->Ln();
+
+// Mostrar las sumas de enviadas
+$pdf->Cell(50, 10, 'Total Enviadas', 1);
+$pdf->Cell(50, 10, $suma_caja_enviada, 1);
+$pdf->Cell(50, 10, $suma_tapa_enviada, 1);
+$pdf->Ln();
+
+// Mostrar la diferencia entre recibidas y enviadas
+$pdf->Cell(50, 10, 'Diferencia', 1);
+$pdf->Cell(50, 10, $diferencia_caja, 1);
+$pdf->Cell(50, 10, $diferencia_tapa, 1);
+$pdf->Ln();
+
 
     // Descargar el PDF
     $pdf->Output('historial_cajas.pdf', 'D');
@@ -198,6 +223,7 @@ if (isset($_GET['generate_pdf'])) {
 
 
 <!-- Cuadro "Canastilla Actual" -->
+<!-- Cuadro "Canastilla Actual" -->
 <div class="col-md-4">
   <br>
   <div class="card card-white">
@@ -209,20 +235,39 @@ if (isset($_GET['generate_pdf'])) {
       // Incluir el archivo de conexión
       include '../config/conexion.php';
 
-      // Obtener los datos actuales de la canastilla
-      $sql_canastilla = "SELECT caja, tapa FROM canastilla WHERE id = 1"; // Ajusta el WHERE según tu caso
-      $resultado = $conn->query($sql_canastilla);
+      // Sumar caja y tapa de la tabla `cajas_recibidas`
+      $sql_recibidas = "SELECT SUM(caja) as suma_caja_recibida, SUM(tapa) as suma_tapa_recibida FROM cajas_recibidas";
+      $resultado_recibidas = $conn->query($sql_recibidas);
 
-      if ($resultado->num_rows > 0) {
-          // Obtener los datos de la canastilla
-          $fila = $resultado->fetch_assoc();
-          $caja_actual = $fila['caja'];
-          $tapa_actual = $fila['tapa'];
-          echo '<p><strong>Caja Actual:</strong> ' . $caja_actual . '</p>';
-          echo '<p><strong>Tapa Actual:</strong> ' . $tapa_actual . '</p>';
+      if ($resultado_recibidas->num_rows > 0) {
+          $fila_recibidas = $resultado_recibidas->fetch_assoc();
+          $suma_caja_recibida = $fila_recibidas['suma_caja_recibida'];
+          $suma_tapa_recibida = $fila_recibidas['suma_tapa_recibida'];
       } else {
-          echo '<p>No se encontraron datos para la canastilla.</p>';
+          $suma_caja_recibida = 0;
+          $suma_tapa_recibida = 0;
       }
+
+      // Sumar caja y tapa de la tabla `caja_enviada`
+      $sql_enviadas = "SELECT SUM(caja) as suma_caja_enviada, SUM(tapa) as suma_tapa_enviada FROM caja_enviada";
+      $resultado_enviadas = $conn->query($sql_enviadas);
+
+      if ($resultado_enviadas->num_rows > 0) {
+          $fila_enviadas = $resultado_enviadas->fetch_assoc();
+          $suma_caja_enviada = $fila_enviadas['suma_caja_enviada'];
+          $suma_tapa_enviada = $fila_enviadas['suma_tapa_enviada'];
+      } else {
+          $suma_caja_enviada = 0;
+          $suma_tapa_enviada = 0;
+      }
+
+      // Calcular la diferencia entre recibidas y enviadas
+      $diferencia_caja = $suma_caja_recibida - $suma_caja_enviada;
+      $diferencia_tapa = $suma_tapa_recibida - $suma_tapa_enviada;
+
+      // Mostrar resultados
+      echo '<p><strong>Diferencia Caja:</strong> ' . $diferencia_caja . '</p>';
+      echo '<p><strong>Diferencia Tapa:</strong> ' . $diferencia_tapa . '</p>';
 
       $conn->close();
       ?>
@@ -254,8 +299,10 @@ if (isset($_GET['generate_pdf'])) {
   <!-- /.content-wrapper -->
 
   <!-- Bootstrap 4 JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="../job_js/a.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../job_js/a2.js"></script>
 </body>
 </html>
 

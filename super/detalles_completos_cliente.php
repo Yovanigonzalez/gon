@@ -85,9 +85,11 @@ if (isset($_GET['nombre']) && isset($_GET['direccion'])) {
             <!-- /.content-wrapper -->
         </div>
         <!-- Bootstrap 4 JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-        </body>
+  <!-- Bootstrap 4 JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="../job_js/a.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../job_js/a2.js"></script>        </body>
         </html>
         <?php
     } else {

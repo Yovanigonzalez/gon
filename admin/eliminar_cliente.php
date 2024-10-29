@@ -11,16 +11,16 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
     
     if ($conn->query($sql) === TRUE) {
         // Redirigir de vuelta a la página de lista de clientes con un mensaje de éxito
-        header("Location: total_clientes.php?delete_success=1");
+        header("Location: total_clientes?delete_success=1");
         exit();
     } else {
         // Redirigir de vuelta a la página de lista de clientes con un mensaje de error
-        header("Location: total_clientes.php?delete_error=1");
+        header("Location: total_clientes?delete_error=1");
         exit();
     }
 } else {
     // Redirigir de vuelta a la página de lista de clientes si no se proporcionó un ID válido
-    header("Location: total_clientes.php?delete_error=1");
+    header("Location: total_clientes?delete_error=1");
     exit();
 }
 ?>

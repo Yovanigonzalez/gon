@@ -19,7 +19,6 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         $nombre = $row['nombre'];
         $direccion = $row['direccion'];
         
-        // Mostrar el formulario de edición con los detalles del cliente
         ?>
 
 <!DOCTYPE html>
@@ -68,8 +67,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
     <!-- /.content -->
   </div>
   <!-- Bootstrap 4 JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="../job_js/a.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../job_js/a2.js"></script>
         <?php
     } else {
         echo "Cliente no encontrado.";

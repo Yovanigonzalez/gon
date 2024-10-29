@@ -144,10 +144,19 @@ if (empty($_SERVER['HTTP_REFERER'])) {
     <!-- /.sidebar -->
   </aside>
 
-  <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>
+    <!-- Bootstrap 4 JS -->
+    <!-- Bootstrap 4 JS en caso de fallar la recuperacion solo sera cambiar las llaves ya que el codigi estara en 'exception_job' -->
+    
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="../job_js/a.js"></script>
+
+    <!-- Bootstrap 4 -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>-->
+    <script src="../job_js/bj.js"></script>
+
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../job_js/a2.js"></script>
+
+    <!-- AdminLTE App -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js"></script>-->
+    <script src="../job_js/admin.js"></script>
