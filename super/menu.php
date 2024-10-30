@@ -114,18 +114,26 @@ if (empty($_SERVER['HTTP_REFERER'])) {
   </a>
 </li>
 
-
+<!-- Nuevo elemento para descargar salidas en PDF -->
+<li class="nav-item">
+    <a href="salidas" class="nav-link">
+        <i class="nav-icon fas fa-box-open"></i>
+        <p>
+            Descargar Salidas
+        </p>
+    </a>
+</li>
 
 
         <!-- Nuevo elemento para descargar PDF -->
-        <li class="nav-item">
+        <!--<li class="nav-item">
       <a href="../pdf/" class="nav-link">
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>
           Descargar PDF (Manual)
         </p>
       </a>
-    </li>
+    </li>-->
 
     <!-- Cerrar Sesión -->
 <li class="nav-item">

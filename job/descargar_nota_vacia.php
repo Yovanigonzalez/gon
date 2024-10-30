@@ -69,20 +69,23 @@ $pdf->Cell(0, 10, 'Dinero recibido: __________________ ', 0, 1);
 $pdf->Ln(3);
 $pdf->SetFont('helvetica', 'B', 11);
 $pdf->Cell(0, 8, 'Caja Entregada: __________________   Tapa Entregada: __________________', 0, 1);
+$pdf->Cell(0, 8, 'Caja Devuelta: __________________   Tapa Devuelta: __________________', 0, 1);
 
-// Texto de pagaré
-$pdf->Ln(3);
-$pdf->SetFont('helvetica', '', 9);
-$pdf->MultiCell(0, 11, 
-                "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de ___________________ " .
-                "," .
-                "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
-                "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de ______% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
 
-// Firma del cliente
+    // Texto de pagaré
+    $pdf->Ln(3);
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->MultiCell(0, 11, 
+    "Por este pagaré, me obligo incondicionalmente a pagar a la orden de Francisco González Flores la cantidad de " .
+    '$' . "____________________________, " .
+    "que se me ha entregado en mercancía a mi entera satisfacción.\n\n" .
+    "Y será exigible desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará intereses moratorios al tipo de ______% mensual, pagaderos con el principal. En caso de incumplimiento de este pagaré, el beneficiario podrá demandar a su elección el cumplimiento del mismo en las ciudades Tecamachalco y/o Tehuacán.\n\n", 0, 'L', 0, 1);
+
+
+// Dinero recibido y Deuda actual en una misma fila (duplicado)
 $pdf->SetFont('helvetica', 'B', 9);
-$pdf->Cell(0, 6, 'Firma del cliente: __________________ ', 0, 1);
-
+$pdf->Cell(0, 6, 'Firma del cliente: __________________   Chofer: __________________', 0, 1);
+                                        
 // Marca de agua en la segunda página
 $pdf->SetAlpha(0.3); // Valor entre 0 (transparente) y 1 (opaco)
 $pdf->Image('../pdf/icono.png', 20, 40, 180); // Coordenadas ajustadas para colocar la imagen a la derecha

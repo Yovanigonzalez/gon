@@ -2,3 +2,4 @@ Falta salidas: 'al momento de que se guarda la nota se debe de guarda el product
 
 las salidas deben de ser semanales
 
+si hay errores en actualizaciones recordar que esta en 'guardar nota'

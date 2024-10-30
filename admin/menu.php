@@ -154,14 +154,14 @@ if (empty($_SERVER['HTTP_REFERER'])) {
     
 
         <!-- Nuevo elemento para descargar PDF -->
-        <li class="nav-item">
+        <!--<li class="nav-item">
     <a href="../pdf/manual_admin.pdf" class="nav-link" download>
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>
             Manual
         </p>
     </a>
-</li>
+</li>-->
 
 
         <!-- Nuevo elemento para descargar PDF -->

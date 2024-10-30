@@ -32,16 +32,52 @@ $stmt->bind_param("sssssssssss", $cliente, $direccion, $subtotalVendido, $deudaP
 if ($stmt->execute()) {
   $notaId = $stmt->insert_id;
 
-  // Insertar los productos en la tabla de productos_nota
-  $sqlProductos = "INSERT INTO productos_nota (nota_id, producto, piezas, kilos, precio, subtotal, estatus)";
-  $sqlProductos .= " VALUES (?, ?, ?, ?, ?, ?, 'pendiente')";
+// Insertar los productos en la tabla de productos_nota
+$sqlProductos = "INSERT INTO productos_nota (nota_id, producto, piezas, kilos, precio, subtotal, estatus)
+                 VALUES (?, ?, ?, ?, ?, ?, 'pendiente')";
 
-  $stmtProductos = $conn->prepare($sqlProductos);
+$stmtProductos = $conn->prepare($sqlProductos);
 
-  foreach ($productos as $producto) {
+foreach ($productos as $producto) {
+    // Insertar en productos_nota
     $stmtProductos->bind_param("isssss", $notaId, $producto['producto'], $producto['piezas'], $producto['kilos'], $producto['precio'], $producto['subtotal']);
     $stmtProductos->execute();
+
+      // Buscar el id del producto en la tabla productos
+      $sqlProductoId = "SELECT id FROM productos WHERE nombre = ?";
+      $stmtProductoId = $conn->prepare($sqlProductoId);
+      $stmtProductoId->bind_param("s", $producto['producto']);
+      $stmtProductoId->execute();
+      $resultProductoId = $stmtProductoId->get_result();
+      $productoData = $resultProductoId->fetch_assoc();
+
+      if ($productoData) {
+          $idProducto = $productoData['id'];
+      } else {
+          // Si no se encuentra en la tabla productos, buscar en la tabla productos_menudencia
+          $sqlProductoIdMenudencia = "SELECT id FROM productos_menudencia WHERE nombre = ?";
+          $stmtProductoIdMenudencia = $conn->prepare($sqlProductoIdMenudencia);
+          $stmtProductoIdMenudencia->bind_param("s", $producto['producto']);
+          $stmtProductoIdMenudencia->execute();
+          $resultProductoIdMenudencia = $stmtProductoIdMenudencia->get_result();
+          $productoDataMenudencia = $resultProductoIdMenudencia->fetch_assoc();
+
+          if ($productoDataMenudencia) {
+              $idProducto = $productoDataMenudencia['id'];
+          } else {
+              // Manejar el caso en el que no se encuentre el producto en ninguna de las tablas
+              throw new Exception("Producto no encontrado en ninguna de las tablas.");
+          }
+      }
+
+      // Insertar en la tabla salidas usando el mismo notaId
+      $sqlSalidas = "INSERT INTO salidas (nota_id, id_producto, producto, piezas, kilos, fecha)
+                     VALUES (?, ?, ?, ?, ?, NOW())";
+      $stmtSalidas = $conn->prepare($sqlSalidas);
+      $stmtSalidas->bind_param("iisss", $notaId, $idProducto, $producto['producto'], $producto['piezas'], $producto['kilos']);
+      $stmtSalidas->execute();
   }
+
 
   // Obtener el ID del cliente
   $sqlClienteId = "SELECT id FROM deudores WHERE nombre_cliente = ? AND direccion = ?";

@@ -247,7 +247,7 @@
     </div>
     <!-- Sección derecha con la imagen -->
     <div class="right">
-      <img src="font/logo.png" alt="Imagen de la empresa">
+      <img src="font/logo.jpg" alt="Imagen de la empresa">
     </div>
   </div>
 
